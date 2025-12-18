@@ -1,17 +1,58 @@
-function order(){
-  let cpu  = parseInt(document.getElementById("cpu").value);
-  let ram  = parseInt(document.getElementById("ram").value);
-  let disk = parseInt(document.getElementById("disk").value);
+<script>
+// ===== CONFIG HARGA =====
+const PRICE_CPU = 25000; // per core
+const PRICE_RAM = 15000; // per GB
 
-  if(!cpu || !ram || !disk){
-    alert("CPU, RAM, dan Disk wajib dipilih");
+function minRam(cpu){
+  if(cpu === 1) return 1;
+  if(cpu >= 2 && cpu <= 5) return 2;
+  if(cpu >= 6 && cpu <= 8) return 6;
+  if(cpu >= 9 && cpu <= 32) return 16;
+  return 0;
+}
+
+function updateAll(){
+  let cpu = parseInt(cpuSelect.value);
+  let ramSelect = document.getElementById("ram");
+  let info = document.getElementById("minRamInfo");
+
+  if(!cpu){
+    info.innerText = "Pilih CPU untuk melihat minimal RAM";
     return;
   }
 
   let min = minRam(cpu);
+  info.innerText = `Minimal RAM untuk CPU ini: ${min} GB`;
 
-  if(ram < min){
-    alert(`RAM minimal untuk CPU ${cpu} Core adalah ${min} GB`);
+  // auto naikkan RAM kalau di bawah minimum
+  if(parseInt(ramSelect.value) < min || !ramSelect.value){
+    ramSelect.value = min;
+  }
+
+  updatePrice();
+}
+
+function updatePrice(){
+  let cpu = parseInt(cpuSelect.value);
+  let ram = parseInt(ramSelect.value);
+  let priceBox = document.getElementById("priceInfo");
+
+  if(!cpu || !ram){
+    priceBox.innerText = "Total: -";
+    return;
+  }
+
+  let total = (cpu * PRICE_CPU) + (ram * PRICE_RAM);
+  priceBox.innerText = "Total: Rp " + total.toLocaleString("id-ID");
+}
+
+function order(){
+  let cpu = cpuSelect.value;
+  let ram = ramSelect.value;
+  let disk = diskSelect.value;
+
+  if(!cpu || !ram || !disk){
+    alert("CPU, RAM, dan Disk wajib dipilih");
     return;
   }
 
@@ -27,4 +68,5 @@ Lokasi: Indonesia`;
   location.href =
   "https://wa.me/6283139274450?text=" + encodeURIComponent(msg);
 }
+</script>
 
