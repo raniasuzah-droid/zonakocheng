@@ -1,3 +1,4 @@
+ (cd "$(git rev-parse --show-toplevel)" && git apply --3way <<'EOF' 
 diff --git a/vps.html b/vps.html
 index 81b95c7899c9b0a92e1a2e3164784e5e3f57f1c6..2372d3b34d4f14c4cc007a86f83084e194120e9a 100644
 --- a/vps.html
@@ -16,8 +17,8 @@ index 81b95c7899c9b0a92e1a2e3164784e5e3f57f1c6..2372d3b34d4f14c4cc007a86f83084e1
      <button onclick="order()">ORDER VIA WHATSAPP</button>
  
      <div class="small">
-       Catatan: ini kalkulator estimasi “ngikut Depa” dari data patokan yang kamu kasih.<br>
-       Jika Depa update harga, tinggal ubah angka config di bagian script.
+       Catatan: ini di buat oleh kreator zona kocheng.<br>
+       Terima kasih telah berkunjung di web kami.
      </div>
    </div>
  </div>
@@ -324,4 +325,6 @@ index 81b95c7899c9b0a92e1a2e3164784e5e3f57f1c6..2372d3b34d4f14c4cc007a86f83084e1
 -</body>
 -</html>
 -
-
+ 
+EOF
+)
