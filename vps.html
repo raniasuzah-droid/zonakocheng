@@ -24,84 +24,167 @@ border:1px solid #1e293b;
 border-radius:16px;
 padding:30px;
 }
-h1{text-align:center}
-label{display:block;margin-top:15px}
-select,button{
+h1{text-align:center;margin-bottom:10px}
+.subtitle{text-align:center;opacity:.7;margin-bottom:30px}
+.block{margin-bottom:25px}
+.label{
+display:flex;
+justify-content:space-between;
+margin-bottom:8px;
+font-weight:600;
+}
+input[type=range]{
 width:100%;
-padding:15px;
-margin-top:5px;
-border-radius:10px;
-border:none;
-font-size:16px;
 }
-select{background:#1e293b;color:white}
-.info{
-margin-top:10px;
+.value{
+background:#1e293b;
+padding:6px 12px;
+border-radius:8px;
 font-size:14px;
-color:#22c55e;
 }
+.info{color:#22c55e;font-size:14px;margin-top:6px}
 .price{
-margin-top:15px;
-font-size:20px;
+font-size:24px;
 font-weight:700;
+margin-top:20px;
+text-align:center;
 }
 button{
+width:100%;
 margin-top:25px;
+padding:16px;
+border:none;
+border-radius:12px;
 background:#22c55e;
 color:black;
+font-size:16px;
 font-weight:700;
 cursor:pointer;
 }
+button:hover{opacity:.9}
 </style>
 </head>
 
 <body>
 <div class="wrap">
 <h1>ZONA KOCHENG VPS</h1>
-<p style="text-align:center;opacity:.7">VPS Indonesia Custom</p>
+<p class="subtitle">VPS Indonesia • Custom Resource • Live Pricing</p>
 
 <div class="card">
 
-<label>CPU Core</label>
-<select id="cpu" onchange="updateAll()">
-  <option value="">Pilih CPU</option>
-  <!-- 1–8 ditampilkan satuan -->
-  <option value="1">1 Core</option>
-  <option value="2">2 Core</option>
-  <option value="3">3 Core</option>
-  <option value="4">4 Core</option>
-  <option value="5">5 Core</option>
-  <option value="6">6 Core</option>
-  <option value="7">7 Core</option>
-  <option value="8">8 Core</option>
+<!-- CPU -->
+<div class="block">
+  <div class="label">
+    <span>CPU</span>
+    <span class="value"><span id="cpuVal">1</span> Core</span>
+  </div>
+  <input type="range" id="cpu" min="1" max="32" value="1" oninput="updateAll()">
+</div>
 
-  <!-- 9–32 tetap tersedia -->
-  <option value="9">9 Core</option>
-  <option value="10">10 Core</option>
-  <option value="11">11 Core</option>
-  <option value="12">12 Core</option>
-  <option value="13">13 Core</option>
-  <option value="14">14 Core</option>
-  <option value="15">15 Core</option>
-  <option value="16">16 Core</option>
-  <option value="17">17 Core</option>
-  <option value="18">18 Core</option>
-  <option value="19">19 Core</option>
-  <option value="20">20 Core</option>
-  <option value="21">21 Core</option>
-  <option value="22">22 Core</option>
-  <option value="23">23 Core</option>
-  <option value="24">24 Core</option>
-  <option value="25">25 Core</option>
-  <option value="26">26 Core</option>
-  <option value="27">27 Core</option>
-  <option value="28">28 Core</option>
-  <option value="29">29 Core</option>
-  <option value="30">30 Core</option>
-  <option value="31">31 Core</option>
-  <option value="32">32 Core</option>
-</select>
+<!-- RAM -->
+<div class="block">
+  <div class="label">
+    <span>RAM</span>
+    <span class="value"><span id="ramVal">1</span> GB</span>
+  </div>
+  <input type="range" id="ram" min="1" max="128" value="1" oninput="updatePrice()">
+  <div class="info" id="ramInfo">Minimal RAM: 1 GB</div>
+</div>
 
+<!-- DISK -->
+<div class="block">
+  <div class="label">
+    <span>Disk</span>
+    <span class="value"><span id="diskVal">20</span> GB</span>
+  </div>
+  <input type="range" id="disk" min="20" max="1000" step="10" value="20" oninput="updatePrice()">
+</div>
+
+<div class="price" id="price">Total: Rp -</div>
+
+<button onclick="order()">ORDER VIA WHATSAPP</button>
+
+</div>
+</div>
+
+<script>
+// ===== HARGA (UBAH SESUAI MAU KAMU) =====
+const PRICE_CPU  = 22000; // per core
+const PRICE_RAM  = 14000; // per GB
+const PRICE_DISK = 1500;  // per GB
+
+function minRam(cpu){
+  if(cpu === 1) return 1;
+  if(cpu >= 2 && cpu <= 5) return 2;
+  if(cpu >= 6 && cpu <= 8) return 6;
+  return 16; // cpu 9–32
+}
+
+function updateAll(){
+  let cpu = parseInt(cpuEl.value);
+  let ramMin = minRam(cpu);
+
+  cpuVal.innerText = cpu;
+
+  if(parseInt(ramEl.value) < ramMin){
+    ramEl.value = ramMin;
+  }
+
+  ramVal.innerText = ramEl.value;
+  ramInfo.innerText = "Minimal RAM: " + ramMin + " GB";
+
+  updatePrice();
+}
+
+function updatePrice(){
+  let cpu  = parseInt(cpuEl.value);
+  let ram  = parseInt(ramEl.value);
+  let disk = parseInt(diskEl.value);
+
+  ramVal.innerText  = ram;
+  diskVal.innerText = disk;
+
+  let total =
+    (cpu  * PRICE_CPU) +
+    (ram  * PRICE_RAM) +
+    (disk * PRICE_DISK);
+
+  price.innerText =
+    "Total: Rp " + total.toLocaleString("id-ID");
+}
+
+function order(){
+  let msg =
+`Halo admin ZONA KOCHENG,
+Saya mau order VPS Custom:
+
+CPU  : ${cpuEl.value} Core
+RAM  : ${ramEl.value} GB
+Disk : ${diskEl.value} GB
+
+Total: ${price.innerText}
+Lokasi: Indonesia`;
+
+  window.location.href =
+  "https://wa.me/6283139274450?text=" + encodeURIComponent(msg);
+}
+
+// element shortcut
+const cpuEl  = document.getElementById("cpu");
+const ramEl  = document.getElementById("ram");
+const diskEl = document.getElementById("disk");
+const cpuVal = document.getElementById("cpuVal");
+const ramVal = document.getElementById("ramVal");
+const diskVal= document.getElementById("diskVal");
+const ramInfo= document.getElementById("ramInfo");
+const price  = document.getElementById("price");
+
+// init
+updateAll();
+</script>
+
+</body>
+</html>
 <label>RAM (GB)</label>
 <select id="ram" onchange="updatePrice()">
 <option value="">Pilih RAM</option>
