@@ -12,10 +12,456 @@
     <h1>KALINUX CLOUD</h1>
     <p>Solusi VPS & Tunnel Indonesia</p>
 
-    <a href="vps.html" style="display:block;margin:20px auto;
-      background:#22c55e;color:black;padding:20px;
-      text-decoration:none;width:250px">
-      ZONA KOCHENG<br>VPS Indonesia
+    <a <!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ZONA KOCHENG - VPS PRO & ULTRA</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#020617;
+      --panel:#0b1220;
+      --border:#1e293b;
+      --text:#ffffff;
+      --muted:rgba(255,255,255,.7);
+      --green:#22c55e;
+      --blue:#38bdf8;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,Arial,sans-serif;
+      background: radial-gradient(900px 450px at 50% 0%, #1e293b 0%, var(--bg) 60%);
+      color:var(--text);
+    }
+    a{color:inherit}
+
+    .topbar{
+      position:sticky; top:0;
+      z-index:10;
+      background:rgba(2,6,23,.72);
+      backdrop-filter: blur(10px);
+      border-bottom:1px solid var(--border);
+    }
+    .topbar-inner{
+      max-width:1100px;
+      margin:auto;
+      padding:14px 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      text-decoration:none;
+    }
+    .logo{
+      width:36px; height:36px;
+      border-radius:10px;
+      background:linear-gradient(135deg, var(--green), var(--blue));
+      display:flex; align-items:center; justify-content:center;
+      color:#00140a; font-weight:900;
+    }
+    .brand-title{
+      line-height:1.1;
+    }
+    .brand-title strong{display:block}
+    .brand-title span{font-size:12px; opacity:.7}
+
+    .actions{display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end}
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:10px 14px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      text-decoration:none;
+      font-weight:700;
+      font-size:14px;
+      cursor:pointer;
+      user-select:none;
+      transition:.2s;
+      background:transparent;
+      color:var(--text);
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .btn.primary{background:var(--green); color:#00140a; border-color:transparent}
+    .btn.ghost{background:rgba(255,255,255,.04)}
+    .btn.blue{background:var(--blue); color:#00111a; border-color:transparent}
+
+    .container{
+      max-width:1100px;
+      margin:auto;
+      padding:28px 18px 70px;
+    }
+
+    .hero{
+      padding:22px 18px 10px;
+      border:1px solid var(--border);
+      border-radius:18px;
+      background:rgba(2,6,23,.55);
+    }
+    .hero h1{
+      margin:0 0 8px;
+      font-size:28px;
+      letter-spacing:.2px;
+    }
+    .hero p{
+      margin:0 0 14px;
+      color:var(--muted);
+      line-height:1.5;
+    }
+    .pill-row{display:flex; flex-wrap:wrap; gap:10px}
+    .pill{
+      font-size:12px;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.04);
+      color:rgba(255,255,255,.82);
+    }
+
+    .tabs{
+      margin-top:18px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .tab{
+      padding:10px 14px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.04);
+      color:var(--text);
+      font-weight:800;
+      cursor:pointer;
+    }
+    .tab.active{
+      background:rgba(34,197,94,.16);
+      border-color:rgba(34,197,94,.55);
+    }
+
+    .section{
+      margin-top:16px;
+      display:none;
+    }
+    .section.active{display:block}
+
+    .grid{
+      margin-top:14px;
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
+      gap:14px;
+    }
+    .card{
+      border:1px solid var(--border);
+      border-radius:18px;
+      background:rgba(2,6,23,.55);
+      padding:16px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      min-height:100%;
+    }
+    .card .name{
+      font-weight:900;
+      letter-spacing:.2px;
+      font-size:16px;
+      margin:0;
+    }
+    .price{
+      font-size:22px;
+      font-weight:900;
+      margin:0;
+    }
+    .period{
+      font-size:12px;
+      opacity:.65;
+      font-weight:700;
+      margin-left:6px;
+    }
+    .tag{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      font-size:12px;
+      padding:7px 10px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.04);
+      width:fit-content;
+      opacity:.9;
+    }
+    ul{
+      margin:0;
+      padding-left:18px;
+      color:rgba(255,255,255,.82);
+      line-height:1.55;
+      font-size:13px;
+    }
+
+    .order{
+      margin-top:auto;
+      width:100%;
+      padding:12px 14px;
+      border-radius:14px;
+      border:0;
+      background:var(--green);
+      color:#00140a;
+      font-weight:900;
+      cursor:pointer;
+    }
+    .order:hover{opacity:.92}
+
+    .note{
+      margin-top:14px;
+      color:rgba(255,255,255,.65);
+      font-size:13px;
+      line-height:1.5;
+    }
+
+    .benefits{
+      margin-top:20px;
+      border:1px solid var(--border);
+      border-radius:18px;
+      background:rgba(2,6,23,.55);
+      padding:16px;
+    }
+    .benefits h2{margin:0 0 10px; font-size:18px}
+    .benef-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(210px, 1fr));
+      gap:10px;
+    }
+    .benef{
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.04);
+      border-radius:14px;
+      padding:12px;
+      font-size:13px;
+      color:rgba(255,255,255,.85);
+    }
+
+    footer{
+      margin-top:18px;
+      text-align:center;
+      padding:24px 10px;
+      opacity:.6;
+      font-size:12px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="index.html">
+        <div class="logo">ZK</div>
+        <div class="brand-title">
+          <strong>ZONA KOCHENG</strong>
+          <span>VPS Indonesia • Order via WhatsApp</span>
+        </div>
+      </a>
+
+      <div class="actions">
+        <a class="btn ghost" href="index.html">Home</a>
+        <a class="btn ghost" href="vps.html">VPS Custom</a>
+        <a class="btn blue" href="https://t.me/t3st1m0n" target="_blank" rel="noreferrer">Testimoni</a>
+        <a class="btn primary" href="https://wa.me/6283139274450" target="_blank" rel="noreferrer">Chat Admin</a>
+      </div>
+    </div>
+  </div>
+
+  <main class="container">
+    <section class="hero">
+      <h1>VPS PRO & ULTRA (Server Indo)</h1>
+      <p>
+        cari vps/rdp spek yang <b>gahar + ganas</b> atau cari vps yang harga terjangkau?
+        santai, semua solusi ada di <b>KOCHENG</b>. 😼
+      </p>
+
+      <div class="pill-row">
+        <div class="pill">Garansi 30 Hari</div>
+        <div class="pill">Support 24 Jam</div>
+        <div class="pill">Anti Suspend (sesuai ketentuan)</div>
+        <div class="pill">Masa Aktif 30 Hari</div>
+      </div>
+
+      <div class="tabs" style="margin-top:16px">
+        <button class="tab active" data-target="pro">SERVER INDO UNLI PRO</button>
+        <button class="tab" data-target="ultra">SERVER INDO UNLI ULTRA</button>
+      </div>
+    </section>
+
+    <!-- PRO -->
+    <section id="pro" class="section active">
+      <div class="grid">
+        <article class="card">
+          <p class="name">UNLI PRO • Starter</p>
+          <p class="price">Rp50.000<span class="period">/ 30 hari</span></p>
+          <div class="tag">CPU: Intel Xeon Platinum Skylake</div>
+          <ul>
+            <li>Server Indonesia</li>
+            <li>Unlimited Bandwidth</li>
+            <li>RAM 1GB</li>
+            <li>CPU 1 Core</li>
+            <li>Request aktif 1–30 hari</li>
+          </ul>
+          <button class="order" onclick="orderWA('UNLI PRO • Starter','50000','1 Core','1 GB','Request (tanya admin)','Intel Xeon Platinum Skylake')">
+            ORDER VIA WHATSAPP
+          </button>
+        </article>
+
+        <article class="card">
+          <p class="name">UNLI PRO • Standard</p>
+          <p class="price">Rp100.000<span class="period">/ 30 hari</span></p>
+          <div class="tag">CPU: Intel Xeon Platinum Skylake</div>
+          <ul>
+            <li>Server Indonesia</li>
+            <li>Unlimited Bandwidth</li>
+            <li>RAM 2GB</li>
+            <li>CPU 2 Core</li>
+            <li>Garansi 30 hari</li>
+          </ul>
+          <button class="order" onclick="orderWA('UNLI PRO • Standard','100000','2 Core','2 GB','Request (tanya admin)','Intel Xeon Platinum Skylake')">
+            ORDER VIA WHATSAPP
+          </button>
+        </article>
+
+        <article class="card">
+          <p class="name">UNLI PRO • Power</p>
+          <p class="price">Rp250.000<span class="period">/ 30 hari</span></p>
+          <div class="tag">CPU: Intel Xeon Platinum Skylake</div>
+          <ul>
+            <li>Server Indonesia</li>
+            <li>Unlimited Bandwidth</li>
+            <li>RAM 4GB</li>
+            <li>CPU 3 Core</li>
+            <li>Support 24 jam</li>
+          </ul>
+          <button class="order" onclick="orderWA('UNLI PRO • Power','250000','3 Core','4 GB','Request (tanya admin)','Intel Xeon Platinum Skylake')">
+            ORDER VIA WHATSAPP
+          </button>
+        </article>
+      </div>
+
+      <p class="note">
+        *Disk belum ditulis di paket karena bisa menyesuaikan stok/kebutuhan. Tinggal tulis kebutuhan saat chat admin.
+      </p>
+    </section>
+
+    <!-- ULTRA -->
+    <section id="ultra" class="section">
+      <div class="grid">
+        <article class="card">
+          <p class="name">UNLI ULTRA • Starter</p>
+          <p class="price">Rp90.000<span class="period">/ 30 hari</span></p>
+          <div class="tag">CPU: AMD EPYC™ Genoa</div>
+          <ul>
+            <li>Server Indonesia</li>
+            <li>Unlimited Bandwidth</li>
+            <li>RAM 1GB</li>
+            <li>CPU 1 Core</li>
+            <li>Garansi 30 hari</li>
+          </ul>
+          <button class="order" onclick="orderWA('UNLI ULTRA • Starter','90000','1 Core','1 GB','Request (tanya admin)','AMD EPYC™ Genoa')">
+            ORDER VIA WHATSAPP
+          </button>
+        </article>
+
+        <article class="card">
+          <p class="name">UNLI ULTRA • Standard</p>
+          <p class="price">Rp170.000<span class="period">/ 30 hari</span></p>
+          <div class="tag">CPU: AMD EPYC™ Genoa</div>
+          <ul>
+            <li>Server Indonesia</li>
+            <li>Unlimited Bandwidth</li>
+            <li>RAM 2GB</li>
+            <li>CPU 2 Core</li>
+            <li>Support 24 jam</li>
+          </ul>
+          <button class="order" onclick="orderWA('UNLI ULTRA • Standard','170000','2 Core','2 GB','Request (tanya admin)','AMD EPYC™ Genoa')">
+            ORDER VIA WHATSAPP
+          </button>
+        </article>
+      </div>
+
+      <p class="note">
+        *Butuh spek di luar paket ULTRA? Pakai VPS Custom (builder) supaya bisa pilih CPU/RAM/Disk sesuai kebutuhan.
+      </p>
+    </section>
+
+    <section class="benefits">
+      <h2>Keuntungan beli VPS di toko kami</h2>
+      <div class="benef-grid">
+        <div class="benef">✅ Garansi 30 hari</div>
+        <div class="benef">✅ Dukungan 24 jam</div>
+        <div class="benef">✅ Request aktif 1–30 hari</div>
+        <div class="benef">✅ Resmi (sesuai ketentuan)</div>
+        <div class="benef">✅ Anti suspend (sesuai ketentuan)</div>
+        <div class="benef">✅ Rekber bisa (opsional)</div>
+      </div>
+    </section>
+
+    <footer>
+      © 2025 ZONA KOCHENG • kalinux.cloud
+    </footer>
+  </main>
+
+  <script>
+    // ===== KONFIG =====
+    const WA_NUMBER = "6283139274450";
+
+    function rupiah(numStr){
+      const n = parseInt(numStr, 10);
+      if(Number.isNaN(n)) return numStr;
+      return n.toLocaleString("id-ID");
+    }
+
+    function orderWA(paket, harga, cpu, ram, disk, cpuModel){
+      const msg =
+`Halo admin ZONA KOCHENG,
+Saya mau order VPS:
+
+Paket : ${paket}
+CPU   : ${cpu}
+RAM   : ${ram}
+Disk  : ${disk}
+CPU Model: ${cpuModel}
+Masa aktif: 30 hari
+
+Harga : Rp ${rupiah(harga)}
+
+Nama:
+Kebutuhan (RDP/Hosting/Bot/dll):
+Lokasi: Indonesia`;
+
+      window.open(
+        "https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(msg),
+        "_blank"
+      );
+    }
+
+    // Tabs
+    document.querySelectorAll(".tab").forEach((btn)=>{
+      btn.addEventListener("click", ()=>{
+        document.querySelectorAll(".tab").forEach(b=>b.classList.remove("active"));
+        btn.classList.add("active");
+
+        const target = btn.getAttribute("data-target");
+        document.querySelectorAll(".section").forEach(sec=>sec.classList.remove("active"));
+        document.getElementById(target).classList.add("active");
+        window.scrollTo({top: 0, behavior: "smooth"});
+      });
+    });
+  </script>
+</body>
+</html>
+
     </a>
 
     <a href="tunnel.html" style="display:block;margin:20px auto;
