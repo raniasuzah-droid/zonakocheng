@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>ZONA KOCHENG - VPS Custom</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body style="font-family:Arial;background:#0f172a;color:white;margin:0">
+
+<div style="padding:20px;text-align:center;background:#020617">
+<h1>ZONA KOCHENG</h1>
+<p>VPS Indonesia Custom</p>
+</div>
+
+<div style="padding:20px">
+<label>RAM</label><br>
+<select id="ram">
+  <option>1 GB</option>
+  <option>2 GB</option>
+  <option>4 GB</option>
+  <option>8 GB</option>
+</select><br><br>
+
+<label>CPU</label><br>
+<select id="cpu">
+  <option>1 Core</option>
+  <option>2 Core</option>
+  <option>4 Core</option>
+</select><br><br>
+
+<label>Disk</label><br>
+<select id="disk">
+  <option>20 GB</option>
+  <option>40 GB</option>
+  <option>80 GB</option>
+</select><br><br>
+
+<button onclick="orderWA()" style="padding:15px;background:#22c55e;color:black">
+ORDER VIA WHATSAPP
+</button>
+</div>
+
+<script>
+function orderWA(){
+  let ram = document.getElementById('ram').value;
+  let cpu = document.getElementById('cpu').value;
+  let disk = document.getElementById('disk').value;
+
+  let text = `Halo admin ZONA KOCHENG,%0A
+Saya mau order VPS Custom:%0A
+RAM: ${ram}%0A
+CPU: ${cpu}%0A
+Disk: ${disk}%0A
+Lokasi: Indonesia`;
+
+  window.location.href =
+  "https://wa.me/6283139274450?text=" + text;
+}
+</script>
+
+</body>
+</html>
+
