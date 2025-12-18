@@ -6,33 +6,3 @@ function minRam(cpu){
   return 0;
 }
 
-    function order(){
-  let cpu  = parseInt(document.getElementById("cpu").value);
-  let ram  = parseInt(document.getElementById("ram").value);
-  let disk = parseInt(document.getElementById("disk").value);
-
-  if(!cpu || !ram || !disk){
-    alert("CPU, RAM, dan Disk wajib dipilih");
-    return;
-  }
-
-  let min = minRam(cpu);
-
-  if(ram < min){
-    alert(`RAM minimal untuk CPU ${cpu} Core adalah ${min} GB`);
-    return;
-  }
-
-  let msg =
-`Halo admin ZONA KOCHENG,
-Saya mau order VPS Custom:
-
-CPU  : ${cpu} Core
-RAM  : ${ram} GB
-Disk : ${disk} GB
-Lokasi: Indonesia`;
-
-  location.href =
-  "https://wa.me/6283139274450?text=" + encodeURIComponent(msg);
-}
-           
