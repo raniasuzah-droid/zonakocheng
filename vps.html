@@ -8,58 +8,56 @@
 
 <style>
 body{
-margin:0;
-font-family:Inter,sans-serif;
-background:#020617;
-color:white;
+  margin:0;
+  font-family:Inter,sans-serif;
+  background:#020617;
+  color:white;
 }
 .wrap{
-max-width:900px;
-margin:auto;
-padding:40px 20px;
+  max-width:900px;
+  margin:auto;
+  padding:40px 20px;
 }
 .card{
-background:#020617;
-border:1px solid #1e293b;
-border-radius:16px;
-padding:30px;
+  background:#020617;
+  border:1px solid #1e293b;
+  border-radius:16px;
+  padding:30px;
 }
-h1{text-align:center;margin-bottom:10px}
+h1{text-align:center;margin-bottom:8px}
 .subtitle{text-align:center;opacity:.7;margin-bottom:30px}
 .block{margin-bottom:25px}
 .label{
-display:flex;
-justify-content:space-between;
-margin-bottom:8px;
-font-weight:600;
-}
-input[type=range]{
-width:100%;
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:8px;
+  font-weight:600;
 }
 .value{
-background:#1e293b;
-padding:6px 12px;
-border-radius:8px;
-font-size:14px;
+  background:#1e293b;
+  padding:6px 12px;
+  border-radius:8px;
+  font-size:14px;
 }
+input[type=range]{width:100%}
 .info{color:#22c55e;font-size:14px;margin-top:6px}
 .price{
-font-size:24px;
-font-weight:700;
-margin-top:20px;
-text-align:center;
+  font-size:24px;
+  font-weight:700;
+  text-align:center;
+  margin-top:20px;
 }
 button{
-width:100%;
-margin-top:25px;
-padding:16px;
-border:none;
-border-radius:12px;
-background:#22c55e;
-color:black;
-font-size:16px;
-font-weight:700;
-cursor:pointer;
+  width:100%;
+  margin-top:25px;
+  padding:16px;
+  border:none;
+  border-radius:12px;
+  background:#22c55e;
+  color:black;
+  font-size:16px;
+  font-weight:700;
+  cursor:pointer;
 }
 button:hover{opacity:.9}
 </style>
@@ -108,13 +106,20 @@ button:hover{opacity:.9}
 </div>
 
 <script>
-// ===== HARGA (UBAH SESUAI MAU KAMU) =====
-const BASE_PRICE = 57000;
-const PROFIT     = 5000;
+/* ===== PRICING FINAL ===== */
+const BASE_PRICE = 57000;   // harga depa 1C 1G 20D
+const PROFIT     = 5000;    // untung awal (murah dulu)
 
-const EXTRA_CPU  = 6000;
-const EXTRA_RAM  = 4000;
-const EXTRA_DISK = 1000;
+const EXTRA_CPU  = 6000;    // per core di atas 1
+const EXTRA_RAM  = 4000;    // per GB di atas min RAM
+const EXTRA_DISK = 1000;    // per GB di atas 20
+
+function minRam(cpu){
+  if(cpu === 1) return 1;
+  if(cpu >= 2 && cpu <= 5) return 2;
+  if(cpu >= 6 && cpu <= 8) return 6;
+  return 16; // cpu 9–32
+}
 
 function calculatePrice(cpu, ram, disk){
   let min = minRam(cpu);
@@ -128,26 +133,18 @@ function calculatePrice(cpu, ram, disk){
   );
 }
 
-
-function minRam(cpu){
-  if(cpu === 1) return 1;
-  if(cpu >= 2 && cpu <= 5) return 2;
-  if(cpu >= 6 && cpu <= 8) return 6;
-  return 16; // cpu 9–32
-}
-
 function updateAll(){
   let cpu = parseInt(cpuEl.value);
-  let ramMin = minRam(cpu);
+  let min = minRam(cpu);
 
   cpuVal.innerText = cpu;
 
-  if(parseInt(ramEl.value) < ramMin){
-    ramEl.value = ramMin;
+  if(parseInt(ramEl.value) < min){
+    ramEl.value = min;
   }
 
   ramVal.innerText = ramEl.value;
-  ramInfo.innerText = "Minimal RAM: " + ramMin + " GB";
+  ramInfo.innerText = "Minimal RAM: " + min + " GB";
 
   updatePrice();
 }
@@ -160,13 +157,8 @@ function updatePrice(){
   ramVal.innerText  = ram;
   diskVal.innerText = disk;
 
-  let total =
-    (cpu  * PRICE_CPU) +
-    (ram  * PRICE_RAM) +
-    (disk * PRICE_DISK);
-
-  price.innerText =
-    "Total: Rp " + total.toLocaleString("id-ID");
+  let total = calculatePrice(cpu, ram, disk);
+  price.innerText = "Total: Rp " + total.toLocaleString("id-ID");
 }
 
 function order(){
@@ -177,15 +169,15 @@ Saya mau order VPS Custom:
 CPU  : ${cpuEl.value} Core
 RAM  : ${ramEl.value} GB
 Disk : ${diskEl.value} GB
+Harga: ${price.innerText}
 
-Total: ${price.innerText}
 Lokasi: Indonesia`;
 
   window.location.href =
-  "https://wa.me/6283139274450?text=" + encodeURIComponent(msg);
+    "https://wa.me/6283139274450?text=" + encodeURIComponent(msg);
 }
 
-// element shortcut
+/* element refs */
 const cpuEl  = document.getElementById("cpu");
 const ramEl  = document.getElementById("ram");
 const diskEl = document.getElementById("disk");
@@ -195,322 +187,8 @@ const diskVal= document.getElementById("diskVal");
 const ramInfo= document.getElementById("ramInfo");
 const price  = document.getElementById("price");
 
-// init
+/* init */
 updateAll();
-</script>
-
-</body>
-</html>
-<button onclick="order()">ORDER VIA WHATSAPP</button>
-
-</div>
-</div>
-
-<script>
-// ===== HARGA (UBAH SESUAI MAU KAMU) =====
-
-
-function minRam(cpu){
-  if(cpu === 1) return 1;
-  if(cpu >= 2 && cpu <= 5) return 2;
-  if(cpu >= 6 && cpu <= 8) return 6;
-  return 16; // cpu 9–32
-}
-
-function updateAll(){
-  let cpu = parseInt(cpuEl.value);
-  let ramMin = minRam(cpu);
-
-  cpuVal.innerText = cpu;
-
-  if(parseInt(ramEl.value) < ramMin){
-    ramEl.vconst BASE_PRICE = 57000;
-const PROFIT     = 5000;
-
-const EXTRA_CPU  = 6000;
-const EXTRA_RAM  = 4000;
-const EXTRA_DISK = 1000;
-
-function calculatePrice(cpu, ram, disk){
-  let min = minRam(cpu);
-
-  let total =
-    BASE_PRICE +
-    (cpu - 1) * EXTRA_CPU +
-    (ram - min) * EXTRA_RAM +
-    Math.max(0, disk - 20) * EXTRA_DISK +
-    PROFIT;
-
-  return total;
-}
-alue = ramMin;
-  }
-
-  ramVal.innerText = ramEl.value;
-  ramInfo.innerText = "Minimal RAM: " + ramMin + " GB";
-
-  updatePrice();
-}
-
-
-
-function order(){
-  let msg =
-`Halo admin ZONA KOCHENG,
-Saya mau order VPS Custom:
-
-CPU  : ${cpuEl.value} Core
-RAM  : ${ramEl.value} GB
-Disk : ${diskEl.value} GB
-
-Total: ${price.innerText}
-Lokasi: Indonesia`;
-
-  window.location.href =
-  "https://wa.me/6283139274450?text=" + encodeURIComponent(msg);
-}
-
-// element shortcut
-const cpuEl  = document.getElementById("cpu");
-const ramEl  = document.getElementById("ram");
-const diskEl = document.getElementById("disk");
-const cpuVal = document.getElementById("cpuVal");
-const ramVal = document.getElementById("ramVal");
-const diskVal= document.getElementById("diskVal");
-const ramInfo= document.getElementById("ramInfo");
-const price  = document.getElementById("price");
-
-// init
-updateAll();
-</script>
-
-</body>
-</html>
-<label>RAM (GB)</label>
-<select id="ram" onchange="updatePrice()">
-<option value="">Pilih RAM</option>
-<option value="1">1 GB</option>
-<option value="2">2 GB</option>
-<option value="3">3 GB</option>
-<option value="4">4 GB</option>
-function updatePrice(){
-  let cpu  = parseInt(cpuEl.value);
-  let ram  = parseInt(ramEl.value);
-  let disk = parseInt(diskEl.value);
-
-  let total = calculatePrice(cpu, ram, disk);
-  price.innerText =
-    "Total: Rp " + total.toLocaleString("id-ID");
-}
-<option value="5">5 GB</option>
-<option value="6">6 GB</option>
-<option value="7">7 GB</option>
-<option value="8">8 GB</option>
-<option value="9">9 GB</option>
-<option value="10">10 GB</option>
-<option value="11">11 GB</option>
-<option value="12">12 GB</option>
-<option value="13">13 GB</option>
-<option value="14">14 GB</option>
-<option value="15">15 GB</option>
-<option value="16">16 GB</option>
-<option value="17">17 GB</option>
-<option value="18">18 GB</option>
-<option value="19">19 GB</option>
-<option value="20">20 GB</option>
-<option value="21">21 GB</option>
-<option value="22">22 GB</option>
-<option value="23">23 GB</option>
-<option value="24">24 GB</option>
-<option value="25">25 GB</option>
-<option value="26">26 GB</option>
-<option value="27">27 GB</option>
-<option value="28">28 GB</option>
-<option value="29">29 GB</option>
-<option value="30">30 GB</option>
-<option value="31">31 GB</option>
-<option value="32">32 GB</option>
-<option value="33">33 GB</option>
-<option value="34">34 GB</option>
-<option value="35">35 GB</option>
-<option value="36">36 GB</option>
-<option value="37">37 GB</option>
-<option value="38">38 GB</option>
-<option value="39">39 GB</option>
-<option value="40">40 GB</option>
-<option value="41">41 GB</option>
-<option value="42">42 GB</option>
-<option value="43">43 GB</option>
-<option value="44">44 GB</option>
-<option value="45">45 GB</option>
-<option value="46">46 GB</option>
-<option value="47">47 GB</option>
-<option value="48">48 GB</option>
-<option value="49">49 GB</option>
-<option value="50">50 GB</option>
-<option value="51">51 GB</option>
-<option value="52">52 GB</option>
-<option value="53">53 GB</option>
-<option value="54">54 GB</option>
-<option value="55">55 GB</option>
-<option value="56">56 GB</option>
-<option value="57">57 GB</option>
-<option value="58">58 GB</option>
-<option value="59">59 GB</option>
-<option value="60">60 GB</option>
-<option value="61">61 GB</option>
-<option value="62">62 GB</option>
-<option value="63">63 GB</option>
-<option value="64">64 GB</option>
-<option value="65">65 GB</option>
-<option value="66">66 GB</option>
-<option value="67">67 GB</option>
-<option value="68">68 GB</option>
-<option value="69">69 GB</option>
-<option value="70">70 GB</option>
-<option value="71">71 GB</option>
-<option value="72">72 GB</option>
-<option value="73">73 GB</option>
-<option value="74">74 GB</option>
-<option value="75">75 GB</option>
-<option value="76">76 GB</option>
-<option value="77">77 GB</option>
-<option value="78">78 GB</option>
-<option value="79">79 GB</option>
-<option value="80">80 GB</option>
-<option value="81">81 GB</option>
-<option value="82">82 GB</option>
-<option value="83">83 GB</option>
-<option value="84">84 GB</option>
-<option value="85">85 GB</option>
-<option value="86">86 GB</option>
-<option value="87">87 GB</option>
-<option value="88">88 GB</option>
-<option value="89">89 GB</option>
-<option value="90">90 GB</option>
-<option value="91">91 GB</option>
-<option value="92">92 GB</option>
-<option value="93">93 GB</option>
-<option value="94">94 GB</option>
-<option value="95">95 GB</option>
-<option value="96">96 GB</option>
-<option value="97">97 GB</option>
-<option value="98">98 GB</option>
-<option value="99">99 GB</option>
-<option value="100">100 GB</option>
-<option value="101">101 GB</option>
-<option value="102">102 GB</option>
-<option value="103">103 GB</option>
-<option value="104">104 GB</option>
-<option value="105">105 GB</option>
-<option value="106">106 GB</option>
-<option value="107">107 GB</option>
-<option value="108">108 GB</option>
-<option value="109">109 GB</option>
-<option value="110">110 GB</option>
-<option value="111">111 GB</option>
-<option value="112">112 GB</option>
-<option value="113">113 GB</option>
-<option value="114">114 GB</option>
-<option value="115">115 GB</option>
-<option value="116">116 GB</option>
-<option value="117">117 GB</option>
-<option value="118">118 GB</option>
-<option value="119">119 GB</option>
-<option value="120">120 GB</option>
-<option value="121">121 GB</option>
-<option value="122">122 GB</option>
-<option value="123">123 GB</option>
-<option value="124">124 GB</option>
-<option value="125">125 GB</option>
-<option value="126">126 GB</option>
-<option value="127">127 GB</option>
-<option value="128">128 GB</option>
-</select>
-
-<label>Disk (GB)</label>
-<select id="disk">
-<option value="">Pilih Disk</option>
-<option>20</option>
-<option>40</option>
-<option>80</option>
-<option>160</option>
-<option>320</option>
-<option>640</option>
-<option>1000</option>
-</select>
-
-<div class="info" id="minRamInfo">Pilih CPU untuk melihat minimal RAM</div>
-<div class="price" id="priceInfo">Total: -</div>
-
-<button onclick="order()">ORDER VIA WHATSAPP</button>
-
-</div>
-</div>
-
-<script>
-const PRICE_CPU = 15000;
-const PRICE_RAM = 10000;
-const PRICE_DISK = 1000;
-  
-function minRam(cpu){
-  if(cpu === 1) return 1;
-  if(cpu >= 2 && cpu <= 5) return 2;
-  if(cpu >= 6 && cpu <= 8) return 6;
-  if(cpu >= 9) return 16;
-  return 0;
-}
-
-function updateAll(){
-  let cpu = parseInt(document.getElementById("cpu").value);
-  let ramSelect = document.getElementById("ram");
-  let info = document.getElementById("minRamInfo");
-
-  if(!cpu){
-    info.innerText = "Pilih CPU untuk melihat minimal RAM";
-    return;
-  }
-
-  let min = minRam(cpu);
-  info.innerText = `Minimal RAM untuk CPU ini: ${min} GB`;
-
-  if(parseInt(ramSelect.value) < min || !ramSelect.value){
-    ramSelect.value = min;
-  }
-
-  function updatePrice(){
-  let cpu  = parseInt(cpuEl.value);
-  let ram  = parseInt(ramEl.value);
-  let disk = parseInt(diskEl.value);
-
-  let total = calculatePrice(cpu, ram, disk);
-  price.innerText =
-    "Total: Rp " + total.toLocaleString("id-ID");
-}
-
-
-function order(){
-  let cpu = document.getElementById("cpu").value;
-  let ram = document.getElementById("ram").value;
-  let disk = document.getElementById("disk").value;
-
-  if(!cpu || !ram || !disk){
-    alert("CPU, RAM, dan Disk wajib dipilih");
-    return;
-  }
-
-  let msg =
-`Halo admin ZONA KOCHENG,
-Saya mau order VPS Custom:
-
-CPU  : ${cpu} Core
-RAM  : ${ram} GB
-Disk : ${disk} GB
-Lokasi: Indonesia`;
-
-  window.location.href =
-  "https://wa.me/6283139274450?text=" + encodeURIComponent(msg);
-}
 </script>
 
 </body>
