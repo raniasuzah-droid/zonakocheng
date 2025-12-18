@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ZONA KOCHENG - VPS Paket</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#020617;
+      --panel:#0b1220;
+      --border:#1e293b;
+      --text:#ffffff;
+      --muted:rgba(255,255,255,.75);
+      --green:#22c55e;
+      --blue:#38bdf8;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,Arial,sans-serif;
+      background: radial-gradient(900px 450px at 50% 0%, #1e293b 0%, var(--bg) 60%);
+      color:var(--text);
+    }
+    a{color:inherit; text-decoration:none}
+
+    .topbar{
+      position:sticky; top:0;
+      z-index:10;
+      background:rgba(2,6,23,.72);
+      backdrop-filter: blur(10px);
+      border-bottom:1px solid var(--border);
+    }
+    .topbar-inner{
+      max-width:1100px;
+      margin:auto;
+      padding:14px 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .brand{display:flex; align-items:center; gap:10px}
+    .logo{
+      width:36px; height:36px;
+      border-radius:10px;
+      background:linear-gradient(135deg, var(--green), var(--blue));
+      display:flex; align-items:center; justify-content:center;
+      color:#00140a; font-weight:900;
+    }
+    .brand-title{line-height:1.1}
+    .brand-title strong{display:block}
+    .brand-title span{font-size:12px; opacity:.7}
+
+    .actions{display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end; align-items:center}
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:10px 14px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      font-weight:900;
+      font-size:14px;
+      cursor:pointer;
+      user-select:none;
+      transition:.2s;
+      background:rgba(255,255,255,.04);
+      color:var(--text);
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .btn.primary{background:var(--green); color:#00140a; border-color:transparent}
+    .btn.blue{background:var(--blue); color:#00111a; border-color:transparent}
+
+    select{
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      background:#0b1220;
+      color:var(--text);
+      font-weight:900;
+      outline:none;
+      min-width:240px;
+    }
+
+    .container{
+      max-width:1100px;
+      margin:auto;
+      padding:26px 18px 70px;
+    }
+    .hero{
+      border:1px solid var(--border);
+      border-radius:18px;
+      background:rgba(2,6,23,.55);
+      padding:18px;
+    }
+    .hero h1{margin:0 0 6px; font-size:26px}
+    .hero p{margin:0; color:var(--muted); line-height:1.5}
+
+    .tabs{
+      margin-top:14px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .tab{
+      padding:10px 14px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.04);
+      color:var(--text);
+      font-weight:900;
+      cursor:pointer;
+    }
+    .tab.active{
+      border-color:rgba(34,197,94,.55);
+      background:rgba(34,197,94,.14);
+    }
+
+    .section{display:none; margin-top:14px}
+    .section.active{display:block}
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
+      gap:14px;
+    }
+    .card{
+      border:1px solid var(--border);
+      border-radius:18px;
+      background:rgba(2,6,23,.55);
+      padding:16px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      min-height:100%;
+    }
+    .name{margin:0; font-size:16px; font-weight:900; letter-spacing:.2px}
+    .price{margin:0; font-size:22px; font-weight:900}
+    .period{font-size:12px; opacity:.65; font-weight:800; margin-left:6px}
+
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      width:fit-content;
+      font-size:12px;
+      padding:7px 10px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.04);
+      opacity:.92;
+      font-weight:900;
+    }
+    ul{
+      margin:0;
+      padding-left:18px;
+      color:rgba(255,255,255,.85);
+      line-height:1.55;
+      font-size:13px;
+    }
+    .order{
+      margin-top:auto;
+      width:100%;
+      padding:12px 14px;
+      border-radius:14px;
+      border:0;
+      background:var(--green);
+      color:#00140a;
+      font-weight:900;
+      cursor:pointer;
+    }
+    .order:hover{opacity:.92}
+
+    .note{
+      margin-top:14px;
+      color:rgba(255,255,255,.65);
+      font-size:13px;
+      line-height:1.5;
+    }
+
+    footer{
+      margin-top:18px;
+      text-align:center;
+      padding:24px 10px;
+      opacity:.6;
+      font-size:12px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="index.html">
+        <div class="logo">ZK</div>
+        <div class="brand-title">
+          <strong>ZONA KOCHENG</strong>
+          <span>VPS Indonesia • Paket Siap Pakai</span>
+        </div>
+      </a>
+
+      <div class="actions">
+        <a class="btn" href="index.html">Home</a>
+        <a class="btn" href="vps.html">VPS Custom</a>
+        <a class="btn" href="tunnel.html">Tunnel</a>
+        <a class="btn blue" href="https://t.me/t3st1m0n" target="_blank" rel="noreferrer">Testimoni</a>
+
+        <select id="adminSelect" title="Pilih Admin WhatsApp">
+          <option value="6283139274450">Admin 1 (0831-3927-4450)</option>
+          <option value="6285931925073">Admin 2 (0859-3192-5073)</option>
+        </select>
+
+        <a class="btn primary" href="https://wa.me/6283139274450" target="_blank" rel="noreferrer">Chat Admin</a>
+      </div>
+    </div>
+  </div>
+
+  <main class="container">
+    <section class="hero">
+      <h1>Paket VPS Indonesia</h1>
+      <p>
+        Pilih paket sesuai kebutuhan. Kalau butuh spek bebas (CPU/RAM/Disk), pakai <b>VPS Custom</b>.
+      </p>
+
+      <div class="tabs">
+        <button class="tab active" data-target="mitra">SERVER ID MITRA KOCHENG</button>
+        <button class="tab" data-target="pro">SERVER INDO UNLI PRO</button>
+        <button class="tab" data-target="ultra">SERVER INDO UNLI ULTRA</button>
+      </div>
+    </section>
+
+    <!-- MITRA -->
+    <section id="mitra" class="section active">
+      <div class="grid">
+        <article class="card">
+          <p class="name">MITRA • 2GB RAM • 3 CPU</p>
+          <p class="price">Rp85.000<span class="period">/ 30 hari</span></p>
+          <div class="tag">Server: Indonesia</div>
+          <ul>
+            <li>Stabil untuk kebutuhan harian</li>
+            <li>Support & garansi (sesuai ketentuan)</li>
+            <li>Disk menyesuaikan stok</li>
+          </ul>
+          <button class="order" onclick="orderWA('MITRA KOCHENG', 85000, '3 Core', '2 GB', 'Tanya admin', 'Indonesia')">ORDER VIA WHATSAPP</button>
+        </article>
+
+        <article class="card">
+          <p class="name">MITRA • 2GB RAM • 5 CPU</p>
+          <p class="price">Rp110.000<span class="period">/ 30 hari</span></p>
+          <div class="tag">Server: Indonesia</div>
+          <ul>
+            <li>Lebih kenceng untuk bot / tools</li>
+            <li>Disk menyesuaikan stok</li>
+            <li>Bisa request sesuai kebutuhan</li>
+          </ul>
+          <button class="order" onclick="orderWA('MITRA KOCHENG', 110000, '5 Core', '2 GB', 'Tanya admin', 'Indonesia')">ORDER VIA WHATSAPP</button>
+        </article>
+
+        <article class="card">
+          <p class="name">MITRA • 6GB RAM • 8 CPU</p>
+          <p class="price">Rp145.000<span class="period">/ 30 hari</span></p>
+          <div class="tag">Server: Indonesia</div>
+          <ul>
+            <li>Cocok untuk kerja berat / multitask</li>
+            <li>Disk menyesuaikan stok</li>
+            <li>Support 24 jam</li>
+          </ul>
+          <button class="order" onclick="orderWA('MITRA KOCHENG', 145000, '8 Core', '6 GB', 'Tanya admin', 'Indonesia')">ORDER VIA WHATSAPP</button>
+        </article>
+
+        <article class="card">
+          <p class="name">MITRA • 16GB RAM • 16 CPU</p>
+          <p class="price">Rp245.000<span class="period">/ 30 hari</span></p>
+          <div class="tag">Server: Indonesia</div>
+          <ul>
+            <li>Untuk RDP / workload berat</li>
+            <li>Disk menyesuaikan stok</li>
+            <li>Garansi 30 hari</li>
+          </ul>
+          <button class="order" onclick="orderWA('MITRA KOCHENG', 245000, '16 Core', '16 GB', 'Tanya admin', 'Indonesia')">ORDER VIA WHATSAPP</button>
+        </article>
+
+        <article class="card">
+          <p class="name">MITRA • 16GB RAM • 32 CPU</p>
+          <p class="price">Rp430.000<span class="period">/ 30 hari</span></p>
+          <div class="tag">Server: Indonesia</div>
+          <ul>
+            <li>Gahar untuk kebutuhan high load</li>
+            <li>Disk menyesuaikan stok</li>
+            <li>Kalau mau spek bebas → VPS Custom</li>
+          </ul>
+          <button class="order" onclick="orderWA('MITRA KOCHENG', 430000, '32 Core', '16 GB', 'Tanya admin', 'Indonesia')">ORDER VIA WHATSAPP</button>
+        </article>
+      </div>
+
+      <p class="note">
+        *Butuh spek custom? klik menu <b>VPS Custom</b>.
+      </p>
+    </section>
+
+    <!-- PRO -->
+    <section id="pro" class="section">
+      <div class="grid">
+        <article class="card">
+          <p class="name">UNLI PRO • 1GB RAM • 1 CPU</p>
+          <p class="price">Rp50.000<span class="period">/ 30 hari</span></p>
+          <div class="tag">CPU: Intel Xeon Platinum Skylake</div>
+          <ul>
+            <li>Server Indonesia</li>
+            <li>Unlimited bandwidth</li>
+            <li>Disk menyesuaikan</li>
+          </ul>
+          <button class="order" onclick="orderWA('UNLI PRO', 50000, '1 Core', '1 GB', 'Tanya admin', 'Intel Xeon Platinum Skylake')">ORDER VIA WHATSAPP</button>
+        </article>
+
+        <article class="card">
+          <p class="name">UNLI PRO • 2GB RAM • 2 CPU</p>
+          <p class="price">Rp100.000<span class="period">/ 30 hari</span></p>
+          <div class="tag">CPU: Intel Xeon Platinum Skylake</div>
+          <ul>
+            <li>Server Indonesia</li>
+            <li>Unlimited bandwidth</li>
+            <li>Disk menyesuaikan</li>
+          </ul>
+          <button class="order" onclick="orderWA('UNLI PRO', 100000, '2 Core', '2 GB', 'Tanya admin', 'Intel Xeon Platinum Skylake')">ORDER VIA WHATSAPP</button>
+        </article>
+
+        <article class="card">
+          <p class="name">UNLI PRO • 4GB RAM • 3 CPU</p>
+          <p class="price">Rp250.000<span class="period">/ 30 hari</span></p>
+          <div class="tag">CPU: Intel Xeon Platinum Skylake</div>
+          <ul>
+            <li>Server Indonesia</li>
+            <li>Unlimited bandwidth</li>
+            <li>Disk menyesuaikan</li>
+          </ul>
+          <button class="order" onclick="orderWA('UNLI PRO', 250000, '3 Core', '4 GB', 'Tanya admin', 'Intel Xeon Platinum Skylake')">ORDER VIA WHATSAPP</button>
+        </article>
+      </div>
+    </section>
+
+    <!-- ULTRA -->
+    <section id="ultra" class="section">
+      <div class="grid">
+        <article class="card">
+          <p class="name">UNLI ULTRA • 1GB RAM • 1 CPU</p>
+          <p class="price">Rp90.000<span class="period">/ 30 hari</span></p>
+          <div class="tag">CPU: AMD EPYC™ Genoa</div>
+          <ul>
+            <li>Server Indonesia</li>
+            <li>Unlimited bandwidth</li>
+            <li>Disk menyesuaikan</li>
+          </ul>
+          <button class="order" onclick="orderWA('UNLI ULTRA', 90000, '1 Core', '1 GB', 'Tanya admin', 'AMD EPYC™ Genoa')">ORDER VIA WHATSAPP</button>
+        </article>
+
+        <article class="card">
+          <p class="name">UNLI ULTRA • 2GB RAM • 2 CPU</p>
+          <p class="price">Rp170.000<span class="period">/ 30 hari</span></p>
+          <div class="tag">CPU: AMD EPYC™ Genoa</div>
+          <ul>
+            <li>Server Indonesia</li>
+            <li>Unlimited bandwidth</li>
+            <li>Disk menyesuaikan</li>
+          </ul>
+          <button class="order" onclick="orderWA('UNLI ULTRA', 170000, '2 Core', '2 GB', 'Tanya admin', 'AMD EPYC™ Genoa')">ORDER VIA WHATSAPP</button>
+        </article>
+      </div>
+    </section>
+
+    <footer>© 2025 ZONA KOCHENG • kalinux.cloud</footer>
+  </main>
+
+  <script>
+    // Tabs
+    document.querySelectorAll(".tab").forEach((btn)=>{
+      btn.addEventListener("click", ()=>{
+        document.querySelectorAll(".tab").forEach(b=>b.classList.remove("active"));
+        btn.classList.add("active");
+        const target = btn.getAttribute("data-target");
+        document.querySelectorAll(".section").forEach(sec=>sec.classList.remove("active"));
+        document.getElementById(target).classList.add("active");
+        window.scrollTo({top: 0, behavior: "smooth"});
+      });
+    });
+
+    function rupiah(n){
+      return Number(n).toLocaleString("id-ID");
+    }
+
+    function orderWA(productGroup, price, cpu, ram, disk, note){
+      const wa = document.getElementById("adminSelect").value;
+
+      const msg =
+`Halo admin ZONA KOCHENG,
+Saya mau order VPS Paket:
+
+Kategori: ${productGroup}
+CPU    : ${cpu}
+RAM    : ${ram}
+Disk   : ${disk}
+Catatan: ${note}
+
+Harga  : Rp ${rupiah(price)} / 30 hari
+
+Nama:
+Kebutuhan (RDP/Hosting/Bot/dll):`;
+
+      window.open("https://wa.me/" + wa + "?text=" + encodeURIComponent(msg), "_blank");
+    }
+  </script>
+</body>
+</html>
