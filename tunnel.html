@@ -1,25 +1,571 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<title>ULTRASONIC TECHNOLOGY</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ULTRASONIC TECHNOLOGY - SSH / VMESS / VLESS / TROJAN / UDP</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#020617;
+      --panel:#0b1220;
+      --border:#1e293b;
+      --text:#ffffff;
+      --muted:rgba(255,255,255,.75);
+      --green:#22c55e;
+      --blue:#38bdf8;
+      --chip:rgba(255,255,255,.05);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,Arial,sans-serif;
+      background: radial-gradient(900px 450px at 50% 0%, #1e293b 0%, var(--bg) 60%);
+      color:var(--text);
+    }
+    a{color:inherit}
+
+    .topbar{
+      position:sticky; top:0;
+      z-index:10;
+      background:rgba(2,6,23,.72);
+      backdrop-filter: blur(10px);
+      border-bottom:1px solid var(--border);
+    }
+    .topbar-inner{
+      max-width:1100px;
+      margin:auto;
+      padding:14px 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      text-decoration:none;
+    }
+    .logo{
+      width:36px; height:36px;
+      border-radius:10px;
+      background:linear-gradient(135deg, var(--blue), var(--green));
+      display:flex; align-items:center; justify-content:center;
+      color:#00111a; font-weight:900;
+    }
+    .brand-title{line-height:1.1}
+    .brand-title strong{display:block}
+    .brand-title span{font-size:12px; opacity:.7}
+
+    .actions{display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end}
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:10px 14px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      text-decoration:none;
+      font-weight:800;
+      font-size:14px;
+      cursor:pointer;
+      user-select:none;
+      transition:.2s;
+      background:rgba(255,255,255,.04);
+      color:var(--text);
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .btn.primary{background:var(--green); color:#00140a; border-color:transparent}
+    .btn.blue{background:var(--blue); color:#00111a; border-color:transparent}
+
+    .container{
+      max-width:1100px;
+      margin:auto;
+      padding:26px 18px 70px;
+    }
+    .hero{
+      border:1px solid var(--border);
+      border-radius:18px;
+      background:rgba(2,6,23,.55);
+      padding:18px;
+    }
+    .hero h1{margin:0 0 6px; font-size:26px}
+    .hero p{margin:0; color:var(--muted); line-height:1.5}
+
+    .panel{
+      margin-top:14px;
+      border:1px solid var(--border);
+      border-radius:18px;
+      background:rgba(2,6,23,.55);
+      padding:16px;
+    }
+
+    .row{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:12px;
+      margin-top:10px;
+    }
+    @media (min-width:900px){
+      .row{
+        grid-template-columns: 1.2fr .8fr .8fr;
+        align-items:end;
+      }
+    }
+    .field label{
+      display:block;
+      font-size:13px;
+      opacity:.8;
+      margin-bottom:6px;
+      font-weight:700;
+    }
+    select{
+      width:100%;
+      padding:12px 12px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      background:#0b1220;
+      color:var(--text);
+      font-weight:700;
+      outline:none;
+    }
+
+    .chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:10px;
+    }
+    .chip{
+      border:1px solid var(--border);
+      background:var(--chip);
+      color:var(--text);
+      padding:9px 12px;
+      border-radius:999px;
+      font-weight:900;
+      font-size:13px;
+      cursor:pointer;
+      user-select:none;
+      transition:.15s;
+    }
+    .chip:hover{transform:translateY(-1px)}
+    .chip.active{
+      border-color:rgba(34,197,94,.55);
+      background:rgba(34,197,94,.14);
+    }
+
+    .tabs{
+      margin-top:14px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .tab{
+      padding:10px 14px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.04);
+      color:var(--text);
+      font-weight:900;
+      cursor:pointer;
+    }
+    .tab.active{
+      border-color:rgba(56,189,248,.55);
+      background:rgba(56,189,248,.12);
+    }
+
+    .section{display:none; margin-top:14px}
+    .section.active{display:block}
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
+      gap:14px;
+    }
+    .card{
+      border:1px solid var(--border);
+      border-radius:18px;
+      background:rgba(2,6,23,.55);
+      padding:16px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      min-height:100%;
+    }
+    .name{
+      margin:0;
+      font-size:16px;
+      font-weight:900;
+      letter-spacing:.2px;
+    }
+    .price{
+      margin:0;
+      font-size:22px;
+      font-weight:900;
+    }
+    .period{font-size:12px; opacity:.65; font-weight:800; margin-left:6px}
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      width:fit-content;
+      font-size:12px;
+      padding:7px 10px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.04);
+      opacity:.92;
+      font-weight:800;
+    }
+    ul{
+      margin:0;
+      padding-left:18px;
+      color:rgba(255,255,255,.85);
+      line-height:1.55;
+      font-size:13px;
+    }
+    .order{
+      margin-top:auto;
+      width:100%;
+      padding:12px 14px;
+      border-radius:14px;
+      border:0;
+      background:var(--green);
+      color:#00140a;
+      font-weight:900;
+      cursor:pointer;
+    }
+    .order:hover{opacity:.92}
+    .ghost{
+      margin-top:10px;
+      width:100%;
+      padding:11px 14px;
+      border-radius:14px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.04);
+      color:var(--text);
+      font-weight:900;
+      cursor:pointer;
+    }
+
+    .benefits{
+      margin-top:18px;
+      border:1px solid var(--border);
+      border-radius:18px;
+      background:rgba(2,6,23,.55);
+      padding:16px;
+    }
+    .benefits h2{margin:0 0 10px; font-size:18px}
+    .benef-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+      gap:10px;
+    }
+    .benef{
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.04);
+      border-radius:14px;
+      padding:12px;
+      font-size:13px;
+      color:rgba(255,255,255,.88);
+      line-height:1.45;
+      font-weight:700;
+    }
+
+    details{
+      margin-top:14px;
+      border:1px solid var(--border);
+      border-radius:18px;
+      background:rgba(2,6,23,.55);
+      padding:14px 16px;
+    }
+    summary{
+      cursor:pointer;
+      font-weight:900;
+    }
+    .serverlist{
+      margin-top:10px;
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(170px, 1fr));
+      gap:8px;
+    }
+    .server{
+      padding:8px 10px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.04);
+      font-size:12px;
+      font-weight:800;
+      opacity:.9;
+      text-align:center;
+    }
+
+    footer{
+      margin-top:18px;
+      text-align:center;
+      padding:24px 10px;
+      opacity:.6;
+      font-size:12px;
+    }
+  </style>
 </head>
 
-<body style="font-family:Arial;background:#020617;color:white;margin:0;text-align:center">
+<body>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="index.html">
+        <div class="logo">UT</div>
+        <div class="brand-title">
+          <strong>ULTRASONIC TECHNOLOGY</strong>
+          <span>SSH • VMESS • VLESS • TROJAN • UDP</span>
+        </div>
+      </a>
 
-<div style="padding:30px">
-<h1>ULTRASONIC TECHNOLOGY</h1>
-<p>SSH • VMESS • VLESS • TROJAN</p>
+      <div class="actions">
+        <a class="btn" href="index.html">VPS</a>
+        <a class="btn" href="vps.html">VPS Custom</a>
+        <a class="btn blue" href="https://t.me/t3st1m0n" target="_blank" rel="noreferrer">Testimoni</a>
+        <a class="btn primary" href="https://wa.me/6283139274450" target="_blank" rel="noreferrer">Chat Admin</a>
+      </div>
+    </div>
+  </div>
 
-<a href="https://wa.me/6285931925073?text=Halo%20admin%20ULTRASONIC%20TECHNOLOGY,%20saya%20mau%20order%20akun"
-style="background:#38bdf8;padding:20px;color:black;text-decoration:none;display:inline-block">
-ORDER VIA WHATSAPP
-</a>
-</div>
+  <main class="container">
+    <section class="hero">
+      <h1>ULTRASONIC TECHNOLOGY</h1>
+      <p>
+        Produk tunnel & config: <b>SSH WS</b>, <b>VMESS</b>, <b>VLESS</b>, <b>TROJAN</b>, <b>UDP</b>, <b>STB</b>.
+        Trial dulu boleh, request config bebas, support VC/Call.
+      </p>
+    </section>
 
-<p style="font-size:12px;opacity:.6">© 2025 ULTRASONIC TECHNOLOGY</p>
+    <section class="panel">
+      <div style="font-weight:900; margin-bottom:8px">Pilih Protocol</div>
+      <div class="chips" id="protocolChips"></div>
 
+      <div class="row">
+        <div class="field">
+          <label>Server favorit (opsional)</label>
+          <select id="serverSelect">
+            <option value="AUTO / RANDOM">AUTO / RANDOM</option>
+            <optgroup label="Indonesia">
+              <option>NUSA</option><option>BIZNET</option><option>MSA</option><option>IKD</option><option>BEON</option>
+              <option>NEVEDA</option><option>LINKGO</option><option>CTN</option><option>JALA</option><option>RAJASA</option>
+              <option>ATHA</option><option>CLOUDHOST</option><option>RUMAWEB</option><option>UNINET</option><option>ARGON</option>
+              <option>TENCENT</option><option>DEWA</option><option>ARENHOST</option><option>WIJAYA</option><option>TECHNO</option>
+              <option>KOMINFO</option><option>INFINYS</option><option>APIK</option>
+            </optgroup>
+            <optgroup label="Singapore">
+              <option>SG - DIGITALOCEAN</option>
+            </optgroup>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Pilih admin WhatsApp</label>
+          <select id="adminSelect">
+            <option value="6283139274450">Admin 1 (0831-3927-4450)</option>
+            <option value="6285931925073">Admin 2 (0859-3192-5073)</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Butuh trial?</label>
+          <button class="btn primary" style="width:100%" onclick="trialWA()">Minta Trial via WA</button>
+        </div>
+      </div>
+
+      <div class="tabs">
+        <button class="tab active" data-target="sg">SERVER SG</button>
+        <button class="tab" data-target="id">SERVER ID</button>
+      </div>
+
+      <!-- SG -->
+      <section id="sg" class="section active">
+        <div class="grid">
+          <article class="card">
+            <p class="name">SG1 • 7 Hari</p>
+            <p class="price">Rp3.000<span class="period">/ paket</span></p>
+            <div class="tag">Limit: 1 HP</div>
+            <ul>
+              <li>Protocol sesuai pilihan (SSH/VMESS/VLESS/TROJAN/UDP/STB)</li>
+              <li>Trial tersedia</li>
+              <li>Support game</li>
+            </ul>
+            <button class="order" onclick="orderWA('SG', 'SG1', '7 Hari', 3000, '1 HP')">ORDER VIA WHATSAPP</button>
+          </article>
+
+          <article class="card">
+            <p class="name">SG1 • 15 Hari</p>
+            <p class="price">Rp5.000<span class="period">/ paket</span></p>
+            <div class="tag">Limit: 2 HP</div>
+            <ul>
+              <li>Request config sepuasnya</li>
+              <li>Support VC / Call</li>
+              <li>Garansi 30 hari</li>
+            </ul>
+            <button class="order" onclick="orderWA('SG', 'SG1', '15 Hari', 5000, '2 HP')">ORDER VIA WHATSAPP</button>
+          </article>
+
+          <article class="card">
+            <p class="name">SG1 • 30 Hari</p>
+            <p class="price">Rp10.000<span class="period">/ paket</span></p>
+            <div class="tag">Limit: 2 HP</div>
+            <ul>
+              <li>Support wildcard</li>
+              <li>Refund max -6 jam (sesuai ketentuan)</li>
+              <li>Tidak lebih dari 50 pengguna</li>
+            </ul>
+            <button class="order" onclick="orderWA('SG', 'SG1', '30 Hari', 10000, '2 HP')">ORDER VIA WHATSAPP</button>
+          </article>
+        </div>
+      </section>
+
+      <!-- ID -->
+      <section id="id" class="section">
+        <div class="grid">
+          <article class="card">
+            <p class="name">ID • 15 Hari</p>
+            <p class="price">Rp8.000<span class="period">/ paket</span></p>
+            <div class="tag">Limit: 2 HP</div>
+            <ul>
+              <li>Server Indonesia (pilih favorit / auto)</li>
+              <li>Request config sepuasnya</li>
+              <li>Garansi 30 hari</li>
+            </ul>
+            <button class="order" onclick="orderWA('ID', 'ID', '15 Hari', 8000, '2 HP')">ORDER VIA WHATSAPP</button>
+          </article>
+
+          <article class="card">
+            <p class="name">ID • 30 Hari</p>
+            <p class="price">Rp15.000<span class="period">/ paket</span></p>
+            <div class="tag">Limit: 2 HP</div>
+            <ul>
+              <li>Support game</li>
+              <li>Support VC / Call</li>
+              <li>Trial tersedia</li>
+            </ul>
+            <button class="order" onclick="orderWA('ID', 'ID', '30 Hari', 15000, '2 HP')">ORDER VIA WHATSAPP</button>
+          </article>
+        </div>
+      </section>
+
+      <div style="margin-top:14px; opacity:.75; font-size:13px; line-height:1.5">
+        Catatan: gunakan layanan untuk hal yang legal & tidak merugikan orang lain.
+      </div>
+    </section>
+
+    <section class="benefits">
+      <h2>Benefit</h2>
+      <div class="benef-grid">
+        <div class="benef">✅ Request config sepuasnya</div>
+        <div class="benef">✅ Trial sebelum beli</div>
+        <div class="benef">✅ Support VC / Call</div>
+        <div class="benef">✅ Garansi 30 hari</div>
+        <div class="benef">✅ Support game</div>
+        <div class="benef">✅ Refund -6 jam (sesuai ketentuan)</div>
+        <div class="benef">✅ Support wildcard</div>
+        <div class="benef">✅ Tidak lebih dari 50 pengguna</div>
+      </div>
+    </section>
+
+    <details>
+      <summary>Daftar server tersedia (klik untuk lihat)</summary>
+      <div class="serverlist" style="margin-top:12px">
+        <div class="server">NUSA</div><div class="server">BIZNET</div><div class="server">MSA</div><div class="server">IKD</div>
+        <div class="server">BEON</div><div class="server">NEVEDA</div><div class="server">LINKGO</div><div class="server">CTN</div>
+        <div class="server">JALA</div><div class="server">RAJASA</div><div class="server">ATHA</div><div class="server">CLOUDHOST</div>
+        <div class="server">RUMAWEB</div><div class="server">UNINET</div><div class="server">ARGON</div><div class="server">TENCENT</div>
+        <div class="server">DEWA</div><div class="server">ARENHOST</div><div class="server">WIJAYA</div><div class="server">TECHNO</div>
+        <div class="server">KOMINFO</div><div class="server">INFINYS</div><div class="server">APIK</div><div class="server">SG - DIGITALOCEAN</div>
+      </div>
+    </details>
+
+    <footer>
+      ADMIN 1: wa.me/6283139274450 • ADMIN 2: wa.me/6285931925073<br>
+      Saluran: https://whatsapp.com/channel/0029VanqM7P5Ui2fW0x6AY0G<br>
+      Grup: https://chat.whatsapp.com/BfEmt2FoOhWEj6HqbXmzys?mode=ems_copy_t<br>
+      Testimoni: https://t.me/t3st1m0n • YouTube: https://www.youtube.com/@ZONAKOCHENG
+    </footer>
+  </main>
+
+  <script>
+    const PROTOCOLS = ["SSH WS", "V2RAY VMESS", "V2RAY VLESS", "TROJAN", "UDP", "STB"];
+    let selectedProtocol = "SSH WS";
+
+    const protocolChips = document.getElementById("protocolChips");
+    const serverSelect = document.getElementById("serverSelect");
+    const adminSelect = document.getElementById("adminSelect");
+
+    function formatIDR(n){
+      return Number(n).toLocaleString("id-ID");
+    }
+
+    function renderProtocols(){
+      protocolChips.innerHTML = "";
+      PROTOCOLS.forEach(p=>{
+        const btn = document.createElement("button");
+        btn.className = "chip" + (p === selectedProtocol ? " active" : "");
+        btn.type = "button";
+        btn.textContent = p;
+        btn.onclick = () => {
+          selectedProtocol = p;
+          renderProtocols();
+        };
+        protocolChips.appendChild(btn);
+      });
+    }
+
+    function orderWA(region, serverCode, durasi, harga, limitHP){
+      const wa = adminSelect.value;
+      const favServer = serverSelect.value || "AUTO / RANDOM";
+
+      const msg =
+`Halo admin ULTRASONIC TECHNOLOGY,
+Saya mau order akun:
+
+Protocol : ${selectedProtocol}
+Region   : ${region}
+Server   : ${serverCode}
+Prefer   : ${favServer}
+Durasi   : ${durasi}
+Limit    : ${limitHP}
+Harga    : Rp ${formatIDR(harga)}
+
+Nama:
+Catatan (game/streaming/dll):
+Mohon dibuatkan config ya.`;
+
+      window.open("https://wa.me/" + wa + "?text=" + encodeURIComponent(msg), "_blank");
+    }
+
+    function trialWA(){
+      const wa = adminSelect.value;
+      const favServer = serverSelect.value || "AUTO / RANDOM";
+      const msg =
+`Halo admin ULTRASONIC TECHNOLOGY,
+Saya mau minta TRIAL dulu ya.
+
+Protocol : ${selectedProtocol}
+Prefer server : ${favServer}
+Region: (SG/ID)`;
+
+      window.open("https://wa.me/" + wa + "?text=" + encodeURIComponent(msg), "_blank");
+    }
+
+    // Tabs
+    document.querySelectorAll(".tab").forEach((btn)=>{
+      btn.addEventListener("click", ()=>{
+        document.querySelectorAll(".tab").forEach(b=>b.classList.remove("active"));
+        btn.classList.add("active");
+
+        const target = btn.getAttribute("data-target");
+        document.querySelectorAll(".section").forEach(sec=>sec.classList.remove("active"));
+        document.getElementById(target).classList.add("active");
+        window.scrollTo({top: 0, behavior: "smooth"});
+      });
+    });
+
+    renderProtocols();
+  </script>
 </body>
 </html>
-
