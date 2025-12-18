@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Checkout - KALINUX CLOUD</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#020617; --panel:#0b1220; --border:#1e293b;
+      --text:#ffffff; --muted:rgba(255,255,255,.75);
+      --green:#22c55e; --blue:#38bdf8;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family:Inter,system-ui,Arial,sans-serif;
+      background: radial-gradient(900px 450px at 50% 0%, #1e293b 0%, var(--bg) 60%);
+      color:var(--text);
+    }
+    a{color:inherit; text-decoration:none}
+
+    .topbar{
+      position:sticky; top:0; z-index:10;
+      background:rgba(2,6,23,.72);
+      backdrop-filter: blur(10px);
+      border-bottom:1px solid var(--border);
+    }
+    .topbar-inner{
+      max-width:1000px; margin:auto; padding:14px 18px;
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+    }
+    .brand{display:flex; align-items:center; gap:10px}
+    .logo{
+      width:36px; height:36px; border-radius:10px;
+      background:linear-gradient(135deg, var(--green), var(--blue));
+      display:flex; align-items:center; justify-content:center;
+      color:#00140a; font-weight:900;
+    }
+    .brand-title{line-height:1.1}
+    .brand-title strong{display:block}
+    .brand-title span{font-size:12px; opacity:.7}
+
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:10px 14px; border-radius:12px;
+      border:1px solid var(--border);
+      font-weight:900; font-size:14px;
+      background:rgba(255,255,255,.04);
+      color:var(--text); cursor:pointer; user-select:none;
+      transition:.2s;
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .btn.primary{background:var(--green); color:#00140a; border-color:transparent}
+    .btn.blue{background:var(--blue); color:#00111a; border-color:transparent}
+
+    .wrap{max-width:1000px; margin:auto; padding:22px 18px 70px}
+    .card{
+      border:1px solid var(--border); border-radius:18px;
+      background:rgba(2,6,23,.55);
+      padding:16px; margin-top:14px;
+    }
+    h1{margin:0 0 8px; font-size:22px}
+    .muted{margin:0; color:var(--muted); font-size:13px; line-height:1.5}
+
+    .grid{
+      margin-top:12px;
+      display:grid;
+      grid-template-columns:1fr;
+      gap:12px;
+    }
+    @media(min-width:900px){ .grid{grid-template-columns:1fr 1fr} }
+
+    .field label{
+      display:block; font-size:13px; opacity:.85;
+      font-weight:900; margin-bottom:6px;
+    }
+    input, select{
+      width:100%;
+      padding:12px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      background:#0b1220;
+      color:var(--text);
+      font-weight:800;
+      outline:none;
+    }
+
+    .badge{
+      display:inline-block; width:100%;
+      background:#0b1220;
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:12px;
+      margin-top:12px;
+    }
+    .small{
+      font-size:13px;
+      opacity:.9;
+      line-height:1.55;
+      font-weight:700;
+      word-break:break-word;
+    }
+    .price{
+      margin-top:12px;
+      font-size:22px;
+      font-weight:900;
+      text-align:center;
+    }
+
+    .paybox{
+      margin-top:12px;
+      border:1px solid var(--border);
+      border-radius:14px;
+      background:rgba(255,255,255,.04);
+      padding:12px;
+    }
+    .paytitle{font-weight:900; margin:0 0 8px}
+
+    .rowbtn{
+      margin-top:12px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .rowbtn .btn{flex:1}
+
+    .warn{
+      margin-top:10px;
+      font-size:12px;
+      opacity:.7;
+      line-height:1.5;
+    }
+
+    .toggle{
+      display:flex; gap:10px; align-items:center;
+      margin-top:10px;
+      font-size:13px;
+      opacity:.9;
+      font-weight:800;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="index.html">
+        <div class="logo">KC</div>
+        <div class="brand-title">
+          <strong>KALINUX CLOUD</strong>
+          <span>Checkout • Bayar & Konfirmasi</span>
+        </div>
+      </a>
+      <a class="btn" href="index.html">Home</a>
+    </div>
+  </div>
+
+  <main class="wrap">
+    <div class="card">
+      <h1>Checkout</h1>
+      <p class="muted">
+        1) Bayar via e-wallet → 2) Klik <b>Konfirmasi</b> → 3) Kirim bukti → admin proses.
+      </p>
+
+      <div class="grid">
+        <div class="field">
+          <label>Nama</label>
+          <input id="name" placeholder="Nama kamu..." />
+        </div>
+
+        <div class="field">
+          <label>Nomor WhatsApp kamu</label>
+          <input id="buyerWa" placeholder="contoh: 08xxxx / +62xxxx" />
+        </div>
+
+        <div class="field">
+          <label>Pilih Admin</label>
+          <select id="adminSelect">
+            <option value="6283139274450">Admin 1 (0831-3927-4450)</option>
+            <option value="6285931925073">Admin 2 (0859-3192-5073)</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Metode Bayar</label>
+          <select id="payMethod" onchange="renderPayInfo()">
+            <option value="DANA">DANA</option>
+            <option value="GOPAY">GoPay</option>
+            <option value="SHOPEEPAY">ShopeePay</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- OPTIONAL: KODE UNIK -->
+      <div class="toggle">
+        <input type="checkbox" id="uniqueToggle" onchange="recalcTotal()">
+        <label for="uniqueToggle">Tambah kode unik (opsional) biar admin cepat cek transfer</label>
+      </div>
+
+      <!-- RINGKASAN (pakai badge + breakdown sesuai yang kamu suka) -->
+      <div class="badge">
+        <div class="small" id="breakdown">
+          Order ID: -<br>
+          Produk: -<br>
+          Detail: -<br>
+          Total Bayar: Rp -
+        </div>
+      </div>
+
+      <div class="price" id="totalText">Total Bayar: Rp -</div>
+
+      <!-- PAYMENT INFO -->
+      <div class="paybox">
+        <p class="paytitle">Instruksi Pembayaran</p>
+        <div class="small" id="payInfo">-</div>
+
+        <div class="rowbtn">
+          <button class="btn blue" onclick="copyText(currentAcc)">Copy Nomor Tujuan</button>
+          <button class="btn blue" onclick="copyText(currentTotalStr)">Copy Nominal</button>
+        </div>
+
+        <div class="warn" id="processingNote">
+          * Setelah transfer, klik <b>Konfirmasi Pembayaran</b> lalu kirim bukti (screenshot).<br>
+          * Untuk VPS reseller: admin create dulu, lalu kirim IP/PW setelah selesai.
+        </div>
+      </div>
+
+      <div class="rowbtn">
+        <a class="btn" id="backBtn" href="index.html">Kembali</a>
+        <button class="btn primary" onclick="confirmWA()">Konfirmasi Pembayaran (WA)</button>
+      </div>
+    </div>
+  </main>
+
+<script>
+/* =========================
+   CONFIG: ISI NOMOR PEMBAYARAN KAMU DI SINI
+   ========================= */
+const PAY_ACCOUNTS = {
+  DANA:      { label: "DANA",      acc: "ISI_NOMOR_DANA_KAMU",      name: "KALINUX CLOUD" },
+  GOPAY:     { label: "GoPay",     acc: "ISI_NOMOR_GOPAY_KAMU",     name: "KALINUX CLOUD" },
+  SHOPEEPAY: { label: "ShopeePay", acc: "ISI_NOMOR_SHOPEEPAY_KAMU", name: "KALINUX CLOUD" },
+};
+
+const SERVICE_TEXT = "Biaya layanan: termasuk";
+
+/* =========================
+   AMBIL DATA DARI URL
+   checkout.html?brand=...&item=...&price=...&detail=...&return=...
+   ========================= */
+const params = new URLSearchParams(location.search);
+const brand  = params.get("brand")  || "KALINUX CLOUD";
+const item   = params.get("item")   || "Produk";
+const detail = params.get("detail") || "-";
+const basePrice = parseInt(params.get("price") || "0", 10);
+
+const returnUrl = params.get("return") || "index.html";
+document.getElementById("backBtn").href = returnUrl;
+
+function pad(n){ return String(n).padStart(2,"0"); }
+function genOrderId(){
+  const d = new Date();
+  const stamp = d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate())+"-"+pad(d.getHours())+pad(d.getMinutes());
+  const rnd = Math.floor(Math.random()*9000)+1000;
+  return "KC-" + stamp + "-" + rnd;
+}
+const orderId = genOrderId();
+
+/* Kode unik (opsional) */
+let uniqueCode = 0;
+
+/* current shown payment */
+let currentAcc = "";
+let currentTotal = (Number.isNaN(basePrice) ? 0 : basePrice);
+let currentTotalStr = "0";
+
+function rupiah(n){ return Number(n).toLocaleString("id-ID"); }
+function escapeHtml(s){
+  return (s||"")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll("\n","<br>");
+}
+
+function recalcTotal(){
+  const toggle = document.getElementById("uniqueToggle").checked;
+
+  // kode unik 1-99 (biar gampang cek transfer); kalau OFF -> 0
+  uniqueCode = toggle ? (Math.floor(Math.random()*99)+1) : 0;
+
+  const p = Number.isNaN(basePrice) ? 0 : basePrice;
+  currentTotal = p + uniqueCode;
+  currentTotalStr = rupiah(currentTotal);
+
+  renderSummary();
+  renderPayInfo();
+  renderProcessingNote();
+}
+
+function renderSummary(){
+  const breakdown = document.getElementById("breakdown");
+  breakdown.innerHTML =
+    "Order ID: <b>" + orderId + "</b><br>" +
+    "Brand: <b>" + brand + "</b><br>" +
+    "Produk: <b>" + item + "</b><br>" +
+    "Detail: " + escapeHtml(detail) + "<br>" +
+    "Total Bayar: <b>Rp " + rupiah(currentTotal) + "</b>" +
+    (uniqueCode ? (" <span style='opacity:.75'>(kode unik +" + uniqueCode + ")</span>") : "") +
+    "<br>" + SERVICE_TEXT;
+
+  document.getElementById("totalText").textContent =
+    "Total Bayar: Rp " + rupiah(currentTotal);
+}
+
+function renderPayInfo(){
+  const method = document.getElementById("payMethod").value;
+  const info = PAY_ACCOUNTS[method];
+  const payInfo = document.getElementById("payInfo");
+
+  if(!info){
+    payInfo.innerHTML = "-";
+    currentAcc = "";
+    return;
+  }
+
+  currentAcc = info.acc;
+
+  payInfo.innerHTML =
+    "Metode: <b>" + info.label + "</b><br>" +
+    "Nomor tujuan: <b>" + info.acc + "</b><br>" +
+    "Atas nama: <b>" + info.name + "</b><br>" +
+    "Nominal transfer: <b>Rp " + rupiah(currentTotal) + "</b>";
+}
+
+function renderProcessingNote(){
+  const note = document.getElementById("processingNote");
+  // beda note untuk brand tunnel vs vps (biar jelas ke buyer)
+  if((brand || "").toLowerCase().includes("ultrasonic")){
+    note.innerHTML =
+      "* Setelah transfer, klik <b>Konfirmasi Pembayaran</b> lalu kirim bukti (screenshot).<br>" +
+      "* Tunnel stok siap — admin kirim akun/config setelah pembayaran terkonfirmasi.";
+  }else{
+    note.innerHTML =
+      "* Setelah transfer, klik <b>Konfirmasi Pembayaran</b> lalu kirim bukti (screenshot).<br>" +
+      "* Untuk VPS reseller: admin create dulu, lalu kirim IP/PW setelah selesai.";
+  }
+}
+
+function copyText(text){
+  navigator.clipboard.writeText(String(text || "")).then(()=>{
+    alert("Copied ✅");
+  }).catch(()=>{
+    prompt("Copy manual:", text);
+  });
+}
+
+function confirmWA(){
+  const admin = document.getElementById("adminSelect").value;
+  const name = document.getElementById("name").value || "-";
+  const buyerWa = document.getElementById("buyerWa").value || "-";
+  const method = document.getElementById("payMethod").value;
+
+  const msg =
+`Halo admin,
+Saya sudah melakukan pembayaran.
+
+Order ID : ${orderId}
+Brand    : ${brand}
+Produk   : ${item}
+Detail   : ${detail}
+Metode   : ${method}
+Nominal  : Rp ${rupiah(currentTotal)}${uniqueCode ? " (termasuk kode unik)" : ""}
+
+Nama     : ${name}
+WA saya  : ${buyerWa}
+
+Bukti transfer menyusul (saya kirim foto).`;
+
+  window.open("https://wa.me/" + admin + "?text=" + encodeURIComponent(msg), "_blank");
+}
+
+/* init */
+recalcTotal();
+</script>
+
+</body>
+</html>
