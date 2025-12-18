@@ -106,6 +106,95 @@ button:hover{opacity:.9}
 </div>
 
 <script>
+/* ===== PRICING (VERSI AMAN) ===== */
+const BASE_PRICE = 57000;
+const PROFIT     = 5000;
+
+const EXTRA_CPU  = 9000;
+const EXTRA_RAM  = 3000;
+const EXTRA_DISK = 0; // disk 20GB sudah termasuk base
+
+function minRam(cpu){
+  if(cpu === 1) return 1;
+  if(cpu >= 2 && cpu <= 5) return 2;
+  if(cpu >= 6 && cpu <= 8) return 6;
+  return 16;
+}
+
+function calculatePrice(cpu, ram, disk){
+  let min = minRam(cpu);
+  return (
+    BASE_PRICE +
+    (cpu - 1) * EXTRA_CPU +
+    Math.max(0, ram - min) * EXTRA_RAM +
+    PROFIT
+  );
+}
+
+function updateAll(){
+  let cpu = parseInt(cpuEl.value);
+  let min = minRam(cpu);
+
+  cpuVal.innerText = cpu;
+
+  if(parseInt(ramEl.value) < min){
+    ramEl.value = min;
+  }
+
+  ramVal.innerText = ramEl.value;
+  ramInfo.innerText = "Minimal RAM: " + min + " GB";
+
+  updatePrice();
+}
+
+function updatePrice(){
+  let cpu  = parseInt(cpuEl.value);
+  let ram  = parseInt(ramEl.value);
+  let disk = parseInt(diskEl.value);
+
+  ramVal.innerText  = ram;
+  diskVal.innerText = disk;
+
+  let total = calculatePrice(cpu, ram, disk);
+  price.innerText = "Total: Rp " + total.toLocaleString("id-ID");
+}
+
+function order(){
+  let msg =
+`Halo admin ZONA KOCHENG,
+Saya mau order VPS Custom:
+
+CPU  : ${cpuEl.value} Core
+RAM  : ${ramEl.value} GB
+Disk : ${diskEl.value} GB
+Harga: ${price.innerText}
+
+Lokasi: Indonesia`;
+
+  window.location.href =
+    "https://wa.me/6283139274450?text=" + encodeURIComponent(msg);
+}
+
+/* refs */
+const cpuEl  = document.getElementById("cpu");
+const ramEl  = document.getElementById("ram");
+const diskEl = document.getElementById("disk");
+const cpuVal = document.getElementById("cpuVal");
+const ramVal = document.getElementById("ramVal");
+const diskVal= document.getElementById("diskVal");
+const ramInfo= document.getElementById("ramInfo");
+const price  = document.getElementById("price");
+
+/* init */
+updateAll();
+</script>
+
+</body>
+</html>
+</div>
+</div>
+
+<script>
 /* ===== PRICING FINAL ===== */
 const BASE_PRICE = 57000;   // harga depa 1C 1G 20D
 const PROFIT     = 5000;    // untung awal (murah dulu)
