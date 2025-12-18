@@ -256,9 +256,10 @@ cursor:pointer;
 </div>
 
 <script>
-const PRICE_CPU = 25000;
-const PRICE_RAM = 15000;
-
+const PRICE_CPU = 15000;
+const PRICE_RAM = 10000;
+const PRICE_DISK = 1000;
+  
 function minRam(cpu){
   if(cpu === 1) return 1;
   if(cpu >= 2 && cpu <= 5) return 2;
@@ -288,18 +289,25 @@ function updateAll(){
 }
 
 function updatePrice(){
-  let cpu = parseInt(document.getElementById("cpu").value);
-  let ram = parseInt(document.getElementById("ram").value);
+  let cpu  = parseInt(document.getElementById("cpu").value);
+  let ram  = parseInt(document.getElementById("ram").value);
+  let disk = parseInt(document.getElementById("disk").value);
   let priceBox = document.getElementById("priceInfo");
 
-  if(!cpu || !ram){
+  if(!cpu || !ram || !disk){
     priceBox.innerText = "Total: -";
     return;
   }
 
-  let total = (cpu * PRICE_CPU) + (ram * PRICE_RAM);
-  priceBox.innerText = "Total: Rp " + total.toLocaleString("id-ID");
+  let total =
+    (cpu  * PRICE_CPU) +
+    (ram  * PRICE_RAM) +
+    (disk * PRICE_DISK);
+
+  priceBox.innerText =
+    "Total: Rp " + total.toLocaleString("id-ID");
 }
+
 
 function order(){
   let cpu = document.getElementById("cpu").value;
