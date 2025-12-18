@@ -7,101 +7,247 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
-body{
-  margin:0;
-  font-family:Inter,sans-serif;
-  background:#020617;
-  color:white;
-}
-.wrap{
-  max-width:900px;
-  margin:auto;
-  padding:40px 20px;
-}
-.card{
-  background:#020617;
-  border:1px solid #1e293b;
-  border-radius:16px;
-  padding:30px;
-}
-h1{text-align:center;margin-bottom:8px}
-.subtitle{text-align:center;opacity:.7;margin-bottom:30px}
+body{margin:0;font-family:Inter,sans-serif;background:#020617;color:white}
+.wrap{max-width:900px;margin:auto;padding:40px 20px}
+.card{background:#020617;border:1px solid #1e293b;border-radius:16px;padding:30px}
+h1{text-align:center;margin:0 0 8px}
+.subtitle{text-align:center;opacity:.7;margin:0 0 30px}
 .block{margin-bottom:25px}
-.label{
-  display:flex;
-  justify-content:space-between;
-  margin-bottom:8px;
-  font-weight:600;
-}
-.value{
-  background:#1e293b;
-  padding:6px 12px;
-  border-radius:8px;
-  font-size:14px;
-}
+.label{display:flex;justify-content:space-between;margin-bottom:8px;font-weight:600}
+.value{background:#1e293b;padding:6px 12px;border-radius:8px;font-size:14px}
 input[type=range]{width:100%}
 .info{color:#22c55e;font-size:14px;margin-top:6px}
-.price{
-  font-size:24px;
-  font-weight:700;
-  text-align:center;
-  margin-top:20px;
-}
+.price{font-size:22px;font-weight:800;text-align:center;margin-top:18px}
+.small{font-size:13px;opacity:.7;text-align:center;margin-top:8px;line-height:1.4}
 button{
-  width:100%;
-  margin-top:25px;
-  padding:16px;
-  border:none;
-  border-radius:12px;
-  background:#22c55e;
-  color:black;
-  font-size:16px;
-  font-weight:700;
-  cursor:pointer;
+  width:100%;margin-top:22px;padding:16px;border:none;border-radius:12px;
+  background:#22c55e;color:black;font-size:16px;font-weight:800;cursor:pointer
 }
 button:hover{opacity:.9}
+.badge{display:inline-block;background:#0b1220;border:1px solid #1e293b;border-radius:10px;padding:10px 12px;margin-top:12px}
 </style>
 </head>
 
 <body>
 <div class="wrap">
-<h1>ZONA KOCHENG VPS</h1>
-<p class="subtitle">VPS Indonesia • Custom Resource • Live Pricing</p>
+  <h1>ZONA KOCHENG VPS</h1>
+  <p class="subtitle">VPS Indonesia • Custom Resource • Pricing mengikuti Depa + profit</p>
 
-<div class="card">
+  <div class="card">
 
-<!-- CPU -->
-<div class="block">
-  <div class="label">
-    <span>CPU</span>
-    <span class="value"><span id="cpuVal">1</span> Core</span>
+    <!-- CPU -->
+    <div class="block">
+      <div class="label">
+        <span>CPU</span>
+        <span class="value"><span id="cpuVal">1</span> Core</span>
+      </div>
+      <input type="range" id="cpu" min="1" max="32" value="1" oninput="updateAll()">
+    </div>
+
+    <!-- RAM -->
+    <div class="block">
+      <div class="label">
+        <span>RAM</span>
+        <span class="value"><span id="ramVal">1</span> GB</span>
+      </div>
+      <input type="range" id="ram" min="1" max="128" value="1" oninput="updateAllFromRam()">
+      <div class="info" id="ramInfo">Minimal RAM: 1 GB</div>
+    </div>
+
+    <!-- DISK -->
+    <div class="block">
+      <div class="label">
+        <span>Disk</span>
+        <span class="value"><span id="diskVal">20</span> GB</span>
+      </div>
+      <input type="range" id="disk" min="20" max="1000" step="10" value="20" oninput="updatePrice()">
+      <div class="small">* Disk base 20GB sudah termasuk. Tambahan disk dihitung per GB.</div>
+    </div>
+
+    <div class="badge">
+      <div class="small" id="breakdown">
+        Depa: Rp -<br>
+        Profit: Rp 5.000
+      </div>
+    </div>
+
+    <div class="price" id="price">Total: Rp -</div>
+
+    <button onclick="order()">ORDER VIA WHATSAPP</button>
+
+    <div class="small">
+      Catatan: ini kalkulator estimasi “ngikut Depa” dari data patokan yang kamu kasih.<br>
+      Jika Depa update harga, tinggal ubah angka config di bagian script.
+    </div>
   </div>
-  <input type="range" id="cpu" min="1" max="32" value="1" oninput="updateAll()">
 </div>
 
-<!-- RAM -->
-<div class="block">
-  <div class="label">
-    <span>RAM</span>
-    <span class="value"><span id="ramVal">1</span> GB</span>
-  </div>
-  <input type="range" id="ram" min="1" max="128" value="1" oninput="updatePrice()">
-  <div class="info" id="ramInfo">Minimal RAM: 1 GB</div>
-</div>
+<script>
+/* =========================
+   CONFIG (UBAH DI SINI SAJA)
+   ========================= */
+const PROFIT = 5000;
 
-<!-- DISK -->
-<div class="block">
-  <div class="label">
-    <span>Disk</span>
-    <span class="value"><span id="diskVal">20</span> GB</span>
-  </div>
-  <input type="range" id="disk" min="20" max="1000" step="10" value="20" oninput="updatePrice()">
-</div>
+/* Tambahan per unit (diambil dari pola Depa + screenshot kamu) */
+const RAM_PER_GB  = 2000;   // tambah RAM di atas minimum CPU
+const DISK_PER_GB = 1000;   // tambah disk di atas 20GB
 
-<div class="price" id="price">Total: Rp -</div>
+/* Base Depa untuk disk 20GB + RAM minimum sesuai CPU tier:
+   patokan kamu:
+   1C1G20D=57k, 5C2G20D=107k, 7C6G20D=127k, 9C16G20D=167k */
+const DEPA_CPU1_BASE  = 57000;  // 1C 1G 20D
+const DEPA_CPU5_BASE  = 107000; // 5C 2G 20D
+const DEPA_CPU7_BASE  = 127000; // 7C 6G 20D
+const DEPA_CPU9_BASE  = 167000; // 9C 16G 20D
 
-<button onclick="order()">ORDER VIA WHATSAPP</button>
+/* Untuk CPU > 9, Depa biasanya naik per core.
+   Kalau nanti kamu dapet data depa untuk 16C/24C/32C, angka ini bisa kamu tune. */
+const CPU9_PLUS_PER_CORE = 9000;
 
+/* =========================
+   RULE MINIMUM RAM
+   ========================= */
+function minRam(cpu){
+  if(cpu === 1) return 1;
+  if(cpu >= 2 && cpu <= 5) return 2;
+  if(cpu >= 6 && cpu <= 8) return 6;
+  return 16; // 9–32
+}
+
+/* =========================
+   BASE PRICE mengikuti Depa
+   (CPU + minRAM + 20GB disk)
+   ========================= */
+function depaBaseForCpu(cpu){
+  // segmen 1..5 (linear dari 57k ke 107k)
+  if(cpu >= 1 && cpu <= 5){
+    const slope = (DEPA_CPU5_BASE - DEPA_CPU1_BASE) / (5 - 1); // 12.5k/core
+    return Math.round(DEPA_CPU1_BASE + (cpu - 1) * slope);
+  }
+
+  // segmen 6..8 (naik 10k/core dari cpu5 ke cpu7, lalu lanjut ke cpu8)
+  if(cpu >= 6 && cpu <= 8){
+    // kita set cpu6 = 117k, cpu7 = 127k, cpu8 = 137k
+    return (DEPA_CPU5_BASE + (cpu - 5) * 10000);
+  }
+
+  // cpu >= 9: base depa cpu9 + tambahan per core
+  return (DEPA_CPU9_BASE + (cpu - 9) * CPU9_PLUS_PER_CORE);
+}
+
+/* =========================
+   Depa Price (estimasi)
+   ========================= */
+function depaPrice(cpu, ram, disk){
+  const min = minRam(cpu);
+  const base = depaBaseForCpu(cpu);
+
+  const ramExtra  = Math.max(0, ram - min) * RAM_PER_GB;
+  const diskExtra = Math.max(0, disk - 20) * DISK_PER_GB;
+
+  return base + ramExtra + diskExtra;
+}
+
+/* =========================
+   UI Update
+   ========================= */
+function updateAll(){
+  const cpu = parseInt(cpuEl.value);
+  const min = minRam(cpu);
+
+  cpuVal.innerText = cpu;
+
+  // set minimum slider RAM agar user gak bisa turun di bawah minimum
+  ramEl.min = String(min);
+
+  // kalau RAM sekarang < minimum, auto naik
+  if(parseInt(ramEl.value) < min){
+    ramEl.value = String(min);
+  }
+
+  ramVal.innerText = ramEl.value;
+  ramInfo.innerText = "Minimal RAM: " + min + " GB";
+
+  updatePrice();
+}
+
+function updateAllFromRam(){
+  // kalau user geser RAM, tetap harus patuh min
+  const cpu = parseInt(cpuEl.value);
+  const min = minRam(cpu);
+  ramEl.min = String(min);
+
+  if(parseInt(ramEl.value) < min){
+    ramEl.value = String(min);
+  }
+  ramVal.innerText = ramEl.value;
+
+  updatePrice();
+}
+
+function updatePrice(){
+  const cpu  = parseInt(cpuEl.value);
+  const ram  = parseInt(ramEl.value);
+  const disk = parseInt(diskEl.value);
+
+  diskVal.innerText = disk;
+
+  const depa = depaPrice(cpu, ram, disk);
+  const total = depa + PROFIT;
+
+  breakdown.innerHTML =
+    "Depa: Rp " + depa.toLocaleString("id-ID") + "<br>" +
+    "Profit: Rp " + PROFIT.toLocaleString("id-ID");
+
+  price.innerText =
+    "Total: Rp " + total.toLocaleString("id-ID");
+}
+
+function order(){
+  const cpu  = parseInt(cpuEl.value);
+  const ram  = parseInt(ramEl.value);
+  const disk = parseInt(diskEl.value);
+
+  const depa = depaPrice(cpu, ram, disk);
+  const total = depa + PROFIT;
+
+  const msg =
+`Halo admin ZONA KOCHENG,
+Saya mau order VPS Custom:
+
+CPU  : ${cpu} Core
+RAM  : ${ram} GB
+Disk : ${disk} GB
+
+Estimasi Depa : Rp ${depa.toLocaleString("id-ID")}
+Profit Admin  : Rp ${PROFIT.toLocaleString("id-ID")}
+TOTAL         : Rp ${total.toLocaleString("id-ID")}
+
+Lokasi: Indonesia`;
+
+  window.location.href =
+    "https://wa.me/6283139274450?text=" + encodeURIComponent(msg);
+}
+
+/* element refs */
+const cpuEl  = document.getElementById("cpu");
+const ramEl  = document.getElementById("ram");
+const diskEl = document.getElementById("disk");
+
+const cpuVal = document.getElementById("cpuVal");
+const ramVal = document.getElementById("ramVal");
+const diskVal= document.getElementById("diskVal");
+
+const ramInfo   = document.getElementById("ramInfo");
+const price     = document.getElementById("price");
+const breakdown = document.getElementById("breakdown");
+
+/* init */
+updateAll();
+</script>
+
+</body>
+</html>
 </div>
 </div>
 
