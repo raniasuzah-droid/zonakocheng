@@ -109,7 +109,106 @@ button:hover{opacity:.9}
 
 <script>
 // ===== HARGA (UBAH SESUAI MAU KAMU) =====
-const BASE_PRICE = 57000;
+const PRICE_CPU  = 22000; // per core
+const PRICE_RAM  = 14000; // per GB
+const PRICE_DISK = 1500;  // per GB
+
+function minRam(cpu){
+  if(cpu === 1) return 1;
+  if(cpu >= 2 && cpu <= 5) return 2;
+  if(cpu >= 6 && cpu <= 8) return 6;
+  return 16; // cpu 9–32
+}
+
+function updateAll(){
+  let cpu = parseInt(cpuEl.value);
+  let ramMin = minRam(cpu);
+
+  cpuVal.innerText = cpu;
+
+  if(parseInt(ramEl.value) < ramMin){
+    ramEl.value = ramMin;
+  }
+
+  ramVal.innerText = ramEl.value;
+  ramInfo.innerText = "Minimal RAM: " + ramMin + " GB";
+
+  updatePrice();
+}
+
+function updatePrice(){
+  let cpu  = parseInt(cpuEl.value);
+  let ram  = parseInt(ramEl.value);
+  let disk = parseInt(diskEl.value);
+
+  ramVal.innerText  = ram;
+  diskVal.innerText = disk;
+
+  let total =
+    (cpu  * PRICE_CPU) +
+    (ram  * PRICE_RAM) +
+    (disk * PRICE_DISK);
+
+  price.innerText =
+    "Total: Rp " + total.toLocaleString("id-ID");
+}
+
+function order(){
+  let msg =
+`Halo admin ZONA KOCHENG,
+Saya mau order VPS Custom:
+
+CPU  : ${cpuEl.value} Core
+RAM  : ${ramEl.value} GB
+Disk : ${diskEl.value} GB
+
+Total: ${price.innerText}
+Lokasi: Indonesia`;
+
+  window.location.href =
+  "https://wa.me/6283139274450?text=" + encodeURIComponent(msg);
+}
+
+// element shortcut
+const cpuEl  = document.getElementById("cpu");
+const ramEl  = document.getElementById("ram");
+const diskEl = document.getElementById("disk");
+const cpuVal = document.getElementById("cpuVal");
+const ramVal = document.getElementById("ramVal");
+const diskVal= document.getElementById("diskVal");
+const ramInfo= document.getElementById("ramInfo");
+const price  = document.getElementById("price");
+
+// init
+updateAll();
+</script>
+
+</body>
+</html>
+<button onclick="order()">ORDER VIA WHATSAPP</button>
+
+</div>
+</div>
+
+<script>
+// ===== HARGA (UBAH SESUAI MAU KAMU) =====
+
+
+function minRam(cpu){
+  if(cpu === 1) return 1;
+  if(cpu >= 2 && cpu <= 5) return 2;
+  if(cpu >= 6 && cpu <= 8) return 6;
+  return 16; // cpu 9–32
+}
+
+function updateAll(){
+  let cpu = parseInt(cpuEl.value);
+  let ramMin = minRam(cpu);
+
+  cpuVal.innerText = cpu;
+
+  if(parseInt(ramEl.value) < ramMin){
+    ramEl.vconst BASE_PRICE = 57000;
 const PROFIT     = 5000;
 
 const EXTRA_CPU  = 6000;
@@ -128,23 +227,7 @@ function calculatePrice(cpu, ram, disk){
 
   return total;
 }
-
-
-function minRam(cpu){
-  if(cpu === 1) return 1;
-  if(cpu >= 2 && cpu <= 5) return 2;
-  if(cpu >= 6 && cpu <= 8) return 6;
-  return 16; // cpu 9–32
-}
-
-function updateAll(){
-  let cpu = parseInt(cpuEl.value);
-  let ramMin = minRam(cpu);
-
-  cpuVal.innerText = cpu;
-
-  if(parseInt(ramEl.value) < ramMin){
-    ramEl.value = ramMin;
+alue = ramMin;
   }
 
   ramVal.innerText = ramEl.value;
@@ -379,28 +462,16 @@ function updateAll(){
     ramSelect.value = min;
   }
 
-  updatePrice();
+  function updatePrice(){
+  let cpu  = parseInt(cpuEl.value);
+  let ram  = parseInt(ramEl.value);
+  let disk = parseInt(diskEl.value);
+
+  let total = calculatePrice(cpu, ram, disk);
+  price.innerText =
+    "Total: Rp " + total.toLocaleString("id-ID");
 }
 
-function updatePrice(){
-  let cpu  = parseInt(document.getElementById("cpu").value);
-  let ram  = parseInt(document.getElementById("ram").value);
-  let disk = parseInt(document.getElementById("disk").value);
-  let priceBox = document.getElementById("priceInfo");
-
-  if(!cpu || !ram || !disk){
-    priceBox.innerText = "Total: -";
-    return;
-  }
-
-  let total =
-    (cpu  * PRICE_CPU) +
-    (ram  * PRICE_RAM) +
-    (disk * PRICE_DISK) +
-
-  priceBox.innerText =
-    "Total: Rp " + total.toLocaleString("id-ID");
-}  
 
 function order(){
   let cpu = document.getElementById("cpu").value;
