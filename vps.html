@@ -1,39 +1,177 @@
-function setRam(){
-  let cpu = parseInt(document.getElementById("cpu").value);
-  let ram = "";
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>ZONA KOCHENG VPS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
-  if(cpu >= 2 && cpu <= 5){
-    ram = "2 GB";
-  }
-  else if(cpu >= 6 && cpu <= 8){
-    ram = "6 GB";
-  }
-  else if(cpu >= 9 && cpu <= 32){
-    ram = "16 GB";
-  }
-
-  document.getElementById("ram").value = ram;
+<style>
+body{
+margin:0;
+font-family:Inter,sans-serif;
+background:#020617;
+color:white;
 }
-  if(cpu === 2 || cpu === 5){
-    ram = "2 GB";
-  } else if(cpu === 6 || cpu === 7 || cpu === 8){
-    ram = "6 GB";
-  } else if(cpu >= 9){
-    ram = "16 GB";
-  } else {
-    ram = "";
+.wrap{
+max-width:900px;
+margin:auto;
+padding:40px 20px;
+}
+.card{
+background:#020617;
+border:1px solid #1e293b;
+border-radius:16px;
+padding:30px;
+}
+h1{text-align:center}
+label{display:block;margin-top:15px}
+select,button{
+width:100%;
+padding:15px;
+margin-top:5px;
+border-radius:10px;
+border:none;
+font-size:16px;
+}
+select{background:#1e293b;color:white}
+option[disabled]{color:#64748b}
+.info{
+margin-top:10px;
+font-size:14px;
+color:#22c55e;
+}
+.price{
+margin-top:15px;
+font-size:20px;
+font-weight:700;
+}
+button{
+margin-top:25px;
+background:#22c55e;
+color:black;
+font-weight:700;
+cursor:pointer;
+}
+button:hover{opacity:.9}
+</style>
+</head>
+
+<body>
+<div class="wrap">
+<h1>ZONA KOCHENG VPS</h1>
+<p style="text-align:center;opacity:.7">VPS Indonesia Custom</p>
+
+<div class="card">
+
+<label>CPU Core</label>
+<select id="cpu" onchange="updateAll()">
+<option value="">Pilih CPU</option>
+<option value="1">1 Core</option>
+<option value="2">2 Core</option>
+<option value="4">4 Core</option>
+<option value="6">6 Core</option>
+<option value="8">8 Core</option>
+<option value="12">12 Core</option>
+<option value="16">16 Core</option>
+<option value="24">24 Core</option>
+<option value="32">32 Core</option>
+</select>
+
+<label>RAM (GB)</label>
+<select id="ram" onchange="updatePrice()">
+<option value="">Pilih RAM</option>
+<option value="1">1 GB</option>
+<option value="2">2 GB</option>
+<option value="4">4 GB</option>
+<option value="6">6 GB</option>
+<option value="8">8 GB</option>
+<option value="16">16 GB</option>
+<option value="32">32 GB</option>
+<option value="64">64 GB</option>
+<option value="128">128 GB</option>
+</select>
+
+<label>Disk (GB)</label>
+<select id="disk">
+<option value="">Pilih Disk</option>
+<option>20</option>
+<option>40</option>
+<option>80</option>
+<option>160</option>
+<option>320</option>
+<option>640</option>
+<option>1000</option>
+</select>
+
+<div class="info" id="minRamInfo">Pilih CPU untuk melihat minimal RAM</div>
+<div class="price" id="priceInfo">Total: -</div>
+
+<button onclick="order()">ORDER VIA WHATSAPP</button>
+
+</div>
+</div>
+
+<script>
+// ===== CONFIG HARGA =====
+const PRICE_CPU = 25000; // per core
+const PRICE_RAM = 15000; // per GB
+
+function minRam(cpu){
+  if(cpu === 1) return 1;
+  if(cpu >= 2 && cpu <= 5) return 2;
+  if(cpu >= 6 && cpu <= 8) return 6;
+  if(cpu >= 9 && cpu <= 32) return 16;
+  return 0;
+}
+
+function updateAll(){
+  let cpu = parseInt(cpuSelect.value);
+  let ramSelect = document.getElementById("ram");
+  let info = document.getElementById("minRamInfo");
+
+  if(!cpu){
+    info.innerText = "Pilih CPU untuk melihat minimal RAM";
+    return;
   }
 
-  document.getElementById("ram").value = ram;
+  let min = minRam(cpu);
+  info.innerText = `Minimal RAM untuk CPU ini: ${min} GB`;
+
+  // disable RAM di bawah minimum
+  for(let opt of ramSelect.options){
+    if(!opt.value) continue;
+    opt.disabled = parseInt(opt.value) < min;
+  }
+
+  if(parseInt(ramSelect.value) < min){
+    ramSelect.value = "";
+  }
+
+  updatePrice();
+}
+
+function updatePrice(){
+  let cpu = parseInt(cpuSelect.value);
+  let ram = parseInt(ramSelect.value);
+  let priceBox = document.getElementById("priceInfo");
+
+  if(!cpu || !ram){
+    priceBox.innerText = "Total: -";
+    return;
+  }
+
+  let total = (cpu * PRICE_CPU) + (ram * PRICE_RAM);
+  priceBox.innerText = "Total: Rp " + total.toLocaleString("id-ID");
 }
 
 function order(){
-  let cpu = document.getElementById("cpu").value;
-  let ram = document.getElementById("ram").value;
-  let disk = document.getElementById("disk").value;
+  let cpu = cpuSelect.value;
+  let ram = ramSelect.value;
+  let disk = diskSelect.value;
 
-  if(!cpu){
-    alert("Pilih CPU dulu");
+  if(!cpu || !ram || !disk){
+    alert("CPU, RAM, dan Disk wajib dipilih");
     return;
   }
 
@@ -42,9 +180,9 @@ function order(){
 Saya mau order VPS Custom:
 
 CPU  : ${cpu} Core
-RAM  : ${ram}
-Disk : ${disk}
-Lokasi : Indonesia`;
+RAM  : ${ram} GB
+Disk : ${disk} GB
+Lokasi: Indonesia`;
 
   location.href =
   "https://wa.me/6283139274450?text=" + encodeURIComponent(msg);
