@@ -395,9 +395,13 @@ const LINUX_RAM_PER_GB = 2000;
 
 /* Standard anchors */
 const LINUX_STD_C1 = 57000;   // C1 R1 D20
-const LINUX_STD_C5 = 107000;  // C5 R2 D20
+const LINUX_STD_C2 = 70000;  // C2 R2 D20
+const LINUX_STD_C5 = 100000;  // C5 R2 D20
+const LINUX_STD_C6 = 117000;   // C6 R6 D20
+const LINUX_STD_C8 = 137000;  // C8 R6 D20
 const LINUX_STD_C9 = 167000;  // C9 R16 D20
-
+const LINUX_STD_C32 = 400000;  // C32 R16 D20
+  
 /* Switch CPU ON anchors (kamu kasih - UPDATE) */
 const LINUX_SWC_C1  = 60000;   // C1 R1 D20
 const LINUX_SWC_C2  = 75000;   // C2 R2 D20
@@ -444,16 +448,15 @@ function baseForCpuLinuxSwitch(cpu){
 
 /* Modal override (Switch CPU ON) untuk spek tertentu biar akurat sesuai list kamu */
 const LINUX_MODAL_SWC = new Map([
-  ["1-1-20",      60000],
-  ["2-2-20",      75000],
-  ["5-2-20",     114000],
-  ["6-6-20",     135000],
-  ["8-6-20",     161000],
-  ["9-16-20",    195000],
-  ["32-16-20",   493000],
-  ["2-128-20",   314000],
-  ["2-2-1000",  1041000],
-  ["32-128-1000",1698000],
+  ["2-2-30",    79000],
+  ["5-2-30",   109000],
+  ["6-6-30",   127000],
+  ["8-6-30",   147000],
+  ["9-16-30",  177000],
+  ["32-16-30", 407000],
+  ["2-128-30", 331000],
+  ["2-2-1000", 1055000],
+  ["32-128-1000", 1602000],
 ]);
 function computeLinuxFinal(cpu, ram, disk, switchOn){
   const min = minRamLinux(cpu);
