@@ -1,6 +1,61 @@
 
 <!DOCTYPE html>
 <html lang="id">
+  <style>
+#dragonSplash{
+  position:fixed;
+  inset:0;
+  background:#020617;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+}
+.dragon-box{text-align:center}
+.dragon-box img{width:220px}
+.dragon-box p{color:#22c55e;font-weight:700}
+
+#dragonFloat{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  background:#020617;
+  border:2px solid #22c55e;
+  border-radius:50%;
+  width:56px;
+  height:56px;
+  display:none;
+  justify-content:center;
+  align-items:center;
+  font-size:28px;
+  cursor:pointer;
+  z-index:999;
+}
+
+#dragonMenu{
+  position:fixed;
+  bottom:90px;
+  right:20px;
+  background:#0b1220;
+  border:1px solid #1e293b;
+  border-radius:12px;
+  padding:10px;
+  display:none;
+  z-index:999;
+}
+#dragonMenu a{
+  display:block;
+  padding:8px 12px;
+  color:white;
+  text-decoration:none;
+  font-weight:700;
+}
+#dragonMenu a:hover{
+  background:#22c55e;
+  color:#00140a;
+}
+  </style>
+  
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
