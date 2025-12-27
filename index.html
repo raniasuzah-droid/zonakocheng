@@ -1,0 +1,516 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KALINUX CLOUD - ZONA KOCHENG & ULTRASONIC TECHNOLOGY</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#020617;
+      --panel:#0b1220;
+      --border:#1e293b;
+      --text:#ffffff;
+      --muted:rgba(255,255,255,.75);
+      --green:#22c55e;
+      --blue:#38bdf8;
+      --chip:rgba(255,255,255,.05);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,Arial,sans-serif;
+      background: radial-gradient(900px 450px at 50% 0%, #1e293b 0%, var(--bg) 60%);
+      color:var(--text);
+    }
+    a{color:inherit; text-decoration:none}
+
+    /* Topbar */
+    .topbar{
+      position:sticky; top:0;
+      z-index:10;
+      background:rgba(2,6,23,.72);
+      backdrop-filter: blur(10px);
+      border-bottom:1px solid var(--border);
+    }
+    .topbar-inner{
+      max-width:1100px;
+      margin:auto;
+      padding:14px 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px;
+    }
+    .logo{
+      width:36px; height:36px;
+      border-radius:10px;
+      background:linear-gradient(135deg, var(--green), var(--blue));
+      display:flex; align-items:center; justify-content:center;
+      color:#00140a; font-weight:900;
+    }
+    .brand-title{line-height:1.1}
+    .brand-title strong{display:block}
+    .brand-title span{font-size:12px; opacity:.7}
+
+    .actions{display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end}
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:10px 14px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      font-weight:900;
+      font-size:14px;
+      cursor:pointer;
+      user-select:none;
+      transition:.2s;
+      background:rgba(255,255,255,.04);
+      color:var(--text);
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .btn.primary{background:var(--green); color:#00140a; border-color:transparent}
+    .btn.blue{background:var(--blue); color:#00111a; border-color:transparent}
+
+    .wrap{
+      max-width:1100px;
+      margin:auto;
+      padding:26px 18px 70px;
+    }
+
+    /* Hero */
+    .hero{
+      border:1px solid var(--border);
+      border-radius:18px;
+      background:rgba(2,6,23,.55);
+      padding:22px 18px;
+    }
+    .hero h1{margin:0 0 8px; font-size:28px; letter-spacing:.2px}
+    .hero p{margin:0 0 14px; color:var(--muted); line-height:1.55}
+    .pill-row{display:flex; flex-wrap:wrap; gap:10px}
+    .pill{
+      font-size:12px;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.04);
+      color:rgba(255,255,255,.82);
+      font-weight:800;
+    }
+
+    /* Cards */
+    .grid{
+      margin-top:16px;
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));
+      gap:14px;
+    }
+    .card{
+      border:1px solid var(--border);
+      border-radius:18px;
+      background:rgba(2,6,23,.55);
+      padding:16px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      min-height:100%;
+    }
+    .card-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .badge{
+      font-size:12px;
+      padding:7px 10px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.04);
+      font-weight:900;
+      opacity:.9;
+      white-space:nowrap;
+    }
+    .name{
+      margin:0;
+      font-size:16px;
+      font-weight:900;
+      letter-spacing:.2px;
+    }
+    .desc{
+      margin:0;
+      color:var(--muted);
+      line-height:1.55;
+      font-size:13px;
+    }
+    ul{
+      margin:0;
+      padding-left:18px;
+      color:rgba(255,255,255,.85);
+      line-height:1.55;
+      font-size:13px;
+    }
+    .cta-row{
+      margin-top:auto;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .cta-row .btn{flex:1}
+    .cta-row .btn.primary{flex:1.2}
+
+    /* Sections */
+    .section{
+      margin-top:16px;
+      border:1px solid var(--border);
+      border-radius:18px;
+      background:rgba(2,6,23,.55);
+      padding:16px;
+    }
+    .section h2{margin:0 0 10px; font-size:18px}
+    .section p{margin:0; color:var(--muted); line-height:1.55; font-size:13px}
+
+    .links{
+      margin-top:10px;
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
+      gap:10px;
+    }
+    .linkbox{
+      border:1px solid var(--border);
+      border-radius:14px;
+      background:rgba(255,255,255,.04);
+      padding:12px;
+      font-size:13px;
+      line-height:1.55;
+      color:rgba(255,255,255,.88);
+      font-weight:700;
+    }
+    .linkbox a{
+      display:inline-block;
+      margin-top:6px;
+      text-decoration:underline;
+      opacity:.95;
+    }
+
+    footer{
+      margin-top:18px;
+      text-align:center;
+      opacity:.6;
+      font-size:12px;
+      padding:20px 0 0;
+    }
+  </style>
+
+<style>
+  /* ===== DRAGON SPLASH + FLOAT NAV (KALINUX) ===== */
+  #dragonOverlay{
+    position: fixed;
+    inset: 0;
+    background: #020617;
+    display: grid;
+    place-items: center;
+    z-index: 9999;
+    transition: opacity .5s ease;
+  }
+  #dragonOverlay.hidden{
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  #dragonWidget{
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    width: 280px;
+    text-align: center;
+    user-select: none;
+  }
+  #dragonWidget img{
+    width: 240px;
+    height: auto;
+    display: block;
+    margin: 0 auto 10px;
+    filter: drop-shadow(0 14px 30px rgba(34,197,94,.25));
+  }
+  #dragonText{
+    color: #22c55e;
+    font-weight: 800;
+    letter-spacing: .2px;
+    opacity: .95;
+  }
+
+  /* Setelah mengecil ke pojok */
+  #dragonWidget.corner{
+    width: 92px;
+  }
+  #dragonWidget.corner img{
+    width: 72px;
+    margin: 0 auto;
+  }
+  #dragonWidget.corner #dragonText{
+    display: none;
+  }
+  #dragonWidget.corner{
+    background: rgba(2,6,23,.72);
+    border: 1px solid #1e293b;
+    border-radius: 999px;
+    padding: 10px;
+    backdrop-filter: blur(10px);
+    cursor: pointer;
+    box-shadow: 0 12px 30px rgba(0,0,0,.35);
+    z-index: 10000;
+  }
+
+  /* Menu navigasi naga */
+  #dragonMenu{
+    position: fixed;
+    bottom: 105px;
+    right: 20px;
+    background: #0b1220;
+    border: 1px solid #1e293b;
+    border-radius: 14px;
+    padding: 10px;
+    display: none;
+    z-index: 10001;
+    min-width: 180px;
+  }
+  #dragonMenu.visible{ display:block; }
+
+  #dragonMenu a{
+    display: block;
+    padding: 9px 12px;
+    border-radius: 10px;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 900;
+    font-size: 13px;
+  }
+  #dragonMenu a:hover{
+    background: #22c55e;
+    color: #00140a;
+  }
+
+  @media (max-width: 420px){
+    #dragonWidget{ width: 240px; }
+    #dragonWidget img{ width: 210px; }
+  }
+</style>
+
+</head>
+
+<body>
+
+  <!-- DRAGON SPLASH (FULLSCREEN) -->
+  <div id="dragonOverlay" aria-hidden="false">
+    <div id="dragonWidget" title="Klik untuk menu (setelah loading)">
+      <img src="https://i.imgur.com/8QfZQZb.gif" alt="Dragon" />
+      <div id="dragonText">Loading KALINUX CLOUD...</div>
+    </div>
+  </div>
+
+  <!-- DRAGON MENU (POJOK) -->
+  <div id="dragonMenu" aria-label="Navigasi cepat">
+    <a href="index.html">🏠 Home</a>
+    <a href="vps.html">⚙️ VPS Custom</a>
+    <a href="vps-paket.html">📦 VPS Paket</a>
+    <a href="tunnel.html">🌐 Tunnel</a>
+  </div>
+
+  <div class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="index.html">
+        <div class="logo">KC</div>
+        <div class="brand-title">
+          <strong>KALINUX CLOUD</strong>
+          <span>ZONA KOCHENG • ULTRASONIC TECHNOLOGY</span>
+        </div>
+      </a>
+
+      <div class="actions">
+        <a class="btn" href="vps-paket.html">Toko VPS</a>
+        <a class="btn" href="tunnel.html">Toko Tunnel</a>
+        <a class="btn blue" href="https://t.me/t3st1m0n" target="_blank" rel="noreferrer">Testimoni</a>
+        <a class="btn primary" href="https://wa.me/6283139274450" target="_blank" rel="noreferrer">Chat Admin</a>
+      </div>
+    </div>
+  </div>
+
+  <main class="wrap">
+    <section class="hero">
+      <h1>Selamat datang di KALINUX CLOUD</h1>
+      <p>
+        Dua brand dalam satu ekosistem: <b>ZONA KOCHENG</b> untuk VPS Indonesia,
+        dan <b>ULTRASONIC TECHNOLOGY</b> untuk kebutuhan tunnel (SSH/VMESS/VLESS/TROJAN/UDP).
+        Pilih sesuai kebutuhan, konsultasi santai via WhatsApp.
+      </p>
+
+      <div class="pill-row">
+        <div class="pill">Garansi 30 Hari (sesuai produk)</div>
+        <div class="pill">Support 24 Jam</div>
+        <div class="pill">Trial tersedia (tunnel)</div>
+        <div class="pill">Order via WhatsApp</div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <!-- ZONA KOCHENG -->
+      <article class="card">
+        <div class="card-head">
+          <p class="name">ZONA KOCHENG</p>
+          <div class="badge">VPS Indonesia</div>
+        </div>
+        <p class="desc">
+          Cari VPS/RDP spek gahar + ganas atau yang terjangkau? Santai, semua solusi ada di KOCHENG.
+        </p>
+        <ul>
+          <li>Server Indo (paket PRO/ULTRA + mitra)</li>
+          <li>VPS Custom Builder (pilih CPU/RAM/Disk)</li>
+          <li>Garansi & support (sesuai ketentuan produk)</li>
+        </ul>
+
+        <div class="cta-row">
+          <a class="btn" href="vps.html">VPS Custom</a>
+          <a class="btn primary" href="vps-paket.html">Masuk Toko VPS</a>
+        </div>
+      </article>
+
+      <!-- ULTRASONIC TECHNOLOGY -->
+      <article class="card">
+        <div class="card-head">
+          <p class="name">ULTRASONIC TECHNOLOGY</p>
+          <div class="badge">SSH • V2Ray • UDP</div>
+        </div>
+        <p class="desc">
+          Produk tunnel & config: SSH WS, VMESS, VLESS, Trojan, UDP, STB. Bisa trial dulu, request config bebas.
+        </p>
+        <ul>
+          <li>Server SG & ID</li>
+          <li>Support VC/Call</li>
+          <li>Support game (sesuai kebutuhan)</li>
+        </ul>
+
+        <div class="cta-row">
+          <a class="btn" href="https://wa.me/6285931925073" target="_blank" rel="noreferrer">Chat Admin 2</a>
+          <a class="btn primary" href="tunnel.html">Masuk Toko Tunnel</a>
+        </div>
+      </article>
+
+      <!-- Kontak Cepat -->
+      <article class="card">
+        <div class="card-head">
+          <p class="name">Kontak Cepat</p>
+          <div class="badge">Fast Response</div>
+        </div>
+        <p class="desc">Kalau bingung pilih produk, langsung chat admin. Nanti dibantu rekomendasi sesuai kebutuhan.</p>
+        <ul>
+          <li>Admin 1: 0831-3927-4450</li>
+          <li>Admin 2: 0859-3192-5073</li>
+          <li>Testimoni & channel tersedia</li>
+        </ul>
+
+        <div class="cta-row">
+          <a class="btn" href="https://wa.me/6283139274450" target="_blank" rel="noreferrer">WA Admin 1</a>
+          <a class="btn primary" href="https://wa.me/6285931925073" target="_blank" rel="noreferrer">WA Admin 2</a>
+        </div>
+      </article>
+    </section>
+
+    <section class="section">
+      <h2>Link Resmi</h2>
+      <p>Semua link di bawah ini adalah akses cepat ke komunitas, testimoni, dan media resmi.</p>
+
+      <div class="links">
+        <div class="linkbox">
+          WhatsApp Channel
+          <br><a href="https://whatsapp.com/channel/0029VanqM7P5Ui2fW0x6AY0G" target="_blank" rel="noreferrer">Buka Channel</a>
+        </div>
+
+        <div class="linkbox">
+          Grup WhatsApp
+          <br><a href="https://chat.whatsapp.com/BfEmt2FoOhWEj6HqbXmzys?mode=ems_copy_t" target="_blank" rel="noreferrer">Masuk Grup</a>
+        </div>
+
+        <div class="linkbox">
+          Testimoni (Telegram)
+          <br><a href="https://t.me/t3st1m0n" target="_blank" rel="noreferrer">Lihat Testimoni</a>
+        </div>
+
+        <div class="linkbox">
+          YouTube
+          <br><a href="https://www.youtube.com/@ZONAKOCHENG" target="_blank" rel="noreferrer">Buka YouTube</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Catatan</h2>
+      <p>
+        Gunakan layanan secara bijak & untuk kebutuhan yang legal. Jika ada pertanyaan soal paket/produk,
+        langsung chat admin supaya diarahkan yang paling cocok.
+      </p>
+    </section>
+
+    <footer>© 2025 KALINUX CLOUD • ZONA KOCHENG • ULTRASONIC TECHNOLOGY</footer>
+  </main>
+
+<script>
+  const overlay = document.getElementById('dragonOverlay');
+  const widget  = document.getElementById('dragonWidget');
+  const menu    = document.getElementById('dragonMenu');
+
+  function closeDragonMenu(){
+    menu.classList.remove('visible');
+  }
+  function toggleDragonMenu(){
+    menu.classList.toggle('visible');
+  }
+
+  function animateToCorner(){
+    const targetSize = 92;
+    const pad = 20;
+
+    const startRect = widget.getBoundingClientRect();
+    const startCx = startRect.left + startRect.width / 2;
+    const startCy = startRect.top  + startRect.height / 2;
+
+    const endCx = window.innerWidth  - pad - targetSize/2;
+    const endCy = window.innerHeight - pad - targetSize/2;
+
+    const dx = endCx - startCx;
+    const dy = endCy - startCy;
+
+    const scale = targetSize / Math.max(140, startRect.width);
+
+    widget.animate([
+      { transform: 'translate(-50%, -50%) scale(1)' },
+      { transform: `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) scale(${scale.toFixed(3)})` }
+    ], { duration: 900, easing: 'cubic-bezier(0.2, 0.9, 0.2, 1)', fill: 'forwards' });
+
+    setTimeout(()=> overlay.classList.add('hidden'), 650);
+    setTimeout(()=> widget.classList.add('corner'), 900);
+  }
+
+  window.addEventListener('load', () => {
+    setTimeout(animateToCorner, 900);
+  });
+
+  widget.addEventListener('click', (e) => {
+    if(!widget.classList.contains('corner')) return;
+    e.stopPropagation();
+    toggleDragonMenu();
+  });
+
+  document.addEventListener('click', () => closeDragonMenu());
+  menu.addEventListener('click', (e) => e.stopPropagation());
+</script>
+
+</body>
+  </html>
+            
