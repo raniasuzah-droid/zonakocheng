@@ -232,7 +232,128 @@
       </div>
     </div>
   </main>
+/* ==========================
+UPLOAD BUKTI → TELEGRAM
+========================== */
 
+async function uploadOrder(){
+
+const file =
+document.getElementById("bukti").files[0];
+
+if(!file){
+
+alert("Pilih bukti transfer dulu");
+
+return;
+
+}
+
+const formData =
+new FormData();
+
+formData.append(
+"nama",
+document.getElementById("name").value
+);
+
+formData.append(
+"wa",
+document.getElementById("buyerWa").value
+);
+
+formData.append(
+"produk",
+item
+);
+
+formData.append(
+"harga",
+currentTotal
+);
+
+formData.append(
+"bukti",
+file
+);
+
+try{
+
+const res =
+await fetch(
+"http://103.253.244.76:3000/upload",
+{
+method:"POST",
+body:formData
+}
+);
+
+const data =
+await res.json();
+
+if(data.success){
+
+alert(
+"Order berhasil dikirim ke admin"
+);
+
+}else{
+
+alert(
+"Gagal kirim order"
+);
+
+}
+
+}catch(e){
+
+console.log(e);
+
+alert(
+"Server error"
+);
+
+}
+
+}
+
+/* TAMBAHKAN INPUT BUKTI + GANTI TOMBOL */
+
+document.addEventListener(
+"DOMContentLoaded",
+function(){
+
+const row =
+document.querySelector(".rowbtn");
+
+row.innerHTML=`
+
+<input
+type="file"
+id="bukti"
+accept="image/*"
+style="
+width:100%;
+padding:10px;
+margin-bottom:10px;
+background:#0b1220;
+color:white;
+border-radius:12px;
+border:1px solid #1e293b;
+">
+
+<button
+class="btn primary"
+onclick="uploadOrder()"
+style="width:100%"
+>
+Kirim Bukti Pembayaran
+</button>
+
+`;
+
+}
+);
 <script>
 /* =========================
    CONFIG: ISI NOMOR PEMBAYARAN KAMU DI SINI
