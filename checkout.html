@@ -115,9 +115,7 @@ Transfer sesuai nominal lalu upload bukti pembayaran.
 
 <label>Metode Pembayaran</label>
 <select id="payMethod">
-<option>DANA</option>
-<option>GOPAY</option>
-<option>SHOPEEPAY</option>
+<option>QRIS</option>
 </select>
 
 <div class="box">
@@ -233,7 +231,7 @@ try{
 
 const res =
 await fetch(
-"http://103.253.244.76:3000/upload",
+"http://103.253.244.76:3000/api/upload",
 {
 method:"POST",
 body:formData
