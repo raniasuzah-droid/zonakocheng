@@ -1,119 +1,51 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KALINUX CHECKOUT</title>
-
-<style>
-
-body{
-background:#0f172a;
-color:white;
-font-family:Arial;
-padding:20px;
-}
-
-.box{
-max-width:500px;
-margin:auto;
-background:#111827;
-padding:20px;
-border-radius:20px;
-}
-
-input,button{
-width:100%;
-padding:14px;
-margin-top:10px;
-border:none;
-border-radius:12px;
-}
-
-input{
-background:#1e293b;
-color:white;
-}
-
-button{
-background:#2563eb;
-color:white;
-font-weight:bold;
-cursor:pointer;
-}
-
-img{
-width:100%;
-border-radius:20px;
-margin-top:20px;
-}
-
-</style>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KALINUX CHECKOUT</title>
+  <style>
+    body { background:#0f172a; color:white; font-family:Arial; padding:20px; }
+    .box { max-width:500px; margin:auto; background:#111827; padding:20px; border-radius:20px; }
+    input, button { width:100%; padding:14px; margin-top:10px; border:none; border-radius:12px; }
+    input { background:#1e293b; color:white; }
+    button { background:#2563eb; color:white; font-weight:bold; cursor:pointer; }
+    img { width:100%; border-radius:20px; margin-top:20px; }
+  </style>
 </head>
 <body>
+  <div class="box">
+    <h2>KALINUX CLOUD</h2>
+    <input type="text" id="name" placeholder="Nama">
+    <input type="text" id="wa" placeholder="Nomor WhatsApp">
+    <img src="https://files.catbox.moe/84p7l2.jpg" alt="QRIS">
+    <button onclick="uploadOrder()">Kirim Checkout</button>
+  </div>
 
-<div class="box">
-
-<h2>KALINUX CLOUD</h2>
-
-<input type="text" id="name" placeholder="Nama">
-
-<input type="text" id="wa" placeholder="Nomor WhatsApp">
-
-<img src="https://files.catbox.moe/84p7l2.jpg">
-
-<button onclick="uploadOrder()">
-Kirim Checkout
-</button>
-
-</div>
-
-<script>
-
-async function uploadOrder(){
-
-    try{
-
-        const res = await fetch(
-            "/api/upload",
-            {
-                method:"POST",
-                headers:{
-                    "Content-Type":"application/json"
-                },
-                body: JSON.stringify({
-                    nama:document.getElementById("name").value,
-                    wa:document.getElementById("wa").value,
-                    produk:"VPS",
-                    harga:"10000"
-                })
-            }
-        );
-
+  <script>
+    async function uploadOrder() {
+      try {
+        const res = await fetch("/api/upload", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            nama: document.getElementById("name").value,
+            wa: document.getElementById("wa").value,
+            produk: "VPS",
+            harga: "10000"
+          })
+        });
         const data = await res.json();
-
-        if(data.success){
-
-            alert("CHECKOUT BERHASIL");
-
-        }else{
-
-            alert("GAGAL");
-
+        if (data.success) {
+          alert("CHECKOUT BERHASIL");
+        } else {
+          alert("GAGAL");
         }
-
-    }catch(e){
-
+      } catch (e) {
         console.log(e);
-
         alert("SERVER ERROR");
-
+      }
     }
-
-}
-
-</script>
-
+  </script>
 </body>
 </html>
