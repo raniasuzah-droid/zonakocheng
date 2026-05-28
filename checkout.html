@@ -1,3 +1,74 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KALINUX CHECKOUT</title>
+
+<style>
+
+body{
+background:#0f172a;
+color:white;
+font-family:Arial;
+padding:20px;
+}
+
+.box{
+max-width:500px;
+margin:auto;
+background:#111827;
+padding:20px;
+border-radius:20px;
+}
+
+input,button{
+width:100%;
+padding:14px;
+margin-top:10px;
+border:none;
+border-radius:12px;
+}
+
+input{
+background:#1e293b;
+color:white;
+}
+
+button{
+background:#2563eb;
+color:white;
+font-weight:bold;
+cursor:pointer;
+}
+
+img{
+width:100%;
+border-radius:20px;
+margin-top:20px;
+}
+
+</style>
+
+</head>
+<body>
+
+<div class="box">
+
+<h2>KALINUX CLOUD</h2>
+
+<input type="text" id="name" placeholder="Nama">
+
+<input type="text" id="wa" placeholder="Nomor WhatsApp">
+
+<img src="LINK_QRIS_KAMU">
+
+<button onclick="uploadOrder()">
+Kirim Checkout
+</button>
+
+</div>
+
 <script>
 
 async function uploadOrder(){
@@ -12,8 +83,8 @@ async function uploadOrder(){
                     "Content-Type":"application/json"
                 },
                 body: JSON.stringify({
-                    nama:"TEST",
-                    wa:"08123",
+                    nama:document.getElementById("name").value,
+                    wa:document.getElementById("wa").value,
                     produk:"VPS",
                     harga:"10000"
                 })
@@ -22,7 +93,15 @@ async function uploadOrder(){
 
         const data = await res.json();
 
-        alert("CHECKOUT BERHASIL");
+        if(data.success){
+
+            alert("CHECKOUT BERHASIL");
+
+        }else{
+
+            alert("GAGAL");
+
+        }
 
     }catch(e){
 
@@ -35,3 +114,6 @@ async function uploadOrder(){
 }
 
 </script>
+
+</body>
+</html>
