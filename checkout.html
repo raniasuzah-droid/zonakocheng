@@ -1,12 +1,75 @@
 <!DOCTYPE html>
 <html>
+<head>
+<meta charset="utf-8">
+<title>Checkout</title>
+</head>
 <body>
 
-<h1>TES CHECKOUT</h1>
+<h2>KALINUX CLOUD</h2>
 
-<button onclick="alert('BERHASIL')">
-TEST
+<p>Silahkan scan QRIS berikut</p>
+
+<img src="qris.jpg" width="250">
+
+<br><br>
+
+<input type="file" id="bukti" required>
+
+<br><br>
+
+<input type="text" id="nama" placeholder="Nama Pembeli">
+
+<br><br>
+
+<button onclick="kirim()">
+Kirim Bukti
 </button>
+
+<script>
+
+async function kirim(){
+
+const file =
+document.getElementById("bukti").files[0];
+
+if(!file){
+alert("Pilih bukti transfer dulu");
+return;
+}
+
+const data = new FormData();
+
+data.append("bukti", file);
+
+data.append(
+"note",
+document.getElementById("nama").value
+);
+
+try{
+
+const res = await fetch(
+"https://api.kalinux.cloud/upload",
+{
+method:"POST",
+body:data
+}
+);
+
+const json = await res.json();
+
+alert(JSON.stringify(json));
+
+}catch(err){
+
+alert("ERROR: " + err);
+
+}
+
+}
+
+</script>
 
 </body>
 </html>
