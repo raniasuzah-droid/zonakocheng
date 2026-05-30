@@ -1,32 +1,6 @@
 <script>
 
+alert("SCRIPT JALAN");
+
 document.getElementById("uploadForm")
 .addEventListener("submit", async function(e){
-
-e.preventDefault();
-
-const data = new FormData(this);
-
-try{
-
-const res = await fetch(
-"https://api.kalinux.cloud/upload",
-{
-method:"POST",
-body:data
-}
-);
-
-const text = await res.text();
-
-alert(text);
-
-}catch(err){
-
-alert("ERROR: " + err);
-
-}
-
-});
-
-</script>
