@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Checkout</title>
+</head>
+<body>
+
+<h2>Checkout VPS</h2>
+
+<p>Silahkan scan QRIS berikut</p>
+
+<img src="qris.jpg" width="250">
+
+<h3>Nominal: Rp 35.000</h3>
+
+<form id="uploadForm">
+
+<input
+type="file"
+name="bukti"
+required
+>
+
+<br><br>
+
+<input
+type="text"
+name="catatan"
+placeholder="Nama pembeli"
+>
+
+<br><br>
+
+<button type="submit">
+Kirim Bukti
+</button>
+
+</form>
+
+<script>
+
+document.getElementById("uploadForm")
+.addEventListener("submit", async function(e){
+
+e.preventDefault();
+
+const data = new FormData(this);
+
+await fetch(
+"https://api.kalinux.cloud/upload",
+{
+method:"POST",
+body:data
+}
+);
+
+alert("Bukti berhasil dikirim");
+
+});
+
+</script>
+
+</body>
+</html>
