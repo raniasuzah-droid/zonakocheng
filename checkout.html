@@ -1,75 +1,466 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-<meta charset="utf-8">
-<title>Checkout</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>KALINUX CLOUD - Checkout</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#07111f;
+      --panel:#0c1729;
+      --panel2:#101f36;
+      --line:rgba(255,255,255,.08);
+      --text:#eaf2ff;
+      --muted:rgba(234,242,255,.68);
+      --blue:#6ea8fe;
+      --green:#2dd4bf;
+      --gold:#ffd166;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      min-height:100vh;
+      color:var(--text);
+      background:
+        radial-gradient(900px 500px at 10% 0%, rgba(110,168,254,.18), transparent 50%),
+        radial-gradient(700px 400px at 90% 10%, rgba(45,212,191,.12), transparent 45%),
+        linear-gradient(180deg, #050b14 0%, #08111d 100%);
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    a{color:inherit;text-decoration:none}
+    .wrap{max-width:1180px;margin:0 auto;padding:20px 16px 40px}
+    .topbar{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      padding:14px 16px;border:1px solid var(--line);border-radius:22px;
+      background:rgba(10,18,31,.72);backdrop-filter: blur(14px);
+      box-shadow:0 20px 60px rgba(0,0,0,.25);
+    }
+    .brand{display:flex;align-items:center;gap:12px}
+    .brand-badge{
+      width:44px;height:44px;border-radius:14px;
+      display:grid;place-items:center;
+      background:linear-gradient(135deg, rgba(110,168,254,.95), rgba(45,212,191,.9));
+      color:#03101b;font-weight:900;
+      box-shadow:0 10px 25px rgba(110,168,254,.25);
+    }
+    .brand h1{margin:0;font-size:1rem;font-weight:800;letter-spacing:.2px}
+    .brand p{margin:2px 0 0;color:var(--muted);font-size:.88rem}
+    .pill-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
+    .pill{
+      padding:8px 12px;border:1px solid var(--line);border-radius:999px;
+      background:rgba(255,255,255,.04);font-size:.82rem;color:var(--muted)
+    }
+
+    .hero{
+      margin-top:16px;
+      border:1px solid var(--line);
+      border-radius:26px;
+      background:linear-gradient(180deg, rgba(16,31,54,.78), rgba(12,23,41,.88));
+      padding:18px;
+      box-shadow:0 24px 70px rgba(0,0,0,.22);
+    }
+    .hero h2{margin:0;font-size:1.5rem;font-weight:800}
+    .hero .sub{margin:8px 0 0;color:var(--muted);line-height:1.6}
+
+    .pricebox{
+      margin-top:14px;
+      display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+      padding:14px 16px;border:1px solid rgba(255,255,255,.08);border-radius:20px;
+      background:rgba(255,255,255,.03);
+    }
+    .pricebox .label{color:var(--muted);font-size:.88rem}
+    .pricebox .price{font-size:1.6rem;font-weight:900;color:#7fd3ff}
+    .pricebox .mini{color:var(--muted);font-size:.88rem}
+
+    .layout{margin-top:16px;display:grid;grid-template-columns:1.45fr .95fr;gap:16px}
+    @media (max-width: 980px){.layout{grid-template-columns:1fr}}
+
+    .cardx{
+      border:1px solid var(--line);
+      border-radius:24px;
+      background:rgba(12,23,41,.84);
+      box-shadow:0 18px 50px rgba(0,0,0,.18);
+      overflow:hidden;
+    }
+    .cardx .head{
+      padding:16px 16px 0 16px;
+      display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+    }
+    .section-title{margin:0;font-size:1.05rem;font-weight:800}
+    .badge-soft{
+      padding:8px 12px;border-radius:999px;background:rgba(110,168,254,.12);
+      border:1px solid rgba(110,168,254,.24);color:#b8d3ff;font-size:.82rem;font-weight:700;
+    }
+    .body{padding:16px}
+    .qris-box{
+      display:grid;place-items:center;gap:12px;
+      padding:18px;border:1px dashed rgba(255,255,255,.15);border-radius:22px;
+      background:rgba(255,255,255,.02);
+    }
+    .qris-box img{
+      width:min(100%, 360px);
+      height:auto;
+      border-radius:18px;
+      box-shadow:0 14px 35px rgba(0,0,0,.28);
+      background:#fff;
+    }
+    .hint{color:var(--muted);font-size:.9rem;line-height:1.55;text-align:center;max-width:520px}
+
+    .grid-info{
+      display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px
+    }
+    @media (max-width:600px){.grid-info{grid-template-columns:1fr}}
+    .info{
+      padding:14px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.03);
+    }
+    .info .k{color:var(--muted);font-size:.8rem;margin-bottom:6px}
+    .info .v{font-weight:800;line-height:1.45}
+    .info .v small{display:block;color:var(--muted);font-weight:600;margin-top:2px}
+
+    .field{
+      display:flex;flex-direction:column;gap:8px;margin-top:12px
+    }
+    .field label{font-size:.9rem;color:#dce7ff;font-weight:700}
+    .field input,.field textarea{
+      width:100%;border:1px solid var(--line);border-radius:16px;
+      background:#08121f;color:var(--text);padding:13px 14px;outline:none;
+    }
+    .field input::placeholder,.field textarea::placeholder{color:rgba(234,242,255,.42)}
+    .field input:focus,.field textarea:focus{border-color:rgba(110,168,254,.45);box-shadow:0 0 0 3px rgba(110,168,254,.12)}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+    .btn-main{
+      border:0;border-radius:16px;padding:13px 16px;font-weight:800;
+      background:linear-gradient(135deg, #6ea8fe, #2dd4bf);
+      color:#04101b;flex:1;min-width:220px;
+    }
+    .btn-ghost{
+      border:1px solid var(--line);border-radius:16px;padding:13px 16px;font-weight:700;
+      background:rgba(255,255,255,.03);color:var(--text);min-width:180px;
+    }
+
+    .chip-wrap{
+      display:flex;flex-wrap:wrap;gap:10px;margin-top:12px
+    }
+    .chip{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:9px 12px;border-radius:999px;border:1px solid var(--line);
+      background:rgba(255,255,255,.03);color:#eaf2ff;font-size:.84rem
+    }
+    .chip i{color:#8ac6ff}
+
+    .choice-grid{
+      display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px
+    }
+    @media (max-width: 700px){.choice-grid{grid-template-columns:1fr}}
+    .choice{
+      display:flex;align-items:center;gap:10px;
+      padding:12px;border-radius:18px;border:1px solid var(--line);
+      background:rgba(255,255,255,.03)
+    }
+    .choice .ico{
+      width:38px;height:38px;border-radius:14px;display:grid;place-items:center;
+      background:rgba(110,168,254,.12);color:#8ac6ff;flex:0 0 auto;
+    }
+    .choice .txt{font-size:.87rem;line-height:1.35}
+    .choice .txt b{display:block;font-size:.92rem;margin-bottom:2px}
+
+    .preview{
+      width:100%;max-height:210px;object-fit:cover;border-radius:16px;margin-top:12px;
+      border:1px solid var(--line);display:none
+    }
+
+    .footer-note{margin-top:14px;color:var(--muted);font-size:.86rem;line-height:1.55}
+  </style>
 </head>
 <body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <div class="brand-badge">KC</div>
+        <div>
+          <h1>KALINUX CLOUD</h1>
+          <p>Checkout QRIS • Upload bukti • Telegram admin</p>
+        </div>
+      </div>
+      <div class="pill-row">
+        <span class="pill"><i class="bi bi-shield-check me-1"></i> Manual verify</span>
+        <span class="pill"><i class="bi bi-clock-history me-1"></i> Fast processing</span>
+      </div>
+    </div>
 
-<h2>KALINUX CLOUD</h2>
+    <section class="hero">
+      <h2 id="pageTitle">Checkout</h2>
+      <p class="sub" id="pageSub">
+        Silakan scan QRIS, bayar sesuai nominal, lalu upload bukti pembayaran.
+      </p>
 
-<p>Silahkan scan QRIS berikut</p>
+      <div class="pricebox">
+        <div>
+          <div class="label">Nominal yang harus dibayar</div>
+          <div class="price" id="priceText">Rp 0</div>
+          <div class="mini" id="miniText">-</div>
+        </div>
+        <div class="badge-soft" id="statusText">Order siap diproses</div>
+      </div>
+    </section>
 
-<img src="qris.jpg" width="250">
+    <div class="layout">
+      <div class="cardx">
+        <div class="head">
+          <p class="section-title"><i class="bi bi-qr-code-scan me-2"></i>QRIS Pembayaran</p>
+          <span class="badge-soft">Scan lalu transfer</span>
+        </div>
+        <div class="body">
+          <div class="qris-box">
+            <img src="qris.jpg" alt="QRIS KALINUX CLOUD">
+            <div class="hint">
+              QRIS di atas akan dipakai untuk transaksi. Setelah bayar, upload bukti supaya admin bisa verifikasi manual.
+            </div>
+          </div>
 
-<br><br>
+          <div class="grid-info">
+            <div class="info">
+              <div class="k">Brand</div>
+              <div class="v" id="brandText">KALINUX CLOUD</div>
+            </div>
+            <div class="info">
+              <div class="k">Produk</div>
+              <div class="v" id="itemText">-</div>
+            </div>
+            <div class="info">
+              <div class="k">Detail VPS / Paket</div>
+              <div class="v" id="detailText">-</div>
+            </div>
+            <div class="info">
+              <div class="k">OS / Aplikasi</div>
+              <div class="v">
+                <span id="osText">-</span>
+                <small id="appText">-</small>
+              </div>
+            </div>
+          </div>
 
-<input type="file" id="bukti" required>
+          <div class="chip-wrap" id="chipWrap"></div>
+        </div>
+      </div>
 
-<br><br>
+      <div class="cardx">
+        <div class="head">
+          <p class="section-title"><i class="bi bi-person-vcard me-2"></i>Data Pembeli</p>
+          <span class="badge-soft">Wajib diisi</span>
+        </div>
+        <div class="body">
+          <div class="field">
+            <label for="buyer_name">Nama pembeli</label>
+            <input id="buyer_name" type="text" placeholder="Contoh: Budi" />
+          </div>
 
-<input type="text" id="nama" placeholder="Nama Pembeli">
+          <div class="field">
+            <label for="buyer_wa">Nomor WhatsApp pembeli</label>
+            <input id="buyer_wa" type="tel" placeholder="Contoh: 08xxxxxxxxxx" />
+          </div>
 
-<br><br>
+          <div class="field">
+            <label for="note">Catatan tambahan</label>
+            <textarea id="note" rows="3" placeholder="Contoh: tolong proses cepat ya"></textarea>
+          </div>
 
-<button onclick="kirim()">
-Kirim Bukti
-</button>
+          <div class="field">
+            <label for="bukti">Upload bukti pembayaran</label>
+            <input id="bukti" type="file" accept="image/*" />
+            <img id="preview" class="preview" alt="Preview bukti">
+          </div>
+
+          <div class="actions">
+            <button class="btn-main" onclick="kirim()">
+              <i class="bi bi-send me-2"></i>Kirim Bukti ke Admin
+            </button>
+            <button class="btn-ghost" onclick="history.back()">
+              <i class="bi bi-arrow-left me-2"></i>Kembali
+            </button>
+          </div>
+
+          <div class="footer-note">
+            Setelah dikirim, bukti akan masuk ke Telegram admin bersama detail order, nomor WhatsApp pembeli, dan harga.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cardx mt-3">
+      <div class="head">
+        <p class="section-title"><i class="bi bi-grid-3x3-gap me-2"></i>Pilihan OS</p>
+        <span class="badge-soft">Contoh yang umum dipakai</span>
+      </div>
+      <div class="body">
+        <div class="choice-grid" id="osGrid"></div>
+      </div>
+    </div>
+
+    <div class="cardx mt-3">
+      <div class="head">
+        <p class="section-title"><i class="bi bi-puzzle me-2"></i>Pilihan Aplikasi</p>
+        <span class="badge-soft">Contoh aplikasi populer</span>
+      </div>
+      <div class="body">
+        <div class="choice-grid" id="appGrid"></div>
+      </div>
+    </div>
+  </div>
 
 <script>
+  const params = new URLSearchParams(location.search);
 
-async function kirim(){
+  const brand = params.get("brand") || "KALINUX CLOUD";
+  const item  = params.get("item")  || "VPS Custom";
+  const price = Number(params.get("price") || 0);
+  const detail = params.get("detail") || "-";
+  const os = params.get("os") || "Linux";
+  const app = params.get("app") || "-";
 
-const file =
-document.getElementById("bukti").files[0];
+  const FALLBACK_OS = [
+    { icon:"bi-windows", title:"Windows", desc:"Untuk RDP / desktop remote" },
+    { icon:"bi-terminal-fill", title:"Ubuntu 20.04 LTS", desc:"LTS stabil dan umum dipakai" },
+    { icon:"bi-terminal-fill", title:"Ubuntu 22.04 LTS", desc:"LTS populer untuk server" },
+    { icon:"bi-terminal-fill", title:"Ubuntu 24.04 LTS", desc:"LTS terbaru yang umum dipilih" },
+    { icon:"bi-database", title:"Debian 11", desc:"Stabil dan ringan" },
+    { icon:"bi-database", title:"Debian 12", desc:"Stabil untuk hosting" },
+    { icon:"bi-database", title:"Debian 13", desc:"Stable terbaru" },
+    { icon:"bi-shield-check", title:"AlmaLinux", desc:"Cocok untuk panel & hosting" },
+    { icon:"bi-shield", title:"Rocky Linux", desc:"Alternatif enterprise-friendly" },
+    { icon:"bi-cpu", title:"Fedora", desc:"Lebih fresh untuk testing" },
+    { icon:"bi-terminal", title:"Alpine Linux", desc:"Super ringan" },
+    { icon:"bi-globe2", title:"Arch Linux", desc:"Untuk user yang suka kustom" }
+  ];
 
-if(!file){
-alert("Pilih bukti transfer dulu");
-return;
-}
+  const FALLBACK_APP = [
+    { icon:"bi-filetype-js", title:"NodeJS", desc:"Bot, API, web app" },
+    { icon:"bi-server", title:"Nginx / Apache", desc:"Web server" },
+    { icon:"bi-wordpress", title:"WordPress", desc:"Website cepat jadi" },
+    { icon:"bi-file-earmark-code", title:"Laravel", desc:"Aplikasi PHP modern" },
+    { icon:"bi-cloud", title:"Nextcloud", desc:"Cloud file pribadi" },
+    { icon:"bi-window-sidebar", title:"Code Server", desc:"VS Code di browser" },
+    { icon:"bi-hdd-network", title:"Portainer", desc:"Kelola Docker" },
+    { icon:"bi-gear-fill", title:"CyberPanel", desc:"Panel hosting" },
+    { icon:"bi-window", title:"Plesk", desc:"Panel server" },
+    { icon:"bi-gear", title:"aaPanel", desc:"Panel ringan" },
+    { icon:"bi-database", title:"MariaDB", desc:"Database populer" },
+    { icon:"bi-database-fill", title:"PostgreSQL", desc:"Database kuat" },
+    { icon:"bi-box-seam", title:"MongoDB", desc:"NoSQL" },
+    { icon:"bi-cpu", title:"Redis", desc:"Cache cepat" },
+    { icon:"bi-graph-up", title:"Grafana", desc:"Monitoring dashboard" },
+    { icon:"bi-clock-history", title:"Uptime Kuma", desc:"Status monitoring" },
+    { icon:"bi-share", title:"n8n", desc:"Automation workflow" },
+    { icon:"bi-camera-video", title:"Jitsi Meet", desc:"Video meeting" },
+    { icon:"bi-chat-left-text", title:"OpenWebUI", desc:"Chat UI / AI" },
+    { icon:"bi-printer", title:"Odoo", desc:"ERP / bisnis" },
+    { icon:"bi-card-list", title:"NetBox", desc:"Inventory jaringan" },
+    { icon:"bi-ui-checks-grid", title:"Draw.io", desc:"Diagram / flowchart" }
+  ];
 
-const data = new FormData();
+  const osGrid = document.getElementById("osGrid");
+  const appGrid = document.getElementById("appGrid");
+  const chipWrap = document.getElementById("chipWrap");
 
-data.append("bukti", file);
+  function rupiah(n){
+    return Number(n || 0).toLocaleString("id-ID");
+  }
 
-data.append(
-"note",
-document.getElementById("nama").value
-);
+  function esc(s){
+    return String(s).replace(/[&<>"']/g, (m)=>({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+    }[m]));
+  }
 
-try{
+  function renderChoices(el, items){
+    el.innerHTML = items.map(item => `
+      <div class="choice">
+        <div class="ico"><i class="bi ${item.icon}"></i></div>
+        <div class="txt">
+          <b>${esc(item.title)}</b>
+          ${esc(item.desc)}
+        </div>
+      </div>
+    `).join("");
+  }
 
-const res = await fetch(
-"https://api.kalinux.cloud/upload",
-{
-method:"POST",
-body:data
-}
-);
+  renderChoices(osGrid, FALLBACK_OS);
+  renderChoices(appGrid, FALLBACK_APP);
 
-const json = await res.json();
+  document.getElementById("brandText").textContent = brand;
+  document.getElementById("itemText").textContent = item;
+  document.getElementById("detailText").textContent = detail;
+  document.getElementById("osText").textContent = os;
+  document.getElementById("appText").textContent = app;
+  document.getElementById("priceText").textContent = `Rp ${rupiah(price)}`;
+  document.getElementById("miniText").textContent = `${item} • ${os}`;
 
-alert(JSON.stringify(json));
+  document.getElementById("pageTitle").textContent = `${brand} - Checkout`;
+  document.getElementById("pageSub").textContent = `Produk: ${item}. Bayar sesuai nominal, lalu upload bukti pembayaran agar admin bisa verifikasi manual.`;
 
-}catch(err){
+  chipWrap.innerHTML = `
+    <span class="chip"><i class="bi bi-cpu"></i>${esc(os)}</span>
+    <span class="chip"><i class="bi bi-app-indicator"></i>${esc(app)}</span>
+    <span class="chip"><i class="bi bi-receipt"></i>${esc(detail)}</span>
+  `;
 
-alert("ERROR: " + err);
+  document.getElementById("bukti").addEventListener("change", function(){
+    const file = this.files && this.files[0];
+    const preview = document.getElementById("preview");
+    if (!file) {
+      preview.style.display = "none";
+      preview.removeAttribute("src");
+      return;
+    }
+    const url = URL.createObjectURL(file);
+    preview.src = url;
+    preview.style.display = "block";
+  });
 
-}
+  async function kirim(){
+    const file = document.getElementById("bukti").files[0];
+    const buyerName = document.getElementById("buyer_name").value.trim();
+    const buyerWa = document.getElementById("buyer_wa").value.trim();
+    const note = document.getElementById("note").value.trim();
 
-}
+    if (!file) return alert("Pilih bukti pembayaran dulu.");
+    if (!buyerName) return alert("Isi nama pembeli dulu.");
+    if (!buyerWa) return alert("Isi nomor WhatsApp pembeli dulu.");
 
+    const fd = new FormData();
+    fd.append("bukti", file);
+    fd.append("brand", brand);
+    fd.append("item", item);
+    fd.append("price", String(price));
+    fd.append("detail", detail);
+    fd.append("os", os);
+    fd.append("app", app);
+    fd.append("buyer_name", buyerName);
+    fd.append("buyer_wa", buyerWa);
+    fd.append("note", note);
+
+    try{
+      const res = await fetch("https://api.kalinux.cloud/upload", {
+        method: "POST",
+        body: fd
+      });
+
+      const json = await res.json();
+      if (json.success) {
+        alert("Bukti berhasil dikirim ke admin.");
+      } else {
+        alert("Gagal: " + (json.error || "unknown error"));
+      }
+    }catch(err){
+      alert("ERROR: " + err);
+    }
+  }
+
+  window.kirim = kirim;
 </script>
-
 </body>
 </html>
