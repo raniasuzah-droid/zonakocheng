@@ -4,10 +4,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>KALINUX CLOUD - Checkout</title>
-
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-
   <style>
     :root{
       --bg:#07111f;
@@ -18,7 +16,6 @@
       --muted:rgba(234,242,255,.68);
       --blue:#6ea8fe;
       --green:#2dd4bf;
-      --gold:#ffd166;
       --danger:#ff7b7b;
     }
     *{box-sizing:border-box}
@@ -34,13 +31,11 @@
     }
     a{color:inherit;text-decoration:none}
     .wrap{max-width:1180px;margin:0 auto;padding:20px 16px 40px}
-
     .topbar{
-      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
       padding:14px 16px;border:1px solid var(--line);border-radius:22px;
       background:rgba(10,18,31,.72);backdrop-filter: blur(14px);
       box-shadow:0 20px 60px rgba(0,0,0,.25);
-      flex-wrap:wrap;
     }
     .brand{display:flex;align-items:center;gap:12px}
     .brand-badge{
@@ -228,6 +223,21 @@
       font-weight:700;
     }
     iframe{display:none}
+    .version-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+    .vbtn{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      color:var(--text);
+      border-radius:999px;
+      padding:8px 12px;
+      font-size:.86rem;
+      font-weight:700;
+      cursor:pointer;
+    }
+    .vbtn.active{
+      background:rgba(110,168,254,.14);
+      border-color:rgba(110,168,254,.35);
+    }
   </style>
 </head>
 <body>
@@ -277,7 +287,7 @@
         </div>
         <div class="body">
           <div class="qris-box">
-            <img src="qris.jpg" alt="QRIS KALINUX CLOUD">
+            <img src="https://files.catbox.moe/84p7l2.jpg" alt="QRIS KALINUX CLOUD">
             <div class="hint">
               QRIS di atas akan dipakai untuk transaksi. Setelah bayar, upload bukti supaya admin bisa verifikasi manual.
             </div>
@@ -297,10 +307,10 @@
               <div class="v" id="detailText">-</div>
             </div>
             <div class="info">
-              <div class="k">OS / Aplikasi</div>
+              <div class="k">OS / Pilihan</div>
               <div class="v">
                 <span id="osText">-</span>
-                <small id="appText">-</small>
+                <small id="appText">Aplikasi opsional</small>
               </div>
             </div>
           </div>
@@ -364,17 +374,18 @@
     <div class="cardx mt-3">
       <div class="head">
         <p class="section-title"><i class="bi bi-grid-3x3-gap me-2"></i>Pilihan OS</p>
-        <span class="badge-soft">Klik versi</span>
+        <span class="badge-soft">Klik kategori lalu pilih versi</span>
       </div>
       <div class="body">
         <div class="choice-grid" id="osGrid"></div>
+        <div class="version-row" id="osVersionRow"></div>
       </div>
     </div>
 
     <div class="cardx mt-3">
       <div class="head">
         <p class="section-title"><i class="bi bi-puzzle me-2"></i>Pilihan Aplikasi</p>
-        <span class="badge-soft">Klik versi</span>
+        <span class="badge-soft">Opsional, tidak wajib dipilih</span>
       </div>
       <div class="body">
         <div class="choice-grid" id="appGrid"></div>
@@ -390,17 +401,17 @@
   const price = Number(params.get("price") || 0);
   const detail = params.get("detail") || "-";
 
+  const toast = document.getElementById("toast");
+  const toastTitle = document.getElementById("toastTitle");
+  const toastText = document.getElementById("toastText");
   const osGrid = document.getElementById("osGrid");
   const appGrid = document.getElementById("appGrid");
+  const osVersionRow = document.getElementById("osVersionRow");
   const chipWrap = document.getElementById("chipWrap");
   const statusText = document.getElementById("statusText");
   const doneBox = document.getElementById("doneBox");
   const submitBtn = document.getElementById("submitBtn");
   const submitLabel = document.getElementById("submitLabel");
-
-  const toast = document.getElementById("toast");
-  const toastTitle = document.getElementById("toastTitle");
-  const toastText = document.getElementById("toastText");
 
   const osOptions = [
     { key:"windows", title:"Windows", icon:"bi-windows", versions:["Server 2019","Server 2022"] },
@@ -460,18 +471,14 @@
   ];
 
   let selectedOs = null;
-  let selectedOsVersion = null;
+  let selectedOsVersion = "";
   let selectedApp = null;
-  let selectedAppVersion = null;
   let busy = false;
   let submittedAt = 0;
   let hideToastTimer = null;
   let failTimer = null;
 
-  function money(n){
-    return Number(n || 0).toLocaleString("id-ID");
-  }
-
+  function money(n){ return Number(n || 0).toLocaleString("id-ID"); }
   function esc(s){
     return String(s).replace(/[&<>"']/g, (m)=>({
       "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
@@ -484,4 +491,161 @@
     toastText.textContent = message;
     toast.style.display = "block";
     clearTimeout(hideToastTimer);
-    hideToastT
+    hideToastTimer = setTimeout(() => toast.style.display = "none", 3500);
+  }
+
+  function setBusy(state){
+    busy = state;
+    submitBtn.disabled = state;
+    submitLabel.textContent = state ? "Mengirim..." : "Kirim Bukti ke Admin";
+    statusText.textContent = state ? "Mengirim..." : "Order siap diproses";
+  }
+
+  function updateHidden(){
+    document.getElementById("brand_hidden").value = brand;
+    document.getElementById("item_hidden").value = item;
+    document.getElementById("price_hidden").value = String(price);
+    document.getElementById("detail_hidden").value = detail;
+    document.getElementById("os_hidden").value = selectedOs ? `${selectedOs.title} ${selectedOsVersion}` : "-";
+    document.getElementById("app_hidden").value = selectedApp ? selectedApp.title : "-";
+  }
+
+  function updateTopInfo(){
+    document.getElementById("brandText").textContent = brand;
+    document.getElementById("itemText").textContent = item;
+    document.getElementById("detailText").textContent = detail;
+    document.getElementById("osText").textContent = selectedOs ? `${selectedOs.title} ${selectedOsVersion}` : "-";
+    document.getElementById("appText").textContent = selectedApp ? selectedApp.title : "Aplikasi opsional";
+    document.getElementById("priceText").textContent = `Rp ${money(price)}`;
+    document.getElementById("miniText").textContent = `${item} • ${selectedOs ? selectedOs.title : "OS"}`;
+    document.getElementById("pageTitle").textContent = `${brand} - Checkout`;
+    document.getElementById("pageSub").textContent = `Produk: ${item}. Bayar sesuai nominal, lalu upload bukti pembayaran agar admin bisa verifikasi manual.`;
+
+    chipWrap.innerHTML = `
+      <span class="chip"><i class="bi bi-cpu"></i>${esc(selectedOs ? `${selectedOs.title} ${selectedOsVersion}` : "Pilih OS")}</span>
+      <span class="chip"><i class="bi bi-app-indicator"></i>${esc(selectedApp ? selectedApp.title : "Aplikasi opsional")}</span>
+      <span class="chip"><i class="bi bi-receipt"></i>${esc(detail)}</span>
+    `;
+    updateHidden();
+  }
+
+  function renderOsGrid(){
+    osGrid.innerHTML = osOptions.map(opt => `
+      <div class="choice ${selectedOs && selectedOs.key === opt.key ? 'active' : ''}" data-key="${opt.key}" data-type="os">
+        <div class="ico"><i class="bi ${opt.icon}"></i></div>
+        <div class="txt">
+          <b>${esc(opt.title)}</b>
+          <small>${opt.versions.join(" • ")}</small>
+        </div>
+      </div>
+    `).join("");
+
+    document.querySelectorAll('[data-type="os"]').forEach(el => {
+      el.addEventListener("click", () => {
+        const key = el.getAttribute("data-key");
+        selectedOs = osOptions.find(x => x.key === key);
+        selectedOsVersion = selectedOs.versions[0];
+        renderOsGrid();
+        renderOsVersions();
+        updateTopInfo();
+      });
+    });
+  }
+
+  function renderOsVersions(){
+    osVersionRow.innerHTML = "";
+    if(!selectedOs) return;
+
+    osVersionRow.innerHTML = selectedOs.versions.map(v => `
+      <button type="button" class="vbtn ${selectedOsVersion === v ? 'active' : ''}" data-version="${esc(v)}">${esc(v)}</button>
+    `).join("");
+
+    osVersionRow.querySelectorAll(".vbtn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        selectedOsVersion = btn.getAttribute("data-version");
+        renderOsVersions();
+        updateTopInfo();
+      });
+    });
+  }
+
+  function renderAppGrid(){
+    appGrid.innerHTML = appOptions.map(opt => `
+      <div class="choice ${selectedApp && selectedApp.key === opt.key ? 'active' : ''}" data-key="${opt.key}" data-type="app">
+        <div class="ico"><i class="bi ${opt.icon}"></i></div>
+        <div class="txt">
+          <b>${esc(opt.title)}</b>
+          <small>${opt.versions.join(" • ")}</small>
+        </div>
+      </div>
+    `).join("");
+
+    document.querySelectorAll('[data-type="app"]').forEach(el => {
+      el.addEventListener("click", () => {
+        const key = el.getAttribute("data-key");
+        selectedApp = appOptions.find(x => x.key === key);
+        renderAppGrid();
+        updateTopInfo();
+      });
+    });
+  }
+
+  function initDefaults(){
+    const hint = `${params.get("os") || ""} ${detail}`.toLowerCase();
+    if(hint.includes("windows")){
+      selectedOs = osOptions.find(x => x.key === "windows") || osOptions[0];
+      selectedOsVersion = "Server 2022";
+    } else {
+      selectedOs = osOptions.find(x => x.key === "ubuntu") || osOptions[0];
+      selectedOsVersion = "24.04 LTS";
+    }
+    selectedApp = null; // aplikasi opsional
+  }
+
+  document.getElementById("bukti").addEventListener("change", function(){
+    const file = this.files && this.files[0];
+    const preview = document.getElementById("preview");
+    if (!file){
+      preview.style.display = "none";
+      preview.removeAttribute("src");
+      return;
+    }
+    preview.src = URL.createObjectURL(file);
+    preview.style.display = "block";
+  });
+
+  document.getElementById("uploadForm").addEventListener("submit", function(){
+    if (busy) return;
+
+    submittedAt = Date.now();
+    setBusy(true);
+    doneBox.style.display = "none";
+    showToast("Mengirim...", "Bukti sedang dikirim ke admin.", "success");
+
+    clearTimeout(failTimer);
+    failTimer = setTimeout(() => {
+      if (busy) {
+        setBusy(false);
+        showToast("Belum ada balasan", "Coba kirim ulang sekali saja kalau belum berubah.", "error");
+      }
+    }, 20000);
+  });
+
+  document.getElementById("uploadFrame").addEventListener("load", function(){
+    if (!busy) return;
+    if (Date.now() - submittedAt < 500) return;
+
+    clearTimeout(failTimer);
+    setBusy(false);
+    doneBox.style.display = "block";
+    showToast("Terkirim", "Bukti berhasil dikirim ke admin.", "success");
+  });
+
+  initDefaults();
+  renderOsGrid();
+  renderOsVersions();
+  renderAppGrid();
+  updateTopInfo();
+</script>
+</body>
+</html>
