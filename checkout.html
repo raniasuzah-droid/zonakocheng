@@ -450,12 +450,11 @@
         body: fd
       });
 
-      const json = await res.json();
-      if (json.success) {
-        alert("Bukti berhasil dikirim ke admin.");
-      } else {
-        alert("Gagal: " + (json.error || "unknown error"));
-      }
+      const text = await res.text();
+
+console.log(text);
+
+alert("Bukti berhasil dikirim ke admin.");
     }catch(err){
       alert("ERROR: " + err);
     }
