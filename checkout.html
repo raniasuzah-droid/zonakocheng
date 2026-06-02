@@ -455,10 +455,18 @@
 console.log(text);
 
 alert("Bukti berhasil dikirim ke admin.");
-    }catch(err){
-      alert("ERROR: " + err);
+    catch(err){
+
+  console.log(err);
+
+  alert(
+    "ERROR DETAIL:\n\n" +
+    err.message +
+    "\n\n" +
+    err
+  );
+
     }
-  }
 
   window.kirim = kirim;
 </script>
