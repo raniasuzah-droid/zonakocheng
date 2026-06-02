@@ -19,6 +19,7 @@
       --blue:#6ea8fe;
       --green:#2dd4bf;
       --gold:#ffd166;
+      --danger:#ff7b7b;
     }
     *{box-sizing:border-box}
     body{
@@ -33,11 +34,13 @@
     }
     a{color:inherit;text-decoration:none}
     .wrap{max-width:1180px;margin:0 auto;padding:20px 16px 40px}
+
     .topbar{
       display:flex;align-items:center;justify-content:space-between;gap:12px;
       padding:14px 16px;border:1px solid var(--line);border-radius:22px;
       background:rgba(10,18,31,.72);backdrop-filter: blur(14px);
       box-shadow:0 20px 60px rgba(0,0,0,.25);
+      flex-wrap:wrap;
     }
     .brand{display:flex;align-items:center;gap:12px}
     .brand-badge{
@@ -75,6 +78,14 @@
     .pricebox .label{color:var(--muted);font-size:.88rem}
     .pricebox .price{font-size:1.6rem;font-weight:900;color:#7fd3ff}
     .pricebox .mini{color:var(--muted);font-size:.88rem}
+    .status-badge{
+      padding:8px 12px;border-radius:999px;
+      background:rgba(45,212,191,.12);
+      border:1px solid rgba(45,212,191,.22);
+      color:#d4fff7;
+      font-weight:800;
+      font-size:.82rem;
+    }
 
     .layout{margin-top:16px;display:grid;grid-template-columns:1.45fr .95fr;gap:16px}
     @media (max-width: 980px){.layout{grid-template-columns:1fr}}
@@ -96,6 +107,7 @@
       border:1px solid rgba(110,168,254,.24);color:#b8d3ff;font-size:.82rem;font-weight:700;
     }
     .body{padding:16px}
+
     .qris-box{
       display:grid;place-items:center;gap:12px;
       padding:18px;border:1px dashed rgba(255,255,255,.15);border-radius:22px;
@@ -137,6 +149,11 @@
       background:linear-gradient(135deg, #6ea8fe, #2dd4bf);
       color:#04101b;flex:1;min-width:220px;
     }
+    .btn-main:disabled{
+      opacity:.65;
+      cursor:not-allowed;
+      transform:none;
+    }
     .btn-ghost{
       border:1px solid var(--line);border-radius:16px;padding:13px 16px;font-weight:700;
       background:rgba(255,255,255,.03);color:var(--text);min-width:180px;
@@ -157,9 +174,16 @@
     }
     @media (max-width: 700px){.choice-grid{grid-template-columns:1fr}}
     .choice{
-      display:flex;align-items:center;gap:10px;
+      display:flex;align-items:flex-start;gap:10px;
       padding:12px;border-radius:18px;border:1px solid var(--line);
-      background:rgba(255,255,255,.03)
+      background:rgba(255,255,255,.03);
+      cursor:pointer;
+      transition:.15s;
+    }
+    .choice:hover{transform:translateY(-1px)}
+    .choice.active{
+      border-color:rgba(110,168,254,.45);
+      background:rgba(110,168,254,.12);
     }
     .choice .ico{
       width:38px;height:38px;border-radius:14px;display:grid;place-items:center;
@@ -167,6 +191,7 @@
     }
     .choice .txt{font-size:.87rem;line-height:1.35}
     .choice .txt b{display:block;font-size:.92rem;margin-bottom:2px}
+    .choice .txt small{display:block;color:var(--muted);margin-top:2px}
 
     .preview{
       width:100%;max-height:210px;object-fit:cover;border-radius:16px;margin-top:12px;
@@ -174,12 +199,30 @@
     }
 
     .footer-note{margin-top:14px;color:var(--muted);font-size:.86rem;line-height:1.55}
-    .status{
-      margin-top:10px;
+
+    .toast-box{
+      position:fixed;
+      right:16px;
+      top:16px;
+      z-index:9999;
+      display:none;
+      max-width:min(92vw, 360px);
+      padding:14px 16px;
+      border-radius:18px;
+      border:1px solid rgba(45,212,191,.22);
+      background:rgba(12,23,41,.96);
+      box-shadow:0 20px 60px rgba(0,0,0,.35);
+    }
+    .toast-box.success{border-color:rgba(45,212,191,.28)}
+    .toast-box.error{border-color:rgba(255,123,123,.28)}
+    .toast-title{font-weight:900;margin:0 0 4px}
+    .toast-text{margin:0;color:var(--muted);font-size:.92rem;line-height:1.45}
+    .status-line{
+      margin-top:12px;
       display:none;
       padding:12px 14px;
       border-radius:16px;
-      border:1px solid rgba(45,212,191,.25);
+      border:1px solid rgba(45,212,191,.18);
       background:rgba(45,212,191,.08);
       color:#d7fff7;
       font-weight:700;
@@ -188,6 +231,11 @@
   </style>
 </head>
 <body>
+  <div id="toast" class="toast-box">
+    <p class="toast-title" id="toastTitle">Sukses</p>
+    <p class="toast-text" id="toastText">Bukti berhasil dikirim.</p>
+  </div>
+
   <iframe name="uploadFrame" id="uploadFrame"></iframe>
 
   <div class="wrap">
@@ -207,9 +255,7 @@
 
     <section class="hero">
       <h2 id="pageTitle">Checkout</h2>
-      <p class="sub" id="pageSub">
-        Silakan scan QRIS, bayar sesuai nominal, lalu upload bukti pembayaran.
-      </p>
+      <p class="sub" id="pageSub">Silakan scan QRIS, bayar sesuai nominal, lalu upload bukti pembayaran.</p>
 
       <div class="pricebox">
         <div>
@@ -217,10 +263,10 @@
           <div class="price" id="priceText">Rp 0</div>
           <div class="mini" id="miniText">-</div>
         </div>
-        <div class="badge-soft" id="statusText">Order siap diproses</div>
+        <div class="status-badge" id="statusText">Order siap diproses</div>
       </div>
 
-      <div class="status" id="doneBox">Bukti berhasil dikirim ke admin.</div>
+      <div class="status-line" id="doneBox">Bukti berhasil dikirim ke admin.</div>
     </section>
 
     <div class="layout">
@@ -231,7 +277,7 @@
         </div>
         <div class="body">
           <div class="qris-box">
-            <img src="qris.jpg" alt="QRIS KALINUX CLOUD">
+            <img src="https://files.catbox.moe/84p7l2.jpg" alt="QRIS KALINUX CLOUD">
             <div class="hint">
               QRIS di atas akan dipakai untuk transaksi. Setelah bayar, upload bukti supaya admin bisa verifikasi manual.
             </div>
@@ -299,8 +345,8 @@
             </div>
 
             <div class="actions">
-              <button class="btn-main" type="submit">
-                <i class="bi bi-send me-2"></i>Kirim Bukti ke Admin
+              <button class="btn-main" id="submitBtn" type="submit">
+                <i class="bi bi-send me-2"></i><span id="submitLabel">Kirim Bukti ke Admin</span>
               </button>
               <button class="btn-ghost" type="button" onclick="history.back()">
                 <i class="bi bi-arrow-left me-2"></i>Kembali
@@ -318,7 +364,7 @@
     <div class="cardx mt-3">
       <div class="head">
         <p class="section-title"><i class="bi bi-grid-3x3-gap me-2"></i>Pilihan OS</p>
-        <span class="badge-soft">Contoh yang umum dipakai</span>
+        <span class="badge-soft">Klik versi</span>
       </div>
       <div class="body">
         <div class="choice-grid" id="osGrid"></div>
@@ -328,7 +374,7 @@
     <div class="cardx mt-3">
       <div class="head">
         <p class="section-title"><i class="bi bi-puzzle me-2"></i>Pilihan Aplikasi</p>
-        <span class="badge-soft">Contoh aplikasi populer</span>
+        <span class="badge-soft">Klik versi</span>
       </div>
       <div class="body">
         <div class="choice-grid" id="appGrid"></div>
@@ -343,54 +389,86 @@
   const item  = params.get("item")  || "VPS Custom";
   const price = Number(params.get("price") || 0);
   const detail = params.get("detail") || "-";
-  const os = params.get("os") || "Linux";
-  const app = params.get("app") || "-";
-
-  const FALLBACK_OS = [
-    { icon:"bi-windows", title:"Windows", desc:"Untuk RDP / desktop remote" },
-    { icon:"bi-terminal-fill", title:"Ubuntu 20.04 LTS", desc:"LTS stabil dan umum dipakai" },
-    { icon:"bi-terminal-fill", title:"Ubuntu 22.04 LTS", desc:"LTS populer untuk server" },
-    { icon:"bi-terminal-fill", title:"Ubuntu 24.04 LTS", desc:"LTS terbaru yang umum dipilih" },
-    { icon:"bi-database", title:"Debian 11", desc:"Stabil dan ringan" },
-    { icon:"bi-database", title:"Debian 12", desc:"Stabil untuk hosting" },
-    { icon:"bi-database", title:"Debian 13", desc:"Stable terbaru" },
-    { icon:"bi-shield-check", title:"AlmaLinux", desc:"Cocok untuk panel & hosting" },
-    { icon:"bi-shield", title:"Rocky Linux", desc:"Alternatif enterprise-friendly" },
-    { icon:"bi-cpu", title:"Fedora", desc:"Lebih fresh untuk testing" },
-    { icon:"bi-terminal", title:"Alpine Linux", desc:"Super ringan" },
-    { icon:"bi-globe2", title:"Arch Linux", desc:"Untuk user yang suka kustom" }
-  ];
-
-  const FALLBACK_APP = [
-    { icon:"bi-filetype-js", title:"NodeJS", desc:"Bot, API, web app" },
-    { icon:"bi-server", title:"Nginx / Apache", desc:"Web server" },
-    { icon:"bi-wordpress", title:"WordPress", desc:"Website cepat jadi" },
-    { icon:"bi-file-earmark-code", title:"Laravel", desc:"Aplikasi PHP modern" },
-    { icon:"bi-cloud", title:"Nextcloud", desc:"Cloud file pribadi" },
-    { icon:"bi-window-sidebar", title:"Code Server", desc:"VS Code di browser" },
-    { icon:"bi-hdd-network", title:"Portainer", desc:"Kelola Docker" },
-    { icon:"bi-gear-fill", title:"CyberPanel", desc:"Panel hosting" },
-    { icon:"bi-window", title:"Plesk", desc:"Panel server" },
-    { icon:"bi-gear", title:"aaPanel", desc:"Panel ringan" },
-    { icon:"bi-database", title:"MariaDB", desc:"Database populer" },
-    { icon:"bi-database-fill", title:"PostgreSQL", desc:"Database kuat" },
-    { icon:"bi-box-seam", title:"MongoDB", desc:"NoSQL" },
-    { icon:"bi-cpu", title:"Redis", desc:"Cache cepat" },
-    { icon:"bi-graph-up", title:"Grafana", desc:"Monitoring dashboard" },
-    { icon:"bi-clock-history", title:"Uptime Kuma", desc:"Status monitoring" },
-    { icon:"bi-share", title:"n8n", desc:"Automation workflow" },
-    { icon:"bi-camera-video", title:"Jitsi Meet", desc:"Video meeting" },
-    { icon:"bi-chat-left-text", title:"OpenWebUI", desc:"Chat UI / AI" },
-    { icon:"bi-printer", title:"Odoo", desc:"ERP / bisnis" },
-    { icon:"bi-card-list", title:"NetBox", desc:"Inventory jaringan" },
-    { icon:"bi-ui-checks-grid", title:"Draw.io", desc:"Diagram / flowchart" }
-  ];
 
   const osGrid = document.getElementById("osGrid");
   const appGrid = document.getElementById("appGrid");
   const chipWrap = document.getElementById("chipWrap");
+  const statusText = document.getElementById("statusText");
+  const doneBox = document.getElementById("doneBox");
+  const submitBtn = document.getElementById("submitBtn");
+  const submitLabel = document.getElementById("submitLabel");
 
-  function rupiah(n){
+  const toast = document.getElementById("toast");
+  const toastTitle = document.getElementById("toastTitle");
+  const toastText = document.getElementById("toastText");
+
+  const osOptions = [
+    { key:"windows", title:"Windows", icon:"bi-windows", versions:["Server 2019","Server 2022"] },
+    { key:"ubuntu", title:"Ubuntu", icon:"bi-terminal-fill", versions:["20.04 LTS","22.04 LTS","24.04 LTS"] },
+    { key:"debian", title:"Debian", icon:"bi-database", versions:["11","12","13"] },
+    { key:"almalinux", title:"AlmaLinux", icon:"bi-shield-check", versions:["8","9"] },
+    { key:"centos", title:"CentOS", icon:"bi-box-seam", versions:["7","8 Stream"] },
+    { key:"fedora", title:"Fedora", icon:"bi-cpu", versions:["41"] },
+    { key:"mikrotik", title:"Mikrotik", icon:"bi-router", versions:["Latest"] },
+    { key:"freebsd", title:"FreeBSD", icon:"bi-shield", versions:["Latest"] },
+    { key:"alpine", title:"Alpine", icon:"bi-lightning-charge", versions:["Latest"] },
+    { key:"arch", title:"Arch Linux", icon:"bi-gear", versions:["Latest"] },
+    { key:"cloudlinux", title:"CloudLinux", icon:"bi-cloud", versions:["Latest"] },
+    { key:"flatcar", title:"Flatcar", icon:"bi-layers", versions:["Latest"] },
+    { key:"opensuse", title:"OpenSUSE", icon:"bi-circle", versions:["Latest"] },
+    { key:"rhel", title:"RHEL", icon:"bi-shield-lock", versions:["8","9"] },
+    { key:"rocky", title:"Rocky Linux", icon:"bi-shield", versions:["8","9"] },
+    { key:"pfsense", title:"pfSense", icon:"bi-shield-lock", versions:["Latest"] }
+  ];
+
+  const appOptions = [
+    { key:"otomax", title:"Otomax", icon:"bi-box-seam", versions:["Latest"] },
+    { key:"st24", title:"ST-24", icon:"bi-bullseye", versions:["Latest"] },
+    { key:"enginecp", title:"EngineCP", icon:"bi-gear-fill", versions:["Latest"] },
+    { key:"grafana", title:"Grafana", icon:"bi-graph-up", versions:["Latest"] },
+    { key:"moodle", title:"Moodle", icon:"bi-mortarboard-fill", versions:["Latest"] },
+    { key:"nextcloud", title:"NextCloud", icon:"bi-cloud", versions:["Latest"] },
+    { key:"laravel", title:"Laravel", icon:"bi-code-slash", versions:["Latest"] },
+    { key:"lamp", title:"LAMP/LEMP", icon:"bi-server", versions:["Latest"] },
+    { key:"codeserver", title:"Code Server", icon:"bi-code-square", versions:["Latest"] },
+    { key:"frankenphp", title:"FrankenPHP", icon:"bi-file-earmark-code", versions:["Latest"] },
+    { key:"jitsi", title:"Jitsi Meet", icon:"bi-camera-video", versions:["Latest"] },
+    { key:"netbox", title:"NetBox", icon:"bi-diagram-3", versions:["Latest"] },
+    { key:"nodejs", title:"NodeJS", icon:"bi-filetype-js", versions:["18 LTS","20 LTS","22 LTS"] },
+    { key:"plesk", title:"Plesk", icon:"bi-window-sidebar", versions:["Latest"] },
+    { key:"drawio", title:"Drawio", icon:"bi-vector-pen", versions:["Latest"] },
+    { key:"librenms", title:"LibreNMS", icon:"bi-activity", versions:["Latest"] },
+    { key:"portainer", title:"Portainer", icon:"bi-box", versions:["Latest"] },
+    { key:"cpanel", title:"WHM & cPanel", icon:"bi-window-stack", versions:["Latest"] },
+    { key:"cyberpanel", title:"CyberPanel", icon:"bi-gear-fill", versions:["Latest"] },
+    { key:"redis", title:"Redis Server", icon:"bi-cpu", versions:["Latest"] },
+    { key:"uptimekuma", title:"UptimeKuma", icon:"bi-clock-history", versions:["Latest"] },
+    { key:"aapanel", title:"aaPanel", icon:"bi-layout-sidebar", versions:["Latest"] },
+    { key:"truenas", title:"TrueNAS-Scale", icon:"bi-hdd-network", versions:["Latest"] },
+    { key:"wordpress", title:"Wordpress", icon:"bi-wordpress", versions:["Latest"] },
+    { key:"immich", title:"Immich", icon:"bi-images", versions:["Latest"] },
+    { key:"n8n", title:"n8n", icon:"bi-diagram-3", versions:["Latest"] },
+    { key:"waha", title:"WAHA", icon:"bi-chat-left-text", versions:["Latest"] },
+    { key:"snipeit", title:"Snipe-IT", icon:"bi-tags", versions:["Latest"] },
+    { key:"mariadb", title:"MariaDB", icon:"bi-database", versions:["10.6","10.11"] },
+    { key:"postgresql", title:"PostgreSQL", icon:"bi-database-fill", versions:["15","16"] },
+    { key:"mongodb", title:"MongoDB", icon:"bi-box-seam", versions:["6","7"] },
+    { key:"odoo", title:"Odoo", icon:"bi-briefcase", versions:["Latest"] },
+    { key:"rabbitmq", title:"RabbitMQ", icon:"bi-envelope", versions:["Latest"] },
+    { key:"openwebui", title:"OpenWebUI", icon:"bi-chat-left-text", versions:["Latest"] },
+    { key:"elk", title:"ELK-Blueprint", icon:"bi-bar-chart", versions:["Latest"] }
+  ];
+
+  let selectedOs = null;
+  let selectedOsVersion = null;
+  let selectedApp = null;
+  let selectedAppVersion = null;
+  let busy = false;
+  let submittedAt = 0;
+  let hideToastTimer = null;
+  let failTimer = null;
+
+  function money(n){
     return Number(n || 0).toLocaleString("id-ID");
   }
 
@@ -400,75 +478,10 @@
     }[m]));
   }
 
-  function renderChoices(el, items){
-    el.innerHTML = items.map(item => `
-      <div class="choice">
-        <div class="ico"><i class="bi ${item.icon}"></i></div>
-        <div class="txt">
-          <b>${esc(item.title)}</b>
-          ${esc(item.desc)}
-        </div>
-      </div>
-    `).join("");
-  }
-
-  renderChoices(osGrid, FALLBACK_OS);
-  renderChoices(appGrid, FALLBACK_APP);
-
-  document.getElementById("brandText").textContent = brand;
-  document.getElementById("itemText").textContent = item;
-  document.getElementById("detailText").textContent = detail;
-  document.getElementById("osText").textContent = os;
-  document.getElementById("appText").textContent = app;
-  document.getElementById("priceText").textContent = `Rp ${rupiah(price)}`;
-  document.getElementById("miniText").textContent = `${item} • ${os}`;
-
-  document.getElementById("pageTitle").textContent = `${brand} - Checkout`;
-  document.getElementById("pageSub").textContent = `Produk: ${item}. Bayar sesuai nominal, lalu upload bukti pembayaran agar admin bisa verifikasi manual.`;
-
-  chipWrap.innerHTML = `
-    <span class="chip"><i class="bi bi-cpu"></i>${esc(os)}</span>
-    <span class="chip"><i class="bi bi-app-indicator"></i>${esc(app)}</span>
-    <span class="chip"><i class="bi bi-receipt"></i>${esc(detail)}</span>
-  `;
-
-  document.getElementById("brand_hidden").value = brand;
-  document.getElementById("item_hidden").value = item;
-  document.getElementById("price_hidden").value = String(price);
-  document.getElementById("detail_hidden").value = detail;
-  document.getElementById("os_hidden").value = os;
-  document.getElementById("app_hidden").value = app;
-
-  document.getElementById("bukti").addEventListener("change", function(){
-    const file = this.files && this.files[0];
-    const preview = document.getElementById("preview");
-    if (!file) {
-      preview.style.display = "none";
-      preview.removeAttribute("src");
-      return;
-    }
-    const url = URL.createObjectURL(file);
-    preview.src = url;
-    preview.style.display = "block";
-  });
-
-  let submitted = false;
-
-  document.getElementById("uploadForm").addEventListener("submit", function(){
-    submitted = true;
-    document.getElementById("doneBox").style.display = "none";
-    setTimeout(() => {
-      if (submitted) {
-        document.getElementById("doneBox").style.display = "block";
-      }
-    }, 1200);
-  });
-
-  document.getElementById("uploadFrame").addEventListener("load", function(){
-    if (!submitted) return;
-    submitted = false;
-    document.getElementById("doneBox").style.display = "block";
-  });
-</script>
-</body>
-</html>
+  function showToast(title, message, type="success"){
+    toast.className = `toast-box ${type}`;
+    toastTitle.textContent = title;
+    toastText.textContent = message;
+    toast.style.display = "block";
+    clearTimeout(hideToastTimer);
+    hideToastT
