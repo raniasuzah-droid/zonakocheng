@@ -174,9 +174,22 @@
     }
 
     .footer-note{margin-top:14px;color:var(--muted);font-size:.86rem;line-height:1.55}
+    .status{
+      margin-top:10px;
+      display:none;
+      padding:12px 14px;
+      border-radius:16px;
+      border:1px solid rgba(45,212,191,.25);
+      background:rgba(45,212,191,.08);
+      color:#d7fff7;
+      font-weight:700;
+    }
+    iframe{display:none}
   </style>
 </head>
 <body>
+  <iframe name="uploadFrame" id="uploadFrame"></iframe>
+
   <div class="wrap">
     <div class="topbar">
       <div class="brand">
@@ -206,6 +219,8 @@
         </div>
         <div class="badge-soft" id="statusText">Order siap diproses</div>
       </div>
+
+      <div class="status" id="doneBox">Bukti berhasil dikirim ke admin.</div>
     </section>
 
     <div class="layout">
@@ -254,35 +269,44 @@
           <span class="badge-soft">Wajib diisi</span>
         </div>
         <div class="body">
-          <div class="field">
-            <label for="buyer_name">Nama pembeli</label>
-            <input id="buyer_name" type="text" placeholder="Contoh: Budi" />
-          </div>
+          <form id="uploadForm" action="https://api.kalinux.cloud/upload" method="POST" enctype="multipart/form-data" target="uploadFrame">
+            <input type="hidden" name="brand" id="brand_hidden">
+            <input type="hidden" name="item" id="item_hidden">
+            <input type="hidden" name="price" id="price_hidden">
+            <input type="hidden" name="detail" id="detail_hidden">
+            <input type="hidden" name="os" id="os_hidden">
+            <input type="hidden" name="app" id="app_hidden">
 
-          <div class="field">
-            <label for="buyer_wa">Nomor WhatsApp pembeli</label>
-            <input id="buyer_wa" type="tel" placeholder="Contoh: 08xxxxxxxxxx" />
-          </div>
+            <div class="field">
+              <label for="buyer_name">Nama pembeli</label>
+              <input id="buyer_name" name="buyer_name" type="text" placeholder="Contoh: Budi" required />
+            </div>
 
-          <div class="field">
-            <label for="note">Catatan tambahan</label>
-            <textarea id="note" rows="3" placeholder="Contoh: tolong proses cepat ya"></textarea>
-          </div>
+            <div class="field">
+              <label for="buyer_wa">Nomor WhatsApp pembeli</label>
+              <input id="buyer_wa" name="buyer_wa" type="tel" placeholder="Contoh: 08xxxxxxxxxx" required />
+            </div>
 
-          <div class="field">
-            <label for="bukti">Upload bukti pembayaran</label>
-            <input id="bukti" type="file" accept="image/*" />
-            <img id="preview" class="preview" alt="Preview bukti">
-          </div>
+            <div class="field">
+              <label for="note">Catatan tambahan</label>
+              <textarea id="note" name="note" rows="3" placeholder="Contoh: tolong proses cepat ya"></textarea>
+            </div>
 
-          <div class="actions">
-            <button class="btn-main" onclick="kirim()">
-              <i class="bi bi-send me-2"></i>Kirim Bukti ke Admin
-            </button>
-            <button class="btn-ghost" onclick="history.back()">
-              <i class="bi bi-arrow-left me-2"></i>Kembali
-            </button>
-          </div>
+            <div class="field">
+              <label for="bukti">Upload bukti pembayaran</label>
+              <input id="bukti" name="bukti" type="file" accept="image/*" required />
+              <img id="preview" class="preview" alt="Preview bukti">
+            </div>
+
+            <div class="actions">
+              <button class="btn-main" type="submit">
+                <i class="bi bi-send me-2"></i>Kirim Bukti ke Admin
+              </button>
+              <button class="btn-ghost" type="button" onclick="history.back()">
+                <i class="bi bi-arrow-left me-2"></i>Kembali
+              </button>
+            </div>
+          </form>
 
           <div class="footer-note">
             Setelah dikirim, bukti akan masuk ke Telegram admin bersama detail order, nomor WhatsApp pembeli, dan harga.
@@ -408,6 +432,13 @@
     <span class="chip"><i class="bi bi-receipt"></i>${esc(detail)}</span>
   `;
 
+  document.getElementById("brand_hidden").value = brand;
+  document.getElementById("item_hidden").value = item;
+  document.getElementById("price_hidden").value = String(price);
+  document.getElementById("detail_hidden").value = detail;
+  document.getElementById("os_hidden").value = os;
+  document.getElementById("app_hidden").value = app;
+
   document.getElementById("bukti").addEventListener("change", function(){
     const file = this.files && this.files[0];
     const preview = document.getElementById("preview");
@@ -421,57 +452,23 @@
     preview.style.display = "block";
   });
 
-  async function kirim(){
-    alert("FUNGSI KIRIM JALAN");
-    const file = document.getElementById("bukti").files[0];
-    const buyerName = document.getElementById("buyer_name").value.trim();
-    const buyerWa = document.getElementById("buyer_wa").value.trim();
-    const note = document.getElementById("note").value.trim();
+  let submitted = false;
 
-    if (!file) return alert("Pilih bukti pembayaran dulu.");
-    if (!buyerName) return alert("Isi nama pembeli dulu.");
-    if (!buyerWa) return alert("Isi nomor WhatsApp pembeli dulu.");
+  document.getElementById("uploadForm").addEventListener("submit", function(){
+    submitted = true;
+    document.getElementById("doneBox").style.display = "none";
+    setTimeout(() => {
+      if (submitted) {
+        document.getElementById("doneBox").style.display = "block";
+      }
+    }, 1200);
+  });
 
-    const fd = new FormData();
-    fd.append("bukti", file);
-    fd.append("brand", brand);
-    fd.append("item", item);
-    fd.append("price", String(price));
-    fd.append("detail", detail);
-    fd.append("os", os);
-    fd.append("app", app);
-    fd.append("buyer_name", buyerName);
-    fd.append("buyer_wa", buyerWa);
-    fd.append("note", note);
-
-    try{
-      const res = await fetch("https://api.kalinux.cloud/upload", {
-        method: "POST",
-        body: fd
-      });
-
-      const text = await res.text();
-
-console.log(text);
-
-alert("Bukti berhasil dikirim ke admin.");
-
-} catch(err){
-
-  console.log(err);
-
-  alert(
-    "ERROR DETAIL:\n\n" +
-    err.message +
-    "\n\n" +
-    err
-  );
-
-}
-
-}   // <-- penutup function kirim()
-
-  window.kirim = kirim;
+  document.getElementById("uploadFrame").addEventListener("load", function(){
+    if (!submitted) return;
+    submitted = false;
+    document.getElementById("doneBox").style.display = "block";
+  });
 </script>
 </body>
 </html>
