@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>KALINUX CLOUD - Checkout</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#07111f;
+      --panel:#0c1729;
+      --panel2:#101f36;
+      --line:rgba(255,255,255,.08);
+      --text:#eaf2ff;
+      --muted:rgba(234,242,255,.68);
+      --blue:#6ea8fe;
+      --green:#2dd4bf;
+      --danger:#ff7b7b;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      min-height:100vh;
+      color:var(--text);
+      background:
+        radial-gradient(900px 500px at 10% 0%, rgba(110,168,254,.18), transparent 50%),
+        radial-gradient(700px 400px at 90% 10%, rgba(45,212,191,.12), transparent 45%),
+        linear-gradient(180deg, #050b14 0%, #08111d 100%);
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    a{color:inherit;text-decoration:none}
+    .wrap{max-width:1180px;margin:0 auto;padding:20px 16px 40px}
+
+    .topbar{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      padding:14px 16px;border:1px solid var(--line);border-radius:22px;
+      background:rgba(10,18,31,.72);backdrop-filter: blur(14px);
+      box-shadow:0 20px 60px rgba(0,0,0,.25);
+      flex-wrap:wrap;
+    }
+    .brand{display:flex;align-items:center;gap:12px}
+    .brand-badge{
+      width:44px;height:44px;border-radius:14px;
+      display:grid;place-items:center;
+      background:linear-gradient(135deg, rgba(110,168,254,.95), rgba(45,212,191,.9));
+      color:#03101b;font-weight:900;
+      box-shadow:0 10px 25px rgba(110,168,254,.25);
+    }
+    .brand h1{margin:0;font-size:1rem;font-weight:800;letter-spacing:.2px}
+    .brand p{margin:2px 0 0;color:var(--muted);font-size:.88rem}
+    .pill-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
+    .pill{
+      padding:8px 12px;border:1px solid var(--line);border-radius:999px;
+      background:rgba(255,255,255,.04);font-size:.82rem;color:var(--muted)
+    }
+
+    .hero{
+      margin-top:16px;
+      border:1px solid var(--line);
+      border-radius:26px;
+      background:linear-gradient(180deg, rgba(16,31,54,.78), rgba(12,23,41,.88));
+      padding:18px;
+      box-shadow:0 24px 70px rgba(0,0,0,.22);
+    }
+    .hero h2{margin:0;font-size:1.5rem;font-weight:800}
+    .hero .sub{margin:8px 0 0;color:var(--muted);line-height:1.6}
+
+    .pricebox{
+      margin-top:14px;
+      display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+      padding:14px 16px;border:1px solid rgba(255,255,255,.08);border-radius:20px;
+      background:rgba(255,255,255,.03);
+    }
+    .pricebox .label{color:var(--muted);font-size:.88rem}
+    .pricebox .price{font-size:1.6rem;font-weight:900;color:#7fd3ff}
+    .pricebox .mini{color:var(--muted);font-size:.88rem}
+    .status-badge{
+      padding:8px 12px;border-radius:999px;
+      background:rgba(45,212,191,.12);
+      border:1px solid rgba(45,212,191,.22);
+      color:#d4fff7;
+      font-weight:800;
+      font-size:.82rem;
+    }
+
+    .layout{margin-top:16px;display:grid;grid-template-columns:1.45fr .95fr;gap:16px}
+    @media (max-width: 980px){.layout{grid-template-columns:1fr}}
+
+    .cardx{
+      border:1px solid var(--line);
+      border-radius:24px;
+      background:rgba(12,23,41,.84);
+      box-shadow:0 18px 50px rgba(0,0,0,.18);
+      overflow:hidden;
+    }
+    .cardx .head{
+      padding:16px 16px 0 16px;
+      display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+    }
+    .section-title{margin:0;font-size:1.05rem;font-weight:800}
+    .badge-soft{
+      padding:8px 12px;border-radius:999px;background:rgba(110,168,254,.12);
+      border:1px solid rgba(110,168,254,.24);color:#b8d3ff;font-size:.82rem;font-weight:700;
+    }
+    .body{padding:16px}
+
+    .qris-box{
+      display:grid;place-items:center;gap:12px;
+      padding:18px;border:1px dashed rgba(255,255,255,.15);border-radius:22px;
+      background:rgba(255,255,255,.02);
+    }
+    .qris-box img{
+      width:min(100%, 360px);
+      height:auto;
+      border-radius:18px;
+      box-shadow:0 14px 35px rgba(0,0,0,.28);
+      background:#fff;
+    }
+    .hint{color:var(--muted);font-size:.9rem;line-height:1.55;text-align:center;max-width:520px}
+
+    .grid-info{
+      display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px
+    }
+    @media (max-width:600px){.grid-info{grid-template-columns:1fr}}
+    .info{
+      padding:14px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.03);
+    }
+    .info .k{color:var(--muted);font-size:.8rem;margin-bottom:6px}
+    .info .v{font-weight:800;line-height:1.45}
+    .info .v small{display:block;color:var(--muted);font-weight:600;margin-top:2px}
+
+    .field{
+      display:flex;flex-direction:column;gap:8px;margin-top:12px
+    }
+    .field label{font-size:.9rem;color:#dce7ff;font-weight:700}
+    .field input,.field textarea{
+      width:100%;border:1px solid var(--line);border-radius:16px;
+      background:#08121f;color:var(--text);padding:13px 14px;outline:none;
+    }
+    .field input::placeholder,.field textarea::placeholder{color:rgba(234,242,255,.42)}
+    .field input:focus,.field textarea:focus{border-color:rgba(110,168,254,.45);box-shadow:0 0 0 3px rgba(110,168,254,.12)}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+    .btn-main{
+      border:0;border-radius:16px;padding:13px 16px;font-weight:800;
+      background:linear-gradient(135deg, #6ea8fe, #2dd4bf);
+      color:#04101b;flex:1;min-width:220px;
+    }
+    .btn-main:disabled{
+      opacity:.65;
+      cursor:not-allowed;
+      transform:none;
+    }
+    .btn-ghost{
+      border:1px solid var(--line);border-radius:16px;padding:13px 16px;font-weight:700;
+      background:rgba(255,255,255,.03);color:var(--text);min-width:180px;
+    }
+
+    .chip-wrap{
+      display:flex;flex-wrap:wrap;gap:10px;margin-top:12px
+    }
+    .chip{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:9px 12px;border-radius:999px;border:1px solid var(--line);
+      background:rgba(255,255,255,.03);color:#eaf2ff;font-size:.84rem
+    }
+    .chip i{color:#8ac6ff}
+
+    .choice-grid{
+      display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px
+    }
+    @media (max-width: 700px){.choice-grid{grid-template-columns:1fr}}
+    .choice{
+      display:flex;align-items:flex-start;gap:10px;
+      padding:12px;border-radius:18px;border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      cursor:pointer;
+      transition:.15s;
+    }
+    .choice:hover{transform:translateY(-1px)}
+    .choice.active{
+      border-color:rgba(110,168,254,.45);
+      background:rgba(110,168,254,.12);
+    }
+    .choice .ico{
+      width:38px;height:38px;border-radius:14px;display:grid;place-items:center;
+      background:rgba(110,168,254,.12);color:#8ac6ff;flex:0 0 auto;
+    }
+    .choice .txt{font-size:.87rem;line-height:1.35}
+    .choice .txt b{display:block;font-size:.92rem;margin-bottom:2px}
+    .choice .txt small{display:block;color:var(--muted);margin-top:2px}
+
+    .preview{
+      width:100%;max-height:210px;object-fit:cover;border-radius:16px;margin-top:12px;
+      border:1px solid var(--line);display:none
+    }
+
+    .footer-note{margin-top:14px;color:var(--muted);font-size:.86rem;line-height:1.55}
+
+    .toast-box{
+      position:fixed;
+      right:16px;
+      top:16px;
+      z-index:9999;
+      display:none;
+      max-width:min(92vw, 360px);
+      padding:14px 16px;
+      border-radius:18px;
+      border:1px solid rgba(45,212,191,.22);
+      background:rgba(12,23,41,.96);
+      box-shadow:0 20px 60px rgba(0,0,0,.35);
+    }
+    .toast-box.success{border-color:rgba(45,212,191,.28)}
+    .toast-box.error{border-color:rgba(255,123,123,.28)}
+    .toast-title{font-weight:900;margin:0 0 4px}
+    .toast-text{margin:0;color:var(--muted);font-size:.92rem;line-height:1.45}
+    .status-line{
+      margin-top:12px;
+      display:none;
+      padding:12px 14px;
+      border-radius:16px;
+      border:1px solid rgba(45,212,191,.18);
+      background:rgba(45,212,191,.08);
+      color:#d7fff7;
+      font-weight:700;
+    }
+    iframe{display:none}
+    .version-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+    .vbtn{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      color:var(--text);
+      border-radius:999px;
+      padding:8px 12px;
+      font-size:.86rem;
+      font-weight:700;
+      cursor:pointer;
+    }
+    .vbtn.active{
+      background:rgba(110,168,254,.14);
+      border-color:rgba(110,168,254,.35);
+    }
+    .btn-spinner{
+      display:inline-block;
+      width:14px;
+      height:14px;
+      border:2px solid rgba(4,16,27,.25);
+      border-top-color:rgba(4,16,27,.9);
+      border-radius:50%;
+      animation:spin 1s linear infinite;
+      vertical-align:-2px;
+      margin-right:8px;
+    }
+    @keyframes spin{to{transform:rotate(360deg)}}
+  </style>
+</head>
+<body>
+  <div id="toast" class="toast-box">
+    <p class="toast-title" id="toastTitle">Sukses</p>
+    <p class="toast-text" id="toastText">Bukti berhasil dikirim.</p>
+  </div>
+
+  <iframe name="uploadFrame" id="uploadFrame"></iframe>
+
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <div class="brand-badge">KC</div>
+        <div>
+          <h1>KALINUX CLOUD</h1>
+          <p>Checkout QRIS • Upload bukti • Telegram admin</p>
+        </div>
+      </div>
+      <div class="pill-row">
+        <span class="pill"><i class="bi bi-shield-check me-1"></i> Manual verify</span>
+        <span class="pill"><i class="bi bi-clock-history me-1"></i> Fast processing</span>
+      </div>
+    </div>
+
+    <section class="hero">
+      <h2 id="pageTitle">Checkout</h2>
+      <p class="sub" id="pageSub">Silakan scan QRIS, bayar sesuai nominal, lalu upload bukti pembayaran.</p>
+
+      <div class="pricebox">
+        <div>
+          <div class="label">Nominal yang harus dibayar</div>
+          <div class="price" id="priceText">Rp 0</div>
+          <div class="mini" id="miniText">-</div>
+        </div>
+        <div class="status-badge" id="statusText">Order siap diproses</div>
+      </div>
+
+      <div class="status-line" id="doneBox">Bukti berhasil dikirim ke admin.</div>
+    </section>
+
+    <div class="layout">
+      <div class="cardx">
+        <div class="head">
+          <p class="section-title"><i class="bi bi-qr-code-scan me-2"></i>QRIS Pembayaran</p>
+          <span class="badge-soft">Scan lalu transfer</span>
+        </div>
+        <div class="body">
+          <div class="qris-box">
+            <img src="https://files.catbox.moe/84p7l2.jpg" alt="QRIS KALINUX CLOUD">
+            <div class="hint">
+              QRIS di atas akan dipakai untuk transaksi. Setelah bayar, upload bukti supaya admin bisa verifikasi manual.
+            </div>
+          </div>
+
+          <div class="grid-info">
+            <div class="info">
+              <div class="k">Brand</div>
+              <div class="v" id="brandText">KALINUX CLOUD</div>
+            </div>
+            <div class="info">
+              <div class="k">Produk</div>
+              <div class="v" id="itemText">-</div>
+            </div>
+            <div class="info">
+              <div class="k">Detail VPS / Paket</div>
+              <div class="v" id="detailText">-</div>
+            </div>
+            <div class="info">
+              <div class="k">OS / Pilihan</div>
+              <div class="v">
+                <span id="osText">-</span>
+                <small id="appText">Aplikasi opsional</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="chip-wrap" id="chipWrap"></div>
+        </div>
+      </div>
+
+      <div class="cardx">
+        <div class="head">
+          <p class="section-title"><i class="bi bi-person-vcard me-2"></i>Data Pembeli</p>
+          <span class="badge-soft">Wajib diisi</span>
+        </div>
+        <div class="body">
+          <form id="uploadForm" action="https://api.kalinux.cloud/upload" method="POST" enctype="multipart/form-data" target="uploadFrame">
+            <input type="hidden" name="brand" id="brand_hidden">
+            <input type="hidden" name="item" id="item_hidden">
+            <input type="hidden" name="price" id="price_hidden">
+            <input type="hidden" name="detail" id="detail_hidden">
+            <input type="hidden" name="os" id="os_hidden">
+            <input type="hidden" name="app" id="app_hidden">
+
+            <div class="field">
+              <label for="buyer_name">Nama pembeli</label>
+              <input id="buyer_name" name="buyer_name" type="text" placeholder="Contoh: Budi" required />
+            </div>
+
+            <div class="field">
+              <label for="buyer_wa">Nomor WhatsApp pembeli</label>
+              <input id="buyer_wa" name="buyer_wa" type="tel" placeholder="Contoh: 08xxxxxxxxxx" required />
+            </div>
+
+            <div class="field">
+              <label for="note">Catatan tambahan</label>
+              <textarea id="note" name="note" rows="3" placeholder="Contoh: tolong proses cepat ya"></textarea>
+            </div>
+
+            <div class="field">
+              <label for="bukti">Upload bukti pembayaran</label>
+              <input id="bukti" name="bukti" type="file" accept="image/*" required />
+              <img id="preview" class="preview" alt="Preview bukti">
+            </div>
+
+            <div class="actions">
+              <button class="btn-main" id="submitBtn" type="submit">
+                <i class="bi bi-send me-2"></i><span id="submitLabel">Kirim Bukti ke Admin</span>
+              </button>
+              <button class="btn-ghost" type="button" onclick="history.back()">
+                <i class="bi bi-arrow-left me-2"></i>Kembali
+              </button>
+            </div>
+          </form>
+
+          <div class="footer-note">
+            Setelah dikirim, bukti akan masuk ke Telegram admin bersama detail order, nomor WhatsApp pembeli, dan harga.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cardx mt-3">
+      <div class="head">
+        <p class="section-title"><i class="bi bi-grid-3x3-gap me-2"></i>Pilihan OS</p>
+        <span class="badge-soft">Klik kategori lalu pilih versi</span>
+      </div>
+      <div class="body">
+        <div class="choice-grid" id="osGrid"></div>
+        <div class="version-row" id="osVersionRow"></div>
+      </div>
+    </div>
+
+    <div class="cardx mt-3">
+      <div class="head">
+        <p class="section-title"><i class="bi bi-puzzle me-2"></i>Pilihan Aplikasi</p>
+        <span class="badge-soft">Opsional, tidak wajib dipilih</span>
+      </div>
+      <div class="body">
+        <div class="choice-grid" id="appGrid"></div>
+        <div class="version-row" id="appVersionRow"></div>
+      </div>
+    </div>
+  </div>
+
+<script>
+  const params = new URLSearchParams(location.search);
+
+  const brand = params.get("brand") || "KALINUX CLOUD";
+  const item  = params.get("item")  || "VPS Custom";
+  const price = Number(params.get("price") || 0);
+  const detail = params.get("detail") || "-";
+
+  const toast = document.getElementById("toast");
+  const toastTitle = document.getElementById("toastTitle");
+  const toastText = document.getElementById("toastText");
+  const osGrid = document.getElementById("osGrid");
+  const appGrid = document.getElementById("appGrid");
+  const osVersionRow = document.getElementById("osVersionRow");
+  const appVersionRow = document.getElementById("appVersionRow");
+  const chipWrap = document.getElementById("chipWrap");
+  const statusText = document.getElementById("statusText");
+  const doneBox = document.getElementById("doneBox");
+  const submitBtn = document.getElementById("submitBtn");
+  const submitLabel = document.getElementById("submitLabel");
+
+  const osOptions = [
+    { key:"windows", title:"Windows", icon:"bi-windows", versions:["2016","2019","2022","2025"] },
+    { key:"debian", title:"Debian", icon:"bi-database", versions:["10","11","12","13"] },
+    { key:"ubuntu", title:"Ubuntu", icon:"bi-terminal-fill", versions:["18.04 LTS","20.04 LTS","22.04 LTS","24.04 LTS"] },
+    { key:"almalinux", title:"AlmaLinux", icon:"bi-shield-check", versions:["8","9"] },
+    { key:"centos", title:"CentOS", icon:"bi-box-seam", versions:["6","7","8","9","10"] },
+    { key:"alpine", title:"Alpine", icon:"bi-lightning-charge", versions:["3.21"] },
+    { key:"arch", title:"Arch Linux", icon:"bi-gear", versions:["Latest"] },
+    { key:"cloudlinux", title:"CloudLinux", icon:"bi-cloud", versions:["8","9"] },
+    { key:"flatcar", title:"Flatcar", icon:"bi-layers", versions:["Stable"] },
+    { key:"opensuse", title:"OpenSUSE", icon:"bi-circle", versions:["15.6"] },
+    { key:"rhel", title:"RHEL", icon:"bi-shield-lock", versions:["8","9","10"] },
+    { key:"rocky", title:"Rocky Linux", icon:"bi-shield", versions:["8","9"] },
+    { key:"pfsense", title:"pfSense", icon:"bi-shield-lock", versions:["2.7.3 UFS"] }
+  ];
+
+  const appOptions = [
+    { key:"otomax", title:"Otomax", icon:"bi-box-seam", versions:["Latest"] },
+    { key:"st24", title:"ST-24", icon:"bi-bullseye", versions:["Latest"] },
+    { key:"enginecp", title:"EngineCP", icon:"bi-gear-fill", versions:["AlmaLinux","Ubuntu"] },
+    { key:"grafana", title:"Grafana", icon:"bi-graph-up", versions:["12.0.2 Systemd","12.0.2 Docker"] },
+    { key:"moodle", title:"Moodle", icon:"bi-mortarboard-fill", versions:["4.0.5"] },
+    { key:"nextcloud", title:"NextCloud", icon:"bi-cloud", versions:["Stable","Docker"] },
+    { key:"laravel", title:"Laravel", icon:"bi-code-slash", versions:["12"] },
+    { key:"lamp", title:"LAMP", icon:"bi-server", versions:["MariaDB 10.11","PHP 8.3"] },
+    { key:"lemp", title:"LEMP", icon:"bi-server", versions:["MariaDB 10.11","PHP 8.3"] },
+    { key:"codeserver", title:"Code Server", icon:"bi-code-square", versions:["4.101.2 Ubuntu24"] },
+    { key:"frankenphp", title:"FrankenPHP", icon:"bi-file-earmark-code", versions:["1.8.0","PHP 8.4"] },
+    { key:"jitsi", title:"Jitsi Meet", icon:"bi-camera-video", versions:["Docker Stable 10314"] },
+    { key:"netbox", title:"NetBox", icon:"bi-diagram-3", versions:["Stable"] },
+    { key:"nodejs", title:"NodeJS", icon:"bi-filetype-js", versions:["22 LTS"] },
+    { key:"plesk", title:"Plesk", icon:"bi-window-sidebar", versions:["18.0.66 Debian 11","18.0.66 AlmaLinux 9"] },
+    { key:"drawio", title:"Drawio", icon:"bi-vector-pen", versions:["Docker 28.0.5"] },
+    { key:"librenms", title:"LibreNMS", icon:"bi-activity", versions:["25.8.0"] },
+    { key:"portainer", title:"Portainer", icon:"bi-box", versions:["Stable"] },
+    { key:"cpanel", title:"WHM & cPanel", icon:"bi-window-stack", versions:["CloudLinux9 BYOL","AlmaLinux9 BYOL","Ubuntu22 BYOL"] },
+    { key:"cyberpanel", title:"CyberPanel", icon:"bi-gear-fill", versions:["Ubuntu22","2.4.2"] },
+    { key:"redis", title:"Redis Server", icon:"bi-cpu", versions:["7.0.15"] },
+    { key:"uptimekuma", title:"Uptime Kuma", icon:"bi-clock-history", versions:["Latest Docker"] },
+    { key:"aapanel", title:"aaPanel", icon:"bi-layout-sidebar", versions:["7.0.21 Ubuntu24"] },
+    { key:"truenas", title:"TrueNAS Scale", icon:"bi-hdd-network", versions:["25.04 Community"] },
+    { key:"wordpress", title:"WordPress", icon:"bi-wordpress", versions:["6.8.2"] },
+    { key:"immich", title:"Immich", icon:"bi-images", versions:["1.135.3"] },
+    { key:"n8n", title:"n8n", icon:"bi-diagram-3", versions:["1.105.3"] },
+    { key:"waha", title:"WAHA", icon:"bi-chat-left-text", versions:["8.1"] },
+    { key:"snipeit", title:"Snipe-IT", icon:"bi-tags", versions:["Latest"] },
+    { key:"mariadb", title:"MariaDB", icon:"bi-database", versions:["10","11","13"] },
+    { key:"postgresql", title:"PostgreSQL", icon:"bi-database-fill", versions:["16"] },
+    { key:"mongodb", title:"MongoDB", icon:"bi-box-seam", versions:["8.0"] },
+    { key:"odoo", title:"Odoo", icon:"bi-briefcase", versions:["18"] },
+    { key:"rabbitmq", title:"RabbitMQ", icon:"bi-envelope", versions:["4 Management"] },
+    { key:"openwebui", title:"OpenWebUI", icon:"bi-chat-left-text", versions:["0.6.26"] },
+    { key:"elk", title:"ELK Blueprint", icon:"bi-bar-chart", versions:["9.1.3"] }
+  ];
+
+  let selectedOs = null;
+  let selectedOsVersion = "";
+  let selectedApp = null;
+  let selectedAppVersion = "";
+  let busy = false;
+  let submittedAt = 0;
+  let hideToastTimer = null;
+  let failTimer = null;
+
+  function money(n){ return Number(n || 0).toLocaleString("id-ID"); }
+  function esc(s){
+    return String(s).replace(/[&<>"']/g, (m)=>({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+    }[m]));
+  }
+
+  function showToast(title, message, type="success"){
+    toast.className = `toast-box ${type}`;
+    toastTitle.textContent = title;
+    toastText.textContent = message;
+    toast.style.display = "block";
+    clearTimeout(hideToastTimer);
+    hideToastTimer = setTimeout(() => toast.style.display = "none", 3500);
+  }
+
+  function setBusy(state){
+    busy = state;
+    submitBtn.disabled = state;
+    submitLabel.innerHTML = state
+      ? '<span class="btn-spinner"></span>Mengirim...'
+      : 'Kirim Bukti ke Admin';
+    statusText.textContent = state ? "Mengirim..." : "Order siap diproses";
+  }
+
+  function updateHidden(){
+    document.getElementById("brand_hidden").value = brand;
+    document.getElementById("item_hidden").value = item;
+    document.getElementById("price_hidden").value = String(price);
+    document.getElementById("detail_hidden").value = detail;
+    document.getElementById("os_hidden").value = selectedOs ? `${selectedOs.title} ${selectedOsVersion}` : "-";
+    document.getElementById("app_hidden").value = selectedApp ? `${selectedApp.title} ${selectedAppVersion}` : "-";
+  }
+
+  function updateTopInfo(){
+    document.getElementById("brandText").textContent = brand;
+    document.getElementById("itemText").textContent = item;
+    document.getElementById("detailText").textContent = detail;
+    document.getElementById("osText").textContent = selectedOs ? `${selectedOs.title} ${selectedOsVersion}` : "-";
+    document.getElementById("appText").textContent = selectedApp ? `${selectedApp.title} ${selectedAppVersion}` : "Aplikasi opsional";
+    document.getElementById("priceText").textContent = `Rp ${money(price)}`;
+    document.getElementById("miniText").textContent = `${item} • ${selectedOs ? selectedOs.title : "OS"}`;
+    document.getElementById("pageTitle").textContent = `${brand} - Checkout`;
+    document.getElementById("pageSub").textContent = `Produk: ${item}. Bayar sesuai nominal, lalu upload bukti pembayaran agar admin bisa verifikasi manual.`;
+
+    chipWrap.innerHTML = `
+      <span class="chip"><i class="bi bi-cpu"></i>${esc(selectedOs ? `${selectedOs.title} ${selectedOsVersion}` : "Pilih OS")}</span>
+      <span class="chip"><i class="bi bi-app-indicator"></i>${esc(selectedApp ? `${selectedApp.title} ${selectedAppVersion}` : "Aplikasi opsional")}</span>
+      <span class="chip"><i class="bi bi-receipt"></i>${esc(detail)}</span>
+    `;
+    updateHidden();
+  }
+
+  function renderOsGrid(){
+    osGrid.innerHTML = osOptions.map(opt => `
+      <div class="choice ${selectedOs && selectedOs.key === opt.key ? 'active' : ''}" data-key="${opt.key}" data-type="os">
+        <div class="ico"><i class="bi ${opt.icon}"></i></div>
+        <div class="txt">
+          <b>${esc(opt.title)}</b>
+          <small>${opt.versions.join(" • ")}</small>
+        </div>
+      </div>
+    `).join("");
+
+    document.querySelectorAll('[data-type="os"]').forEach(el => {
+      el.addEventListener("click", () => {
+        const key = el.getAttribute("data-key");
+        selectedOs = osOptions.find(x => x.key === key);
+        selectedOsVersion = selectedOs.versions[0];
+        renderOsGrid();
+        renderOsVersions();
+        updateTopInfo();
+      });
+    });
+  }
+
+  function renderOsVersions(){
+    osVersionRow.innerHTML = "";
+    if(!selectedOs) return;
+
+    osVersionRow.innerHTML = selectedOs.versions.map(v => `
+      <button type="button" class="vbtn ${selectedOsVersion === v ? 'active' : ''}" data-version="${esc(v)}">${esc(v)}</button>
+    `).join("");
+
+    osVersionRow.querySelectorAll(".vbtn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        selectedOsVersion = btn.getAttribute("data-version");
+        renderOsVersions();
+        updateTopInfo();
+      });
+    });
+  }
+
+  function renderAppGrid(){
+    appGrid.innerHTML = appOptions.map(opt => `
+      <div class="choice ${selectedApp && selectedApp.key === opt.key ? 'active' : ''}" data-key="${opt.key}" data-type="app">
+        <div class="ico"><i class="bi ${opt.icon}"></i></div>
+        <div class="txt">
+          <b>${esc(opt.title)}</b>
+          <small>${opt.versions.join(" • ")}</small>
+        </div>
+      </div>
+    `).join("");
+
+    document.querySelectorAll('[data-type="app"]').forEach(el => {
+      el.addEventListener("click", () => {
+        const key = el.getAttribute("data-key");
+        selectedApp = appOptions.find(x => x.key === key);
+        selectedAppVersion = selectedApp.versions[0];
+        renderAppGrid();
+        renderAppVersions();
+        updateTopInfo();
+      });
+    });
+  }
+
+  function renderAppVersions(){
+    appVersionRow.innerHTML = "";
+    if(!selectedApp) return;
+
+    appVersionRow.innerHTML = selectedApp.versions.map(v => `
+      <button type="button" class="vbtn ${selectedAppVersion === v ? 'active' : ''}" data-version="${esc(v)}">${esc(v)}</button>
+    `).join("");
+
+    appVersionRow.querySelectorAll(".vbtn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        selectedAppVersion = btn.getAttribute("data-version");
+        renderAppVersions();
+        updateTopInfo();
+      });
+    });
+  }
+
+  function initDefaults(){
+    const hint = `${params.get("os") || ""} ${detail}`.toLowerCase();
+    if(hint.includes("windows")){
+      selectedOs = osOptions.find(x => x.key === "windows") || osOptions[0];
+      selectedOsVersion = "2022";
+    } else {
+      selectedOs = osOptions.find(x => x.key === "ubuntu") || osOptions[0];
+      selectedOsVersion = "24.04 LTS";
+    }
+    selectedApp = null;
+    selectedAppVersion = "";
+  }
+
+  document.getElementById("bukti").addEventListener("change", function(){
+    const file = this.files && this.files[0];
+    const preview = document.getElementById("preview");
+    if (!file){
+      preview.style.display = "none";
+      preview.removeAttribute("src");
+      return;
+    }
+    preview.src = URL.createObjectURL(file);
+    preview.style.display = "block";
+  });
+
+  document.getElementById("uploadForm").addEventListener("submit", function(){
+    if (busy) return;
+
+    submittedAt = Date.now();
+    setBusy(true);
+    doneBox.style.display = "none";
+    showToast("Mengirim...", "Bukti sedang dikirim ke admin.", "success");
+
+    clearTimeout(failTimer);
+    failTimer = setTimeout(() => {
+      if (busy) {
+        setBusy(false);
+        showToast("Belum ada balasan", "Coba kirim ulang sekali saja kalau belum berubah.", "error");
+      }
+    }, 20000);
+  });
+
+  document.getElementById("uploadFrame").addEventListener("load", function(){
+    if (!busy) return;
+    if (Date.now() - submittedAt < 500) return;
+
+    clearTimeout(failTimer);
+    setBusy(false);
+    doneBox.style.display = "block";
+    showToast("Terkirim", "Bukti berhasil dikirim ke admin.", "success");
+  });
+
+  initDefaults();
+  renderOsGrid();
+  renderOsVersions();
+  renderAppGrid();
+  renderAppVersions();
+  updateTopInfo();
+</script>
+</body>
+</html>
