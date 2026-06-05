@@ -391,24 +391,20 @@
     }
 
     function orderWA(productGroup, price, cpu, ram, disk, note){
-      const wa = document.getElementById("adminSelect").value;
 
-      const msg =
-`Halo admin ZONA KOCHENG,
-Saya mau order VPS Paket:
+  const detail =
+    `Linux | CPU ${cpu} | RAM ${ram} | Disk ${disk}`;
 
-Kategori: ${productGroup}
-CPU    : ${cpu}
-RAM    : ${ram}
-Disk   : ${disk}
-Catatan: ${note}
+  const url =
+    "checkout.html" +
+    "?brand=" + encodeURIComponent("KALINUX CLOUD") +
+    "&item=" + encodeURIComponent(productGroup) +
+    "&price=" + encodeURIComponent(price) +
+    "&detail=" + encodeURIComponent(detail) +
+    "&os=" + encodeURIComponent("Belum Dipilih") +
+    "&app=" + encodeURIComponent("-");
 
-Harga  : Rp ${rupiah(price)} / 30 hari
-
-Nama:
-Kebutuhan (RDP/Hosting/Bot/dll):`;
-
-      window.open("https://wa.me/" + wa + "?text=" + encodeURIComponent(msg), "_blank");
+  window.location.href = url;
     }
   </script>
 </body>
