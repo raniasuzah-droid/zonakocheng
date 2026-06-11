@@ -383,7 +383,7 @@
       grid.innerHTML = items.map((p, i) => `
         <article class="card">
           <p class="name">${p.name}</p>
-          <p class="price">Rp${rupiah(p.price)}<span class="period">/ 30 hari</span></p>
+          <p class="price">Rp${rupiah(p.price)}<span class="period">/ garansi</span></p>
           <div class="tag">${p.tag}</div>
           <ul>
             ${p.features.map(f => `<li>${f}</li>`).join("")}
